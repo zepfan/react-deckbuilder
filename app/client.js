@@ -1,14 +1,20 @@
-import React, { Component } from 'react';
+// react jazz
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
-const app = document.getElementByID('app');
+// firebase init
+import './util/firebase';
+
+// components
+import DeckBuilderApp from './DeckBuilderApp';
+import Home from './containers/Home';
 
 ReactDOM.render(
-	// <Router history={hashHistory}>
-	// 	<Route path="/" component={App}>
-	// 		<IndexRoute component={IndexComponent}></IndexRoute>
-	// 	</Route>
-	// </Router>,
-	app
+	<Router history={hashHistory}>
+		<Route path="/" component={DeckBuilderApp}>
+			<IndexRoute component={Home}></IndexRoute>
+		</Route>
+	</Router>,
+	document.getElementById('app')
 );
