@@ -20,7 +20,6 @@ import DeckCatalog from './containers/DeckCatalog/DeckCatalog';
 import DeckAdder from './containers/DeckAdder/DeckAdder';
 import DeckList from './containers/DeckList/DeckList';
 
-
 /**
  * ----------------------------------------
  * Authenticate Users
@@ -38,7 +37,6 @@ function requireAuth(nextState, replace, callback) {
     callback();
   });
 }
-
 
 /**
  * ----------------------------------------

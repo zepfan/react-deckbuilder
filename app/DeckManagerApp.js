@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 
+// stores
 import userStore from './stores/userStore';
 
 class DeckManagerApp extends Component {

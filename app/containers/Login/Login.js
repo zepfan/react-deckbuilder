@@ -25,6 +25,20 @@ class Login extends Component {
 		return (
 			<div>
 				<h1>Login</h1>
+
+				<form>
+					<label for="email-input">Email:</label>
+					<input name="email" type="text" id="email-input" />
+
+					<label for="password-input">Password:</label>
+					<input name="password" type="password" id="password-input" />
+
+					<button type="submit">Login</button>
+					
+					<a>Forgot your password?</a>
+				</form>
+
+				<a>New user? Sign up here.</a>
 			</div>
 		);
 	}

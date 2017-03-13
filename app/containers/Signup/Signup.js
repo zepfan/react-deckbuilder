@@ -22,9 +22,23 @@ class Signup extends Component {
 	}
 
 	render() {
+		console.log(this.props.appState.user);
+		
 		return (
 			<div>
-				<h1>Signup Works</h1>
+				<h1>Sign Up</h1>
+
+				<form>
+					<label for="email-input">Email:</label>
+					<input name="email" type="text" id="email-input" />
+
+					<label for="password-input">Password:</label>
+					<input name="password" type="password" id="password-input" />
+
+					<button type="submit">Sign Up</button>
+				</form>
+
+				<a>Already registered? Sign in here.</a>
 			</div>
 		);
 	}

@@ -1,7 +1,9 @@
 import * as firebase from 'firebase';
 
 /**
- * Hook up our Firebase account.
+ * ----------------------------------------
+ * Initialize our Firebase app
+ * ----------------------------------------
  */
 
 const config = {
@@ -14,5 +16,18 @@ const config = {
 
 export const firebaseApp = firebase.initializeApp(config);
 
+/**
+ * ----------------------------------------
+ * Export database() methods
+ * ----------------------------------------
+ */
+
 export const db = firebaseApp.database();
+
+/**
+ * ----------------------------------------
+ * Export auth() methods
+ * ----------------------------------------
+ */
+
 export const auth = firebaseApp.auth();
