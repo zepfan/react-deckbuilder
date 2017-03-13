@@ -1,20 +1,18 @@
-/**
- * Hook up our Firebase account
- * 
- * Once initialized and imported into parent
- * component, it should work everywhere.
- */
-
 import * as firebase from 'firebase';
 
-(() => {
-	const config = {
-		apiKey: "AIzaSyCi4Ld4o0svBJSMP5s-JhSH8i3PvFSupnA",
-		authDomain: "react-todo-app-d870e.firebaseapp.com",
-		databaseURL: "https://react-todo-app-d870e.firebaseio.com",
-		storageBucket: "react-todo-app-d870e.appspot.com",
-		messagingSenderId: "993878740859"
-	};
+/**
+ * Hook up our Firebase account.
+ */
 
-	firebase.initializeApp(config);
-})();
+const config = {
+	apiKey: "AIzaSyAL_goA4tvtMZWMWs2YmPXcwA1NtXaNa64",
+	authDomain: "mtg-deck-catalog.firebaseapp.com",
+	databaseURL: "https://mtg-deck-catalog.firebaseio.com",
+	storageBucket: "mtg-deck-catalog.appspot.com",
+	messagingSenderId: "64133753903"
+};
+
+export const firebaseApp = firebase.initializeApp(config);
+
+export const db = firebaseApp.database();
+export const auth = firebaseApp.auth();
