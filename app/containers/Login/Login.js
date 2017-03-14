@@ -1,44 +1,147 @@
 // react jazz
 import React, { Component } from 'react';
+import { hashHistory, Link } from 'react-router';
+
+// helpers
+import { isEmpty } from 'lodash';
 
 // firebase
 import { auth } from '../../util/firebase';
+
+// components
+import TextFieldGroup from '../../components/TextFieldGroup';
+import Loader from '../../components/Loader';
 
 class Login extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			identifier: '',
+			password: '',
+			errors: {},
+			isLoading: false
+		};
+
+		this.onChange = this.onChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
 	}
+
+
+	/** ================ METHODS =========================== */
+
+	/**
+	 * ----------------------------------------
+	 * Save the value of the inputs
+	 * ----------------------------------------
+	 */
+
+	onChange(e) {
+		this.setState({ [e.target.name]: e.target.value })
+	}
+
+	/**
+	 * ----------------------------------------
+	 * Handle form submission
+	 * ----------------------------------------
+	 */
+
+	onSubmit(e) {
+		e.preventDefault();
+
+		this.validateForm(this.handleLogin.bind(this));
+	}
+
+	/**
+	 * ----------------------------------------
+	 * Validate form inputs
+	 * Currently only checking for non-empty val
+	 * ----------------------------------------
+	 */
+	
+	validateForm(callback) {
+		let errors = {};
+
+		if(!this.state.identifier) errors.identifier = "Please enter an email!";
+		if(!this.state.password) errors.password = "Please enter a password!";
+
+		this.setState({ errors: {...errors} }, () => {
+			if(_.isEmpty(this.state.errors)) {
+				callback();
+			}
+		});
+	}
+
+	/**
+	 * ----------------------------------------
+	 * Authenticate the user
+	 * ----------------------------------------
+	 */
 
 	handleLogin() {
-		const email = 'email';
-		const pass = 'pass';
-		// const promise = auth.signInWithEmailAndPassword(email, pass);
+		const id = this.state.identifier;
+		const pass = this.state.password;
 
-		// promise
-		// 	.then(user => console.log(user.uid))
-		// 	.catch(e => console.log(e.message));
+		this.setState({ isLoading: true });
+
+		// sign the user in
+		auth.signInWithEmailAndPassword(id, pass)
+			.then(user => {
+				hashHistory.push('/dashboard');
+			})
+			.catch(e => {
+				this.setState({ 
+					errors: {
+						...this.state.errors,
+						loginError: 'Your email or password is incorrect.'
+					},
+					isLoading: false
+				});
+			});
 	}
 
+
+	/** ================ RENDER =========================== */
+
 	render() {
+		const { identifier, password, isLoading, errors } = this.state;
+
 		return (
-			<div>
+			<div class="authenticate-pane">
 				<h1>Login</h1>
 
-				<form>
-					<label for="email-input">Email:</label>
-					<input name="email" type="text" id="email-input" />
+				<div class="main-container">
+					{errors.loginError ? <span class="error-msg">{errors.loginError}</span> : ''}
 
-					<label for="password-input">Password:</label>
-					<input name="password" type="password" id="password-input" />
+					<form onSubmit={this.onSubmit}>
+						<TextFieldGroup 
+							label="Email:"
+							name="identifier"
+							id="identifier-input"
+							value={identifier}
+							onChange={this.onChange}
+							error={errors.identifier}
+						/>
 
-					<button type="submit">Login</button>
-					
-					<a>Forgot your password?</a>
-				</form>
+						<TextFieldGroup 
+							label="Password:"
+							name="password"
+							id="password-input"
+							type="password"
+							value={password}
+							onChange={this.onChange}
+							error={errors.password}
+						/>
 
-				<a>New user? Sign up here.</a>
+						<button class="control-btn" type="submit" disabled={isLoading}>Log In</button>
+
+						{isLoading ? <Loader /> : ''}
+					</form>
+				</div>
+
+				<span class="auxiliary-link">
+					Don't have an account yet? <Link to="/signup">Create one here.</Link>
+				</span>
 			</div>
 		);
 	}

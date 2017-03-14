@@ -2,14 +2,14 @@ import dispatcher from '../dispatcher';
 
 /**
  * ----------------------------------------
- * Set the user's logged in status
+ * Create a new user after sign-up
  * ----------------------------------------
  */
 
-export function setAuthState(state, uid) {
+export function createNewUser(userId, email) {
 	dispatcher.dispatch({
-		type: 'SET_AUTH_STATE',
-		state,
-		uid
+		type: 'CREATE_NEW_USER',
+		userId,
+		email
 	});
 }

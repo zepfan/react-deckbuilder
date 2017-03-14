@@ -2,17 +2,17 @@
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 
+// firebase
+import { db } from '../util/firebase';
+
 class UserStore extends EventEmitter {
 	constructor() {
 		super();
 
-		this.user = {
-			isLoggedIn: null,
-			userId: null
-		};
+		this.user = {}
 	}
 
-	/** ================ HELPERS =========================== */
+	/** ===================== HELPERS ===================== */
 
 	/**
 	 * ----------------------------------------
@@ -26,21 +26,24 @@ class UserStore extends EventEmitter {
 
 	/**
 	 * ----------------------------------------
-	 * Set the user's logged in state
+	 * Create a new user in the database
 	 * ----------------------------------------
 	 */
-
-	setAuthState(state, uid) {
-		this.user = {...this.user, isLoggedIn: state, userId: uid};
+	
+	createNewUser(userId, email) {
+		db.ref('users/' + userId).set({
+			email: email
+		});
 	}
 
+	
 
-	/** ================ HANDLE DISPATCHER =========================== */
+	/** ===================== HANDLE DISPATCHER ===================== */
 
-	handleActions(act) {
-		switch(act.type) {
-			case 'SET_AUTH_STATE':
-				this.setAuthState(act.state, act.uid);
+	handleActions(action) {
+		switch(action.type) {
+			case 'CREATE_NEW_USER':
+				this.createNewUser(action.userId, action.email);
 				break;
 		}
 	}

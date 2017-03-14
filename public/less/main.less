@@ -1,5 +1,21 @@
+/**
+ * ---------------------------------------------------
+ * Mixins
+ * ---------------------------------------------------
+ */
+
+@serif: 'Lora', Georgia, 'Times New Roman', serif;
+@sans-serif: 'Open Sans', Helvetica, Arial, sans-serif;
+
+
+/**
+ * ---------------------------------------------------
+ * Base Styles
+ * ---------------------------------------------------
+ */
+
 html {
-	font-family: 'Open Sans';
+	font-family: @sans-serif;
 	background: #eee;
 	margin: 0;
 	padding: 0;
@@ -19,52 +35,103 @@ body {
 	clear: both;
 }
 
+.authenticate-pane {
+	max-width: 500px;
+	margin: 0 auto;
 
-/**
- * Deck Catalog
- */
+	h1 {
+		text-align: center;
+	}
 
-header .title-bar {
-	float: left;
-}
-
-header .main-actions {
-	float: right;
-
-	button {
-		padding: 10px 20px;
-		font-size: 1em;
-		font-weight: 600;
-		border-radius: 100px;
-		border: 2px solid lighten(green, 10%);
-		background: #fff;
+	.auxiliary-link {
 		display: block;
-		margin: 1.6em 0 0;
+		text-align: center;
+		margin: 1.5em 0 0;
+		color: #666;
+
+		a {
+			text-decoration: underline;
+			color: #4b81ec;
+		}
+	}
+
+	.spinning-loader {
+		height: 23px;
+		position: relative;
+		top: 7px;
 	}
 }
 
-.formats {
-	clear: both;
+.error-msg {
+	text-align: center;
+	display: block;
+	color: red;
+	font-weight: 600;
+	margin-bottom: 12px;
 }
 
-.formats .decks {
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
 
-	li {
-		list-style: none;
-		float: left;
-		width: 20%;
-		margin-right: 2%;
+/**
+ * ---------------------------------------------------
+ * Typography
+ * ---------------------------------------------------
+ */
 
-		img {
-			max-width: 210px;
-			max-height: 110px;
+h1 {
+	font-family: @serif;
+}
+
+
+/**
+ * ---------------------------------------------------
+ * Forms
+ * ---------------------------------------------------
+ */
+
+.form-group {
+	margin: 0 0 15px;
+
+	.control-label {
+		display: block;
+		font-family: @sans-serif;
+		margin: 0 0 3px;
+	}
+
+	.control-input {
+		width: 100%;
+		padding: 7px 10px;
+		box-sizing: border-box;
+		font-size: 1em;
+		border-radius: 3px;
+		border: 1px solid #c5c5c5;
+		box-shadow: inset 2px 2px 2px rgb(228, 228, 228);
+	}
+
+	&.has-error {
+		.control-input {
+			border-color: red;
 		}
+	}
 
-		p {
-			margin: 5px 0 0;
-		}
+	.error-block {
+		color: red;
+		font-size: 0.9em;
+	}
+}
+
+.control-btn {
+	font-size: 1em;
+	background: #fff;
+	border: 1px solid #cccaca;
+	border-radius: 5px;
+	padding: 7px 13px;
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), inset 0px -10px 13px -5px rgba(0, 0, 0, 0.25), 0 0 3px rgba(0, 0, 0, 0.13);
+	cursor: pointer;
+	margin-right: 0.8em;
+
+	&:hover,
+	&:focus {
+		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 1), inset 0px -10px 13px -5px rgba(0, 0, 0, 0.25), 0 0 3px rgba(0, 0, 0, 0.23);
+		background: #efefef;
 	}
 }

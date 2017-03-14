@@ -4,13 +4,10 @@ import '../public/less/main.less';
 // react jazz
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect, hashHistory, browserHistory } from 'react-router';
 
 // firebase
 import { auth } from './util/firebase';
-
-// actions
-import * as serverActions from './actions/serverActions';
 
 // components
 import DeckManagerApp from './DeckManagerApp';
@@ -28,14 +25,26 @@ import DeckList from './containers/DeckList/DeckList';
 
 function requireAuth(nextState, replace, callback) {
   auth.onAuthStateChanged((user) => {
-    if (!user) { 
-    	replace({ pathname: '/login' });
-    	serverActions.setAuthState(false, null);
-   	} else {
-   		serverActions.setAuthState(true, user.uid);
-   	}
+    if (!user) { replace({ pathname: '/login' }); }
     callback();
   });
+}
+
+// test methods for logging in and out
+window.logOut = function() {
+	auth.signOut().then(function() {
+	  console.log('signed out');
+	}).catch(function(error) {
+	  console.log('error while signing out');
+	});
+}
+window.logIn = function() {
+	const email = 'adam.rich+test@gmail.com';
+	const pass = 'test123';
+	const promise = auth.signInWithEmailAndPassword(email, pass);
+}
+window.currentUser = function() {
+	console.log(auth.currentUser.uid);
 }
 
 /**
@@ -47,9 +56,15 @@ function requireAuth(nextState, replace, callback) {
 ReactDOM.render(
 	<Router history={hashHistory}>
 		<Route path="/" component={DeckManagerApp}>
-			<IndexRoute component={DeckCatalog} onEnter={requireAuth}></IndexRoute>
-			<Route path="/add-deck" component={DeckAdder} onEnter={requireAuth}></Route>
-			<Route path="/decks/:id" component={DeckList} onEnter={requireAuth}></Route>
+			<IndexRedirect to="/dashboard" />
+			
+			{/* Protected Routes */}
+			<Route path="/dashboard" onEnter={requireAuth}>
+				<IndexRoute component={DeckCatalog} />
+				<Route path="/dashboard/decks/:id" component={DeckList}></Route>
+				<Route path="/dashboard/add-deck" component={DeckAdder}></Route>
+			</Route>
+
 			<Route path="/login" component={Login}></Route>
 			<Route path="/signup" component={Signup}></Route>
 		</Route>
