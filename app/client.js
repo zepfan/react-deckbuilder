@@ -7,7 +7,8 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, IndexRedirect, hashHistory, browserHistory } from 'react-router';
 
 // firebase
-import { auth } from './util/firebase';
+import { auth } from './util/firebaseClient';
+import './util/authTest'; /* DEBUG ONLY */
 
 // components
 import DeckManagerApp from './DeckManagerApp';
@@ -28,23 +29,6 @@ function requireAuth(nextState, replace, callback) {
     if (!user) { replace({ pathname: '/login' }); }
     callback();
   });
-}
-
-// test methods for logging in and out
-window.logOut = function() {
-	auth.signOut().then(function() {
-	  console.log('signed out');
-	}).catch(function(error) {
-	  console.log('error while signing out');
-	});
-}
-window.logIn = function() {
-	const email = 'adam.rich+test@gmail.com';
-	const pass = 'test123';
-	const promise = auth.signInWithEmailAndPassword(email, pass);
-}
-window.currentUser = function() {
-	console.log(auth.currentUser.uid);
 }
 
 /**

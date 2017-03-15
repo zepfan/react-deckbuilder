@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { hashHistory, Link } from 'react-router';
 
 // helpers
-import { isEmpty } from 'lodash';
+import _ from 'lodash';
 
-// firebase
-import { auth } from '../../util/firebase';
+// actions
+import * as viewActions from '../../actions/viewActions';
 
 // components
 import TextFieldGroup from '../../components/TextFieldGroup';
@@ -84,20 +84,7 @@ class Login extends Component {
 
 		this.setState({ isLoading: true });
 
-		// sign the user in
-		auth.signInWithEmailAndPassword(id, pass)
-			.then(user => {
-				hashHistory.push('/dashboard');
-			})
-			.catch(e => {
-				this.setState({ 
-					errors: {
-						...this.state.errors,
-						loginError: 'Your email or password is incorrect.'
-					},
-					isLoading: false
-				});
-			});
+		viewActions.signUserIn(id, pass);
 	}
 
 

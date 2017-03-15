@@ -8,9 +8,7 @@ class DeckAdder extends Component {
 		this.state = {};
 	}
 
-	render() {
-		console.log(this.props.appState.user);
-		
+	render() {		
 		return (
 			<div>
 				Deck Adder

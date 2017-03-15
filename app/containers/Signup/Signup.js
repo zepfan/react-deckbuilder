@@ -5,11 +5,8 @@ import { hashHistory, Link } from 'react-router';
 // helpers
 import { isEmpty } from 'lodash';
 
-// firebase
-import { auth } from '../../util/firebase';
-
 // actions
-import * as serverActions from '../../actions/serverActions';
+import * as viewActions from '../../actions/viewActions';
 
 // components
 import TextFieldGroup from '../../components/TextFieldGroup';
@@ -87,26 +84,7 @@ class Signup extends Component {
 
 		this.setState({ isLoading: true });
 
-		// sign the user in
-		auth.createUserWithEmailAndPassword(id, pass)
-			.then(user => {
-				// add a new entry to the database
-				serverActions.createNewUser(user.uid, user.email);
-			})
-			.then(() => {
-				// redirect to dashboard on successful login
-				hashHistory.push('/dashboard');
-			})
-			.catch(e => {
-				// error jazz
-				this.setState({ 
-					errors: {
-						...this.state.errors,
-						signUpError: 'There was a problem. Please try again.'
-					},
-					isLoading: false
-				});
-			});
+		viewActions.createNewUser(id, pass);
 	}
 
 

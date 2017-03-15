@@ -13,7 +13,6 @@ class DeckList extends Component {
 		return (
 			<div>
 				Deck List
-				<Link to={'/signup'} activeClassName="current">test</Link>
 			</div>
 		);
 	}
