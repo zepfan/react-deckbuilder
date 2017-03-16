@@ -12,7 +12,7 @@ import * as viewActions from '../../actions/viewActions';
 import userStore from '../../stores/userStore';
 
 // components
-import TextFieldGroup from '../../components/TextFieldGroup';
+import TextFieldGroup from '../../components/forms/TextFieldGroup';
 import Loader from '../../components/Loader';
 
 class Signup extends Component {

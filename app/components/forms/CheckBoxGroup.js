@@ -1,16 +1,17 @@
 import React, { PropTypes } from 'react';
 
-const TextFieldGroup = ({ id, label, onChange, onBlur, value, type, name, error }) => {
+const CheckBoxGroup = ({ id, label, name, onChange, onBlur, value, checked, error }) => {
 	return (
-		<div class={['form-group', error ? 'has-error' : ''].join(' ')}>
+		<div class={['form-group checkbox-group', error ? 'has-error' : ''].join(' ')}>
 			<label for={id} class="control-label">{label}</label>
 			<input 
 				onChange={onChange}
 				onBlur={onBlur}
-				value={value}
-				type={type}
 				name={name}
 				id={id}
+				type="checkbox"
+				value={value}
+				checked={checked}
 				class="control-input"
 			/>
 			{error ? <div class="error-block">{error}</div> : ''}
@@ -18,19 +19,15 @@ const TextFieldGroup = ({ id, label, onChange, onBlur, value, type, name, error 
 	);
 }
 
-TextFieldGroup.propTypes = {
+CheckBoxGroup.propTypes = {
 	label: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	error: PropTypes.string,
 	id: PropTypes.string,
-	value: PropTypes.string,
-	type: PropTypes.string,
+ 	// value: PropTypes.something,
+ 	// checked: PropTypes.something,
 	onChange: PropTypes.func,
 	onBlur: PropTypes.func
 }
 
-TextFieldGroup.defaultProps = {
-	type: 'text'
-}
-
-export default TextFieldGroup;
+export default CheckBoxGroup;
