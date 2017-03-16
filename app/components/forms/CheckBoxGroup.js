@@ -9,9 +9,9 @@ const CheckBoxGroup = ({ id, label, name, onChange, onBlur, value, checked, erro
 				onBlur={onBlur}
 				name={name}
 				id={id}
-				type="checkbox"
 				value={value}
 				checked={checked}
+				type="checkbox"
 				class="control-input"
 			/>
 			{error ? <div class="error-block">{error}</div> : ''}
@@ -22,10 +22,10 @@ const CheckBoxGroup = ({ id, label, name, onChange, onBlur, value, checked, erro
 CheckBoxGroup.propTypes = {
 	label: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
+	checked: PropTypes.bool.isRequired,
 	error: PropTypes.string,
 	id: PropTypes.string,
- 	// value: PropTypes.something,
- 	// checked: PropTypes.something,
+ 	value: PropTypes.string,
 	onChange: PropTypes.func,
 	onBlur: PropTypes.func
 }

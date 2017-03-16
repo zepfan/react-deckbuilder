@@ -1,6 +1,12 @@
 // react jazz
 import React, { Component } from 'react';
 
+// data
+import supportedFormats from '../../data/supportedFormats';
+
+// stores
+import userStore from '../../stores/userStore';
+
 // components
 import TextFieldGroup from '../../components/forms/TextFieldGroup';
 import TextAreaGroup from '../../components/forms/TextAreaGroup';
@@ -12,6 +18,7 @@ class DeckAdder extends Component {
 		super(props);
 
 		this.state = {
+			user: userStore.getUser(),
 			deck: {
 				deckName: '',
 				format: '',
@@ -22,12 +29,59 @@ class DeckAdder extends Component {
 			}
 		};
 
+		this.onUserChange = this.onUserChange.bind(this);
 		this.onInputChange = this.onInputChange.bind(this);
+		this.onCheckboxChange = this.onCheckboxChange.bind(this);
+		this.onSubmit = this.onSubmit.bind(this);
+	}
+
+	/** ================ LIFECYCLE =========================== */
+
+	componentWillMount() {
+		userStore.on('change', this.onUserChange);
+	}
+
+	componentWillUnmount() {
+		userStore.removeListener('change', this.onUserChange);
+	}
+
+	/** ================ METHODS =========================== */
+
+	/**
+	 * ----------------------------------------
+	 * Update the state when the user store does
+	 * ----------------------------------------
+	 */
+
+	onUserChange(e) {
+		this.setState({
+			user: userStore.getUser()
+		});
 	}
 
 	/**
 	 * ----------------------------------------
-	 * 
+	 * Handle input changes
+	 * ----------------------------------------
+	 */
+
+	onInputChange(e) {
+		let deck = { [e.target.name]: e.target.value };
+
+		this.setState({ deck: { ...this.state.deck, ...deck } }, () => {
+			console.log(this.state)
+		});
+	}
+
+	onCheckboxChange(e) {
+		let deck = { [e.target.name]: e.target.checked };
+
+		this.setState({ deck: { ...this.state.deck, ...deck } });
+	}
+
+	/**
+	 * ----------------------------------------
+	 * Save the deck to the database
 	 * ----------------------------------------
 	 */
 
@@ -35,16 +89,9 @@ class DeckAdder extends Component {
 		e.preventDefault();
 	}
 
-	onInputChange(e) {
-		let deck = { [e.target.name]: e.target.value };
-
-		this.setState({ deck: { ...this.state.deck, ...deck } });
-	}
-
 	/** ================ RENDER =========================== */
 
 	render() {
-		const formats = ['Standard', 'Modern', 'Commander'];
 		const { deck } = this.state;
 
 		return (
@@ -66,7 +113,7 @@ class DeckAdder extends Component {
 						id="format"
 						value={deck.format}
 						onChange={this.onInputChange}
-						options={formats}
+						options={supportedFormats}
 						placeholder="Select your format"
 					/>
 
@@ -75,8 +122,8 @@ class DeckAdder extends Component {
 						label="Is this deck In Progress?"
 						name="inProgress"
 						id="inProgress"
-						value={deck.inProgress}
-						onChange={this.onInputChange}
+						value="inProgress"
+						onChange={this.onCheckboxChange}
 						checked={deck.inProgress}
 					/>
 

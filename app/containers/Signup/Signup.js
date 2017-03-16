@@ -44,6 +44,12 @@ class Signup extends Component {
 
 	/** ================ METHODS =========================== */
 
+	/**
+	 * ----------------------------------------
+	 * Update the state when the user store does
+	 * ----------------------------------------
+	 */
+
 	onUserChange(e) {
 		this.setState({
 			registerErrors: userStore.getRegisteringErrors(),
