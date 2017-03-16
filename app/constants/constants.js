@@ -6,8 +6,12 @@
 
 export default {
 	actions: mirror([
-		'SIGNING_IN_USER',
-		'CREATING_NEW_USER'
+		'LOGGING_IN',
+		'LOGIN_SUCCESS',
+		'LOGIN_FAILED',
+		'REGISTERING',
+		'REGISTER_SUCCESS',
+		'REGISTER_FAILED'
 	]),
 }
 

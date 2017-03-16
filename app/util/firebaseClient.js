@@ -1,9 +1,15 @@
-import * as firebase from 'firebase';
+// react jazz
 import { hashHistory } from 'react-router';
+
+// firebase
+import * as firebase from 'firebase';
+
+// actions
+import * as serverActions from '../actions/serverActions';
 
 /**
  * ----------------------------------------
- * Initialize our Firebase app
+ * Initialize Firebase app
  * ----------------------------------------
  */
 
@@ -35,50 +41,45 @@ export const auth = firebaseApp.auth();
 export function signUserIn(id, pass) {
 	auth.signInWithEmailAndPassword(id, pass)
 		.then(user => {
+			serverActions.loginSuccess(user);
+		})
+		.then(() => {
 			hashHistory.push('/dashboard');
 		})
 		.catch(e => {
-			/* fire off a server action that does this... */
-
-			// this.setState({ 
-			// 	errors: {
-			// 		...this.state.errors,
-			// 		loginError: 'Your email or password is incorrect.'
-			// 	},
-			// 	isLoading: false
-			// });
+			// stick with a simple error for now
+			let error = 'Your username or password is not correct.'
+			serverActions.loginFailed(error);
 		});
 }
 
 /**
  * ----------------------------------------
- * Create a new user account
+ * Create a new user account in Auth
  * ----------------------------------------
  */
 
 export function createNewUser(id, pass) {
 	auth.createUserWithEmailAndPassword(id, pass)
 		.then(user => {
-			console.log('added to database');
-			// serverActions.createNewUser(user.uid, user.email);
+			addNewUserToDatabase(user.uid, user.email);
+
+			serverActions.loginSuccess(user);
 		})
 		.then(() => {
 			hashHistory.push('/dashboard');
 		})
 		.catch(e => {
-			console.log(e.message);
-			/* fire off a server action that does this.... */
-
-			// error jazz
-			// this.setState({ 
-			// 	errors: {
-			// 		...this.state.errors,
-			// 		signUpError: 'There was a problem. Please try again.'
-			// 	},
-			// 	isLoading: false
-			// });
+			let error = 'There was a problem. Please try again.'
+			serverActions.registerFailed(error);
 		});
 }
+
+/**
+ * ----------------------------------------
+ * Add a new user to the real-time database
+ * ----------------------------------------
+ */
 
 function addNewUserToDatabase(userId, email) {
 	db.ref('users/' + userId).set({

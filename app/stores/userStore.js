@@ -1,35 +1,75 @@
 // flux jazz
 import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
+import constants from '../constants/constants';
 
-// firebase
-import { db } from '../util/firebaseclient';
+let _user = null,
+	_isLoggingIn = false,
+	_logInErrors = null,
+	_isRegistering = false,
+	_registerErrors = null;
 
 class UserStore extends EventEmitter {
-	constructor() {
-		super();
-
-		this.user = {}
-	}
 
 	/**
 	 * ----------------------------------------
-	 * Return the user
+	 * Getter methods
 	 * ----------------------------------------
 	 */
 
 	getUser() {
-		return this.user;
+		return _user;
 	}
 
+	getLoginErrors() {
+		return _logInErrors;
+	}
+
+	isLoggingIn() {
+		return _isLoggingIn;
+	}
+
+	getRegisteringErrors() {
+		return _registerErrors;
+	}
+
+	isRegistering() {
+		return _isRegistering;
+	}
 
 	/** ===================== HANDLE DISPATCHER ===================== */
 
 	handleActions(action) {
 		switch(action.type) {
-			// case 'CREATE_NEW_USER':
-			// 	this.createNewUser(action.userId, action.email);
-			// 	break;
+			case constants.actions.LOGGING_IN:
+				_isLoggingIn = true;
+				this.emit('change');
+				break;
+
+			case constants.actions.LOGIN_SUCCESS:
+				_user = action.user;
+				this.emit('change');
+				break;
+
+			case constants.actions.LOGIN_FAILED:
+				_logInErrors = action.errors;
+				_isLoggingIn = false;
+				this.emit('change');
+				break;
+
+			case constants.actions.REGISTERING:
+				_isRegistering = true;
+				this.emit('change');
+				break;
+
+			case constants.actions.REGISTER_FAILED:
+				_isRegistering = false;
+				_registerErrors = action.errors;
+				this.emit('change');
+				break;
+
+			default:
+				break;
 		}
 	}
 }

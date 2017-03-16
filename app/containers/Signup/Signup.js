@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import { hashHistory, Link } from 'react-router';
 
 // helpers
-import { isEmpty } from 'lodash';
+import _ from 'lodash';
 
 // actions
 import * as viewActions from '../../actions/viewActions';
+
+// stores
+import userStore from '../../stores/userStore';
 
 // components
 import TextFieldGroup from '../../components/TextFieldGroup';
@@ -19,16 +22,34 @@ class Signup extends Component {
 		this.state = {
 			identifier: '',
 			password: '',
-			errors: {},
-			isLoading: false
+			validationErrors: '',
+			registerErrors: userStore.getRegisteringErrors(),
+			isRegistering: userStore.isRegistering()
 		};
 
-		this.onChange = this.onChange.bind(this);
+		this.onUserChange = this.onUserChange.bind(this);
+		this.onInputChange = this.onInputChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+	/** ================ LIFECYCLE =========================== */
+
+	componentWillMount() {
+		userStore.on('change', this.onUserChange);
+	}
+
+	componentWillUnmount() {
+		userStore.removeListener('change', this.onUserChange);
+	}
 
 	/** ================ METHODS =========================== */
+
+	onUserChange(e) {
+		this.setState({
+			registerErrors: userStore.getRegisteringErrors(),
+			isRegistering: userStore.isRegistering()
+		});
+	}
 
 	/**
 	 * ----------------------------------------
@@ -36,7 +57,7 @@ class Signup extends Component {
 	 * ----------------------------------------
 	 */
 
-	onChange(e) {
+	onInputChange(e) {
 		this.setState({ [e.target.name]: e.target.value })
 	}
 
@@ -60,13 +81,13 @@ class Signup extends Component {
 	 */
 	
 	validateForm(callback) {
-		let errors = {};
+		let validationErrors = {};
 
-		if(!this.state.identifier) errors.identifier = "Please enter an email!";
-		if(!this.state.password) errors.password = "Please enter a password!";
+		if(!this.state.identifier) validationErrors.identifier = "Please enter an email!";
+		if(!this.state.password) validationErrors.password = "Please enter a password!";
 
-		this.setState({ errors: {...errors} }, () => {
-			if(_.isEmpty(this.state.errors)) {
+		this.setState({ validationErrors: {...validationErrors} }, () => {
+			if(_.isEmpty(this.state.validationErrors)) {
 				callback();
 			}
 		});
@@ -82,23 +103,20 @@ class Signup extends Component {
 		const id = this.state.identifier;
 		const pass = this.state.password;
 
-		this.setState({ isLoading: true });
-
 		viewActions.createNewUser(id, pass);
 	}
-
 
 	/** ================ RENDER =========================== */
 
 	render() {	
-		const { identifier, password, isLoading, errors } = this.state;
+		const { identifier, password, isRegistering, validationErrors, registerErrors } = this.state;
 
 		return (
 			<div class="authenticate-pane">
 				<h1>Signup</h1>
 
 				<div class="main-container">
-					{errors.signUpError ? <span class="error-msg">{errors.signUpError}</span> : ''}
+					{registerErrors ? <span class="error-msg">{registerErrors}</span> : ''}
 
 					<form onSubmit={this.onSubmit}>
 						<TextFieldGroup 
@@ -106,8 +124,8 @@ class Signup extends Component {
 							name="identifier"
 							id="identifier-input"
 							value={identifier}
-							onChange={this.onChange}
-							error={errors.identifier}
+							onChange={this.onInputChange}
+							error={validationErrors.identifier}
 						/>
 
 						<TextFieldGroup 
@@ -116,13 +134,13 @@ class Signup extends Component {
 							id="password-input"
 							type="password"
 							value={password}
-							onChange={this.onChange}
-							error={errors.password}
+							onChange={this.onInputChange}
+							error={validationErrors.password}
 						/>
 
-						<button class="control-btn" type="submit" disabled={isLoading}>Sign Up</button>
+						<button class="control-btn" type="submit" disabled={isRegistering}>Sign Up</button>
 
-						{isLoading ? <Loader /> : ''}
+						{isRegistering ? <Loader /> : ''}
 					</form>
 				</div>
 

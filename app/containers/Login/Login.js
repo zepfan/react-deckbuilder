@@ -8,6 +8,9 @@ import _ from 'lodash';
 // actions
 import * as viewActions from '../../actions/viewActions';
 
+// stores
+import userStore from '../../stores/userStore';
+
 // components
 import TextFieldGroup from '../../components/TextFieldGroup';
 import Loader from '../../components/Loader';
@@ -19,16 +22,34 @@ class Login extends Component {
 		this.state = {
 			identifier: '',
 			password: '',
-			errors: {},
-			isLoading: false
+			validationErrors: '',
+			logInErrors: userStore.getLoginErrors(),
+			isLoggingIn: userStore.isLoggingIn()
 		};
 
-		this.onChange = this.onChange.bind(this);
+		this.onUserChange = this.onUserChange.bind(this);
+		this.onInputChange = this.onInputChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
+	/** ================ LIFECYCLE =========================== */
+
+	componentWillMount() {
+		userStore.on('change', this.onUserChange);
+	}
+
+	componentWillUnmount() {
+		userStore.removeListener('change', this.onUserChange);
+	}
 
 	/** ================ METHODS =========================== */
+
+	onUserChange(e) {
+		this.setState({
+			logInErrors: userStore.getLoginErrors(),
+			isLoggingIn: userStore.isLoggingIn()
+		});
+	}
 
 	/**
 	 * ----------------------------------------
@@ -36,7 +57,7 @@ class Login extends Component {
 	 * ----------------------------------------
 	 */
 
-	onChange(e) {
+	onInputChange(e) {
 		this.setState({ [e.target.name]: e.target.value })
 	}
 
@@ -60,13 +81,13 @@ class Login extends Component {
 	 */
 	
 	validateForm(callback) {
-		let errors = {};
+		let validationErrors = {};
 
-		if(!this.state.identifier) errors.identifier = "Please enter an email!";
-		if(!this.state.password) errors.password = "Please enter a password!";
+		if(!this.state.identifier) validationErrors.identifier = "Please enter an email!";
+		if(!this.state.password) validationErrors.password = "Please enter a password!";
 
-		this.setState({ errors: {...errors} }, () => {
-			if(_.isEmpty(this.state.errors)) {
+		this.setState({ validationErrors: {...validationErrors} }, () => {
+			if(_.isEmpty(this.state.validationErrors)) {
 				callback();
 			}
 		});
@@ -82,23 +103,20 @@ class Login extends Component {
 		const id = this.state.identifier;
 		const pass = this.state.password;
 
-		this.setState({ isLoading: true });
-
 		viewActions.signUserIn(id, pass);
 	}
-
 
 	/** ================ RENDER =========================== */
 
 	render() {
-		const { identifier, password, isLoading, errors } = this.state;
+		const { identifier, password, isLoggingIn, validationErrors, logInErrors } = this.state;
 
 		return (
 			<div class="authenticate-pane">
 				<h1>Login</h1>
 
 				<div class="main-container">
-					{errors.loginError ? <span class="error-msg">{errors.loginError}</span> : ''}
+					{logInErrors ? <span class="error-msg">{logInErrors}</span> : ''}
 
 					<form onSubmit={this.onSubmit}>
 						<TextFieldGroup 
@@ -106,8 +124,8 @@ class Login extends Component {
 							name="identifier"
 							id="identifier-input"
 							value={identifier}
-							onChange={this.onChange}
-							error={errors.identifier}
+							onChange={this.onInputChange}
+							error={validationErrors.identifier}
 						/>
 
 						<TextFieldGroup 
@@ -116,13 +134,13 @@ class Login extends Component {
 							id="password-input"
 							type="password"
 							value={password}
-							onChange={this.onChange}
-							error={errors.password}
+							onChange={this.onInputChange}
+							error={validationErrors.password}
 						/>
 
-						<button class="control-btn" type="submit" disabled={isLoading}>Log In</button>
+						<button class="control-btn" type="submit" disabled={isLoggingIn}>Log In</button>
 
-						{isLoading ? <Loader /> : ''}
+						{isLoggingIn ? <Loader /> : ''}
 					</form>
 				</div>
 

@@ -2,8 +2,6 @@ import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 import * as firebaseClient from '../util/firebaseClient';
 
-/* ===================== USER ACTIONS ===================== */
-
 /**
  * ----------------------------------------
  * Sign user in
@@ -12,7 +10,7 @@ import * as firebaseClient from '../util/firebaseClient';
 
 export function signUserIn(id, pass) {
 	dispatcher.dispatch({
-		actionType: constants.actions.SIGNING_IN_USER,
+		type: constants.actions.LOGGING_IN,
 		id,
 		pass
 	});
@@ -22,13 +20,13 @@ export function signUserIn(id, pass) {
 
 /**
  * ----------------------------------------
- * Create new user
+ * Create a new user
  * ----------------------------------------
  */
 
 export function createNewUser(id, pass) {
 	dispatcher.dispatch({
-		actionType: constants.actions.CREATING_NEW_USER,
+		type: constants.actions.REGISTERING,
 		id,
 		pass
 	});
