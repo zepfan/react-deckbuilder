@@ -1,11 +1,74 @@
 /**
  * ---------------------------------------------------
+ * CSS Reset
+ * ---------------------------------------------------
+ */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/**
+ * ---------------------------------------------------
  * Mixins
  * ---------------------------------------------------
  */
 
-@serif: 'Lora', Georgia, 'Times New Roman', serif;
-@sans-serif: 'Open Sans', Helvetica, Arial, sans-serif;
+@serif: 'Playfair Display';
+@sans-serif: 'Palanquin';
+
+@letter-spacing: 0.05em;
+
+@widthMobile: 600px;
+
+@bg-color: #232323;
+@error-color: #e47815;
+@white: #fff;
+@brand: #b69258;
+@brand-dark: #57472f;
+@light-gray: #c9c9c9;
+@light-grey: @light-gray; // fuck you English
 
 
 /**
@@ -16,60 +79,49 @@
 
 html {
 	font-family: @sans-serif;
-	background: #eee;
-	margin: 0;
-	padding: 0;
+	background: @bg-color;
+	background-image: url('../img/bg-image-theros.jpg');
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-position: 50% 0;
 }
 
 body {
-	max-width: 1000px;
+	max-width: 1100px;
 	margin: 0 auto;
-	padding: 0 1em;
+	color: @white;
+	letter-spacing: @letter-spacing;
+	-webkit-font-smoothing: antialiased;
 }
 
-.main-container { 
-	background: #fff;
-	border-radius: 5px;
-	border: 1px solid #ddd;
-	padding: 1em 3em;
+.app-interior {
+	margin: 8em 0 2em;
+}
+
+.main-container {
+	margin: 3em 0 0;
+}
+
+.row {
 	clear: both;
+	overflow: hidden;
 }
 
-.authenticate-pane {
-	max-width: 500px;
-	margin: 0 auto;
-
-	h1 {
-		text-align: center;
-	}
-
-	.auxiliary-link {
-		display: block;
-		text-align: center;
-		margin: 1.5em 0 0;
-		color: #666;
-
-		a {
-			text-decoration: underline;
-			color: #4b81ec;
-		}
-	}
-
-	.spinning-loader {
-		height: 23px;
-		position: relative;
-		top: 7px;
-	}
+.left-col { 
+	float: left; 
+	width: 50%;
+}
+.right-col { 
+	float: right; 
+	width: 50%;
 }
 
-.error-msg {
-	text-align: center;
-	display: block;
-	color: red;
-	font-weight: 600;
-	margin-bottom: 12px;
+@media (max-width: @widthMobile) {
+	.app-interior {
+		margin: 3em 0 2em;
+		padding: 0 1em;
+	}
 }
-
 
 /**
  * ---------------------------------------------------
@@ -77,65 +129,241 @@ body {
  * ---------------------------------------------------
  */
 
-h1 {
+h1, h2, h3, h4, h5, h6 {
 	font-family: @serif;
+}
+
+h1 {
+	font-size: 3em;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+h2 { 
+	font-size: 1.7em;
+	font-family: @sans-serif;
+	font-weight: 600;
+	text-transform: uppercase;
+	color: @light-gray;
+}
+
+h3 { 
+	font-size: 1.2em;
+	margin: 0;
+}
+
+a {
+	color: @brand;
+
+	&:hover {
+		text-decoration: none;
+	}
 }
 
 
 /**
  * ---------------------------------------------------
- * Forms
+ * Inputs
  * ---------------------------------------------------
  */
 
-.form-group {
-	margin: 0 0 15px;
+label {
+	display: block;
+	margin: 0 0 10px;
+	color: @light-gray;
+	font-size: 1.2em;
+	font-weight: 300;
+	text-transform: uppercase;
+}
 
-	.control-label {
-		display: block;
-		font-family: @sans-serif;
-		margin: 0 0 3px;
-	}
+input, button, a {
+	&:focus { outline-color: @brand; }
+}
 
-	.control-input {
-		width: 100%;
-		padding: 7px 10px;
-		box-sizing: border-box;
-		font-size: 1em;
-		border-radius: 3px;
-		border: 1px solid #c5c5c5;
-		box-shadow: inset 2px 2px 2px rgb(228, 228, 228);
-	}
+input {
+	width: 100%;
+	padding: 8px 10px;
+	box-sizing: border-box;
+	border: 1px solid #59595a;
+	font-size: 1.25em;
+	font-weight: 300;
+	box-shadow: inset 4px 4px 5px rgba(0,0,0,0.18);
+}
 
-	input[type="checkbox"] {
-		width: auto;
-	}
+button.control-btn {
+	display: block;
+	text-transform: uppercase;
+	background: transparent;
+	border: 1px solid @brand-dark;
+	color: @white;
+	font-size: 1.3em;
+	padding: 10px 20px;
+	border-radius: 4px;
+	letter-spacing: @letter-spacing;
+	cursor: pointer;
+	transition: 0.2s linear all;
 
-	&.has-error {
-		.control-input {
-			border-color: red;
-		}
-	}
-
-	.error-block {
-		color: red;
-		font-size: 0.9em;
+	&:hover {
+		border-color: @brand;
+		background: fade(@brand, 10%);
 	}
 }
 
-.control-btn {
-	font-size: 1em;
-	background: #fff;
-	border: 1px solid #cccaca;
-	border-radius: 5px;
-	padding: 7px 13px;
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45), inset 0px -10px 13px -5px rgba(0, 0, 0, 0.25), 0 0 3px rgba(0, 0, 0, 0.13);
-	cursor: pointer;
-	margin-right: 0.8em;
+.form-group {
+	margin: 0 0 22px;
 
-	&:hover,
-	&:focus {
-		box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 1), inset 0px -10px 13px -5px rgba(0, 0, 0, 0.25), 0 0 3px rgba(0, 0, 0, 0.23);
-		background: #efefef;
+	&.has-error {
+		.error-block {
+			color: @error-color;
+		}
+
+		input {
+			border-color: @error-color;
+		}
+	}
+}
+
+
+/**
+ * ---------------------------------------------------
+ * Header
+ * ---------------------------------------------------
+ */
+
+#app-header {
+	.left-col { width: 70%; }
+	.right-col { width: 30%; }
+
+	#logo {
+		float: left;
+
+		img {
+			height: auto;
+			width: 158px;
+		}
+	}
+
+	#primary-navigation {
+		float: left;
+		padding: 1.5em 0 0 1.5em;
+
+		ul {
+			li {
+				display: inline-block;
+				margin-right: 1.5em;
+
+				a {
+					color: @light-gray;
+					text-transform: uppercase;
+					text-decoration: none;
+					font-size: 1.2em;
+					padding-bottom: 4px;
+					border-bottom: 1px solid transparent;
+
+					&.active {
+						border-color: @brand;
+					}
+				}
+			}
+		}
+	}
+
+	#user-control {
+		padding: 1.5em 0 0;
+		text-align: right;
+	}
+}
+
+
+/**
+ * ---------------------------------------------------
+ * Footer
+ * ---------------------------------------------------
+ */
+
+#app-footer {
+	position: absolute;
+	padding: 15px 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	.copyright {
+		display: block;
+		text-align: center;
+		text-transform: uppercase;
+		color: @brand;
+		font-size: 0.8em;
+
+		em {
+			color: @light-gray;
+		}
+	}
+}
+
+
+/**
+ * ---------------------------------------------------
+ * Authentication
+ * ---------------------------------------------------
+ */
+
+.authenticate-pane {
+	
+	.main-container {
+		max-width: 400px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.control-btn {
+		margin: 0 auto;
+	}
+
+	.auxiliary-link {
+		display: block;
+		margin: 3em 0 0;
+		text-align: center;
+	}
+}
+
+
+/**
+ * ---------------------------------------------------
+ * Deck Catalog
+ * ---------------------------------------------------
+ */
+
+#deck-catalog {
+
+	.formats {
+		h2 {
+			margin: 0 0 1em;
+		}
+		background: url('../img/deck-formats-bg.png');
+		background-repeat: repeat-y;
+		background-position: 0 0;
+		.decks {
+			overflow: hidden;
+			
+
+			li {
+				width: 25%;
+				float: left;
+				text-align: center;
+
+				img {
+					width: 182px;
+					height: auto;
+					border-radius: 100px;
+					border: 5px solid rgba(0,0,0,0.17);
+					margin: 0 0 7px;
+				}
+
+				&.in-progress {
+					opacity: 0.5;
+				}
+			}
+		}
 	}
 }

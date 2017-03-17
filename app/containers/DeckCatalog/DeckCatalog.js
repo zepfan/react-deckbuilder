@@ -1,5 +1,6 @@
 // react jazz
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 
 class DeckCatalog extends Component {
 	constructor(props) {
@@ -10,8 +11,8 @@ class DeckCatalog extends Component {
 
 	render() {		
 		return (
-			<div>
-				<h1>Deck Catalog</h1>
+			<div id="deck-catalog">
+				<h1>Your Decks</h1>
 
 				<div class="main-container">
 					<div class="formats">
@@ -19,16 +20,31 @@ class DeckCatalog extends Component {
 
 						<ul class="decks">
 							<li>
-								<img src="#" />
-								<p>Lorthos, the Badass</p>
+								<Link to="/">
+									<img class="spinning-loader" src={require('../../../public/img/deck-placeholder-img.png')} />
+									<h3>Lorthos, the Badass</h3>
+								</Link>
 							</li>
+
 							<li>
-								<img src="#" />
-								<p>Hannah, Artifact Reviver</p>
+								<Link to="/">
+									<img class="spinning-loader" src={require('../../../public/img/deck-placeholder-img.png')} />
+									<h3>Lorthos, the Badass</h3>
+								</Link>
 							</li>
+
 							<li>
-								<img src="#" />
-								<p>Wrexial, Steal Everything</p>
+								<Link to="/">
+									<img class="spinning-loader" src={require('../../../public/img/deck-placeholder-img.png')} />
+									<h3>Lorthos, the Badass</h3>
+								</Link>
+							</li>
+
+							<li class="in-progress">
+								<Link to="/">
+									<img class="spinning-loader" src={require('../../../public/img/deck-placeholder-img.png')} />
+									<h3>Lorthos, the Badass</h3>
+								</Link>
 							</li>
 						</ul>
 					</div>

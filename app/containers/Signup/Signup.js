@@ -119,7 +119,7 @@ class Signup extends Component {
 
 		return (
 			<div class="authenticate-pane">
-				<h1>Signup</h1>
+				<h1>Create an Account</h1>
 
 				<div class="main-container">
 					{registerErrors ? <span class="error-msg">{registerErrors}</span> : ''}
@@ -144,7 +144,7 @@ class Signup extends Component {
 							error={validationErrors.password}
 						/>
 
-						<button class="control-btn" type="submit" disabled={isRegistering}>Sign Up</button>
+						<button class="control-btn" type="submit" disabled={isRegistering}>Create Account</button>
 
 						{isRegistering ? <Loader /> : ''}
 					</form>

@@ -83,7 +83,7 @@ class Login extends Component {
 	validateForm(callback) {
 		let validationErrors = {};
 
-		if(!this.state.identifier) validationErrors.identifier = "Please enter an email!";
+		if(!this.state.identifier) validationErrors.identifier = "Please enter an username or email!";
 		if(!this.state.password) validationErrors.password = "Please enter a password!";
 
 		this.setState({ validationErrors: {...validationErrors} }, () => {
@@ -113,14 +113,14 @@ class Login extends Component {
 
 		return (
 			<div class="authenticate-pane">
-				<h1>Login</h1>
+				<h1>Log In</h1>
 
 				<div class="main-container">
 					{logInErrors ? <span class="error-msg">{logInErrors}</span> : ''}
 
 					<form onSubmit={this.onSubmit}>
 						<TextFieldGroup 
-							label="Email:"
+							label="Username or Email:"
 							name="identifier"
 							id="identifier-input"
 							value={identifier}
