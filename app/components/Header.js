@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const Header = () => {
 	return (
-		<header id="app-header">
+		<header id="app-header" class="container-1100">
 			<div class="row">
 				<div class="left-col">
 					<div id="logo">
@@ -23,7 +23,7 @@ const Header = () => {
 
 				<div class="right-col">
 					<div id="user-control">
-						logged in as <strong>zepfan</strong>
+						logged in as <strong>username here</strong>
 					</div>
 				</div>
 			</div>

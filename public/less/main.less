@@ -87,8 +87,6 @@ html {
 }
 
 body {
-	max-width: 1100px;
-	margin: 0 auto;
 	color: @white;
 	letter-spacing: @letter-spacing;
 	-webkit-font-smoothing: antialiased;
@@ -103,18 +101,35 @@ body {
 	margin: 3em 0 0;
 }
 
+.container-1100 {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
 .row {
 	clear: both;
-	overflow: hidden;
+	.clearfix;
 }
 
 .left-col { 
 	float: left; 
 	width: 50%;
+	box-sizing: border-box;
 }
+
 .right-col { 
 	float: right; 
 	width: 50%;
+	box-sizing: border-box;
+}
+
+.clearfix {
+	&:after {
+		content: '';
+		display: block;
+		overflow: hidden;
+		clear: both;
+	}
 }
 
 @media (max-width: @widthMobile) {
@@ -141,7 +156,7 @@ h1 {
 }
 
 h2 { 
-	font-size: 1.7em;
+	font-size: 1.9em;
 	font-family: @sans-serif;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -181,7 +196,7 @@ input, button, a {
 	&:focus { outline-color: @brand; }
 }
 
-input {
+.input {
 	width: 100%;
 	padding: 8px 10px;
 	box-sizing: border-box;
@@ -191,8 +206,17 @@ input {
 	box-shadow: inset 4px 4px 5px rgba(0,0,0,0.18);
 }
 
+input, select, textarea {
+	.input;
+}
+
+input[type="checkbox"] {
+	width: auto;
+}
+
 button.control-btn {
 	display: block;
+	margin: 0 auto;
 	text-transform: uppercase;
 	background: transparent;
 	border: 1px solid @brand-dark;
@@ -324,10 +348,6 @@ button.control-btn {
 		margin-right: auto;
 	}
 
-	.control-btn {
-		margin: 0 auto;
-	}
-
 	.auxiliary-link {
 		display: block;
 		margin: 3em 0 0;
@@ -343,35 +363,94 @@ button.control-btn {
  */
 
 #deck-catalog {
-
 	.formats {
 		h2 {
-			margin: 0 0 1em;
+			margin: 0 0 1em 1.2em;
 		}
-		background: url('../img/deck-formats-bg.png');
-		background-repeat: repeat-y;
-		background-position: 0 0;
-		.decks {
-			overflow: hidden;
-			
 
-			li {
-				width: 25%;
-				float: left;
-				text-align: center;
+		.format {
+			margin: 0 0 5em;
+			background: url('../img/deck-formats-bg.png');
+			// background-repeat: repeat-y;
+			background-repeat: no-repeat;
+			background-position: 0 0;
+			background-size: 100% 100%;
+			min-height: 350px;
 
-				img {
-					width: 182px;
-					height: auto;
-					border-radius: 100px;
-					border: 5px solid rgba(0,0,0,0.17);
-					margin: 0 0 7px;
+			.decks {
+				.clearfix;
+
+				li {
+					width: 25%;
+					margin-bottom: 2em;
+					float: left;
+					text-align: center;
+					transform: translateY(0);
+					transition: 0.2s linear all;
+
+					a {
+						text-decoration: none;
+					}
+
+					img {
+						width: 182px;
+						height: auto;
+						border-radius: 100px;
+						border: 5px solid rgba(0,0,0,0.17);
+						margin: 0 0 7px;
+					}
+
+					h3 {
+						color: @white;
+					}
+
+					&.in-progress {
+						opacity: 0.5;
+					}
+
+					&:hover {
+						transform: translateY(-10px);
+					}
 				}
+			}
+		}
+	}
 
-				&.in-progress {
-					opacity: 0.5;
+	@media (max-width: @widthMobile) {
+		.formats {
+			.format {
+				.decks {
+					li {
+						width: 50%;
+						padding: 0 1em;
+						box-sizing: border-box;
+
+						img {
+							max-width: 100px;
+						}
+
+						h3 {
+							font-size: 1em;
+						}
+					}
 				}
 			}
 		}
 	}
 }
+
+
+/**
+ * ---------------------------------------------------
+ * Deck Adder
+ * ---------------------------------------------------
+ */
+
+#deck-adder {
+	.left-col,
+	.right-col {
+		padding: 0 1em;
+		position: relative;
+	}
+}
+

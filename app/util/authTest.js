@@ -8,9 +8,13 @@ import { auth } from './firebaseClient';
 
 /* log in to test account */
 window.logIn = function() {
-	const email = 'adam.rich+test@gmail.com';
+	const email = 'adm.rich@gmail.com';
 	const pass = 'test123';
-	const promise = auth.signInWithEmailAndPassword(email, pass);
+	auth.signInWithEmailAndPassword(email, pass).then(function() {
+		console.log('signed in');
+	}).catch(function(error) {
+		console.log('error signing in');
+	});
 }
 
 /* log out test account */

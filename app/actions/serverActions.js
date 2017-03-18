@@ -30,6 +30,19 @@ export function loginFailed(errors) {
 
 /**
  * ----------------------------------------
+ * Handle succesful registration
+ * ----------------------------------------
+ */
+
+export function registerSuccess(user) {
+	dispatcher.dispatch({
+		type: constants.actions.REGISTER_SUCCESS,
+		user
+	});
+}
+
+/**
+ * ----------------------------------------
  * Catch register errors
  * ----------------------------------------
  */

@@ -3,6 +3,9 @@ import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
+// firebase
+import { auth } from '../util/firebaseClient';
+
 let _user = null,
 	_isLoggingIn = false,
 	_logInErrors = null,
@@ -59,6 +62,11 @@ class UserStore extends EventEmitter {
 
 			case constants.actions.REGISTERING:
 				_isRegistering = true;
+				this.emit('change');
+				break;
+
+			case constants.actions.LOGIN_SUCCESS:
+				_user = action.user;
 				this.emit('change');
 				break;
 

@@ -3,16 +3,59 @@ import React, { Component } from 'react';
 import { hashHistory } from 'react-router';
 import { RouteTransition } from 'react-router-transition';
 
+// firebase
+import { auth } from './util/firebaseClient';
+
+// stores
+import userStore from './stores/userStore';
+
 // components
 import Header from './components/Header';
 import Footer from './components/Footer';
 
 class DeckManagerApp extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
-		this.state = {};
+		this.state = {
+			user: userStore.getUser(),
+			example: 'str'
+		};
+
+		this.onUserChange = this.onUserChange.bind(this);
+
+		setTimeout(() => {
+			console.log('app constructor', this.state);
+		}, 3000);
 	}
+
+	/** ================ LIFECYCLE =========================== */
+
+	componentWillMount() {
+		userStore.on('change', this.onUserChange);
+	}
+
+	componentWillUnmount() {
+		userStore.removeListener('change', this.onUserChange);
+	}
+
+	/** ================ METHODS =========================== */
+
+	/**
+	 * ----------------------------------------
+	 * Update the state when the user store does
+	 * ----------------------------------------
+	 */
+
+	onUserChange(e) {
+		this.setState({
+			user: userStore.getUser()
+		}, function() {
+			console.log('onuserchange', this.state);
+		});
+	}
+
+	/** ================ RENDER =========================== */
 
 	render() {
 		return (

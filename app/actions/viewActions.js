@@ -24,7 +24,7 @@ export function signUserIn(id, pass) {
  * ----------------------------------------
  */
 
-export function createNewUser(email, username, pass) {
+export function validateNewUser(email, username, pass) {
 	dispatcher.dispatch({
 		type: constants.actions.REGISTERING,
 		email,
@@ -32,5 +32,5 @@ export function createNewUser(email, username, pass) {
 		pass
 	});
 
-	firebaseClient.createNewUser(email, username, pass);
+	firebaseClient.validateNewUser(email, username, pass);
 }

@@ -32,6 +32,7 @@ class Signup extends Component {
 		this.onUserChange = this.onUserChange.bind(this);
 		this.onInputChange = this.onInputChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.validateForm = this.validateForm.bind(this);
 	}
 
 	/** ================ LIFECYCLE =========================== */
@@ -78,7 +79,7 @@ class Signup extends Component {
 	onSubmit(e) {
 		e.preventDefault();
 
-		this.validateForm(this.handleLogin.bind(this));
+		this.validateForm(this.handleSignup.bind(this));
 	}
 
 	/**
@@ -113,12 +114,12 @@ class Signup extends Component {
 	 * ----------------------------------------
 	 */
 
-	handleLogin() {
+	handleSignup() {
 		const email = this.state.email;
 		const username = this.state.username;
 		const pass = this.state.password;
 
-		viewActions.createNewUser(email, username, pass);
+		viewActions.validateNewUser(email, username, pass);
 	}
 
 	/** ================ RENDER =========================== */

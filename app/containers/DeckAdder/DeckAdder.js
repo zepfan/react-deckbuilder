@@ -95,70 +95,83 @@ class DeckAdder extends Component {
 		const { deck } = this.state;
 
 		return (
-			<div>
-				<form onSubmit={this.onSubmit}>
-					{/* Deck Name */}
-					<TextFieldGroup
-						label="Deck Name:"
-						name="deckName"
-						id="deckName"
-						value={deck.deckName}
-						onChange={this.onInputChange}
-					/>
+			<div id="deck-adder">
+				<h1>Add New Deck</h1>
 
-					{/* Format */}
-					<SelectInputGroup
-						label="Format:"
-						name="format"
-						id="format"
-						value={deck.format}
-						onChange={this.onInputChange}
-						options={supportedFormats}
-						placeholder="Select your format"
-					/>
+				<div class="container-1100">
+					<div class="main-container">
+						<form onSubmit={this.onSubmit}>
+							<div class="row">
+								<div class="left-col">
+									{/* Deck Name */}
+									<TextFieldGroup
+										label="Deck Name:"
+										name="deckName"
+										id="deckName"
+										value={deck.deckName}
+										onChange={this.onInputChange}
+									/>
 
-					{/* In Progress? */}
-					<CheckBoxGroup
-						label="Is this deck In Progress?"
-						name="inProgress"
-						id="inProgress"
-						value="inProgress"
-						onChange={this.onCheckboxChange}
-						checked={deck.inProgress}
-					/>
+									{/* Format */}
+									<SelectInputGroup
+										label="Format:"
+										name="format"
+										id="format"
+										value={deck.format}
+										onChange={this.onInputChange}
+										options={supportedFormats}
+										placeholder="Select your format"
+									/>
 
-					{/* Description */}
-					<TextAreaGroup
-						label="Description:"
-						name="description"
-						id="description"
-						onChange={this.onInputChange}
-						value={deck.description}
-						rows="4"
-					/>
+									{/* In Progress? */}
+									<CheckBoxGroup
+										label="Is this deck In Progress?"
+										name="inProgress"
+										id="inProgress"
+										value="inProgress"
+										onChange={this.onCheckboxChange}
+										checked={deck.inProgress}
+									/>
 
-					{/* Main List */}
-					<TextAreaGroup
-						label="Mainboard:"
-						name="mainboard"
-						id="mainboard"
-						onChange={this.onInputChange}
-						value={deck.mainboard}
-						rows="15"
-					/>
+									{/* Description */}
+									<TextAreaGroup
+										label="Description:"
+										name="description"
+										id="description"
+										onChange={this.onInputChange}
+										value={deck.description}
+										rows="4"
+									/>
+								</div>
 
-					{/* Sideboard */}
-					<TextAreaGroup
-						label="Sideboard:"
-						name="sideboard"
-						id="sideboard"
-						onChange={this.onInputChange}
-						value={deck.sideboard}
-						rows="10"
-					/>
+								<div class="right-col">
+									{/* Main List */}
+									<TextAreaGroup
+										label="Mainboard:"
+										name="mainboard"
+										id="mainboard"
+										onChange={this.onInputChange}
+										value={deck.mainboard}
+										rows="15"
+									/>
 
-					<button class="control-btn" type="submit">Add Deck</button>
-				</form>
+									{/* Sideboard 
+									<TextAreaGroup
+										label="Sideboard:"
+										name="sideboard"
+										id="sideboard"
+										onChange={this.onInputChange}
+										value={deck.sideboard}
+										rows="15"
+									/>
+									*/}
+								</div>
+							</div>
+
+							<button class="control-btn" type="submit">Add This Deck</button>
+						</form>
+					</div>
+				</div>
 			</div>
 		);
 	}

@@ -26,7 +26,10 @@ import DeckList from './containers/DeckList/DeckList';
 
 function requireAuth(nextState, replace, callback) {
   auth.onAuthStateChanged((user) => {
-    if (!user) { replace({ pathname: '/login' }); }
+    if (!user) {
+    	replace({ pathname: '/login' }); 
+    }
+    
     callback();
   });
 }
