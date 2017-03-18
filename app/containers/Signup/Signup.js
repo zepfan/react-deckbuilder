@@ -20,8 +20,10 @@ class Signup extends Component {
 		super(props);
 
 		this.state = {
-			identifier: '',
+			username: '',
+			email: '',
 			password: '',
+			passwordConfirmation: '',
 			validationErrors: '',
 			registerErrors: userStore.getRegisteringErrors(),
 			isRegistering: userStore.isRegistering()
@@ -89,8 +91,14 @@ class Signup extends Component {
 	validateForm(callback) {
 		let validationErrors = {};
 
-		if(!this.state.identifier) validationErrors.identifier = "Please enter an email!";
+		if(!this.state.username) validationErrors.username = "Please enter a username!";
+		if(!this.state.email) validationErrors.email = "Please enter an email!";
 		if(!this.state.password) validationErrors.password = "Please enter a password!";
+		if(!this.state.passwordConfirmation) validationErrors.passwordConfirmation = "Please confirm your password!";
+		
+		if(this.state.password !== this.state.passwordConfirmation) {
+			validationErrors.passwordConfirmation = "The passwords you have entered do not match.";
+		}
 
 		this.setState({ validationErrors: {...validationErrors} }, () => {
 			if(_.isEmpty(this.state.validationErrors)) {
@@ -106,16 +114,17 @@ class Signup extends Component {
 	 */
 
 	handleLogin() {
-		const id = this.state.identifier;
+		const email = this.state.email;
+		const username = this.state.username;
 		const pass = this.state.password;
 
-		viewActions.createNewUser(id, pass);
+		viewActions.createNewUser(email, username, pass);
 	}
 
 	/** ================ RENDER =========================== */
 
 	render() {	
-		const { identifier, password, isRegistering, validationErrors, registerErrors } = this.state;
+		const { username, email, password, passwordConfirmation, isRegistering, validationErrors, registerErrors } = this.state;
 
 		return (
 			<div class="authenticate-pane">
@@ -126,22 +135,41 @@ class Signup extends Component {
 
 					<form onSubmit={this.onSubmit}>
 						<TextFieldGroup 
-							label="Enter an Email:"
-							name="identifier"
-							id="identifier-input"
-							value={identifier}
+							label="Username:"
+							name="username"
+							id="username-input"
+							value={username}
 							onChange={this.onInputChange}
-							error={validationErrors.identifier}
+							error={validationErrors.username}
 						/>
 
 						<TextFieldGroup 
-							label="Choose a Password:"
+							label="Email Address:"
+							name="email"
+							id="email-input"
+							value={email}
+							onChange={this.onInputChange}
+							error={validationErrors.email}
+						/>
+
+						<TextFieldGroup 
+							label="Password:"
 							name="password"
 							id="password-input"
 							type="password"
 							value={password}
 							onChange={this.onInputChange}
 							error={validationErrors.password}
+						/>
+
+						<TextFieldGroup 
+							label="Confirm Password:"
+							name="passwordConfirmation"
+							id="confirm-password-input"
+							type="password"
+							value={passwordConfirmation}
+							onChange={this.onInputChange}
+							error={validationErrors.passwordConfirmation}
 						/>
 
 						<button class="control-btn" type="submit" disabled={isRegistering}>Create Account</button>

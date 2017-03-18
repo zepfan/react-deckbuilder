@@ -83,7 +83,7 @@ class Login extends Component {
 	validateForm(callback) {
 		let validationErrors = {};
 
-		if(!this.state.identifier) validationErrors.identifier = "Please enter an username or email!";
+		if(!this.state.identifier) validationErrors.identifier = "Please enter a username or email!";
 		if(!this.state.password) validationErrors.password = "Please enter a password!";
 
 		this.setState({ validationErrors: {...validationErrors} }, () => {

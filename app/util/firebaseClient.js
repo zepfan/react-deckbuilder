@@ -59,10 +59,10 @@ export function signUserIn(id, pass) {
  * ----------------------------------------
  */
 
-export function createNewUser(id, pass) {
-	auth.createUserWithEmailAndPassword(id, pass)
+export function createNewUser(email, username, pass) {
+	auth.createUserWithEmailAndPassword(email, pass)
 		.then(user => {
-			addNewUserToDatabase(user.uid, user.email);
+			addNewUserToDatabase(user.uid, user.email, username);
 
 			serverActions.loginSuccess(user);
 		})
@@ -81,8 +81,14 @@ export function createNewUser(id, pass) {
  * ----------------------------------------
  */
 
-function addNewUserToDatabase(userId, email) {
+function addNewUserToDatabase(userId, email, username) {
+	// give the user their own 'table'
 	db.ref('users/' + userId).set({
 		email: email
+	});
+
+	// add their username to the usernames list
+	db.ref('usernames/').set({
+		[username]: email
 	});
 }

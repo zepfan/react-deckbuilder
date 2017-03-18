@@ -39,7 +39,7 @@ class DeckManagerApp extends Component {
 					</div>
 				</RouteTransition>
 
-				<Footer />
+				{/*<Footer />*/}
 			</div>
 		);
 	}

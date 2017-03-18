@@ -24,12 +24,13 @@ export function signUserIn(id, pass) {
  * ----------------------------------------
  */
 
-export function createNewUser(id, pass) {
+export function createNewUser(email, username, pass) {
 	dispatcher.dispatch({
 		type: constants.actions.REGISTERING,
-		id,
+		email,
+		username,
 		pass
 	});
 
-	firebaseClient.createNewUser(id, pass);
+	firebaseClient.createNewUser(email, username, pass);
 }
