@@ -45,7 +45,7 @@ export const auth = firebaseApp.auth();
 export function signUserIn(id, pass) {
 	auth.signInWithEmailAndPassword(id, pass)
 		.then(user => {
-			setLoggedInUser(user);
+			setLoggedInUser(user.uid, username);
 			serverActions.loginSuccess(user);
 		})
 		.then(() => {
@@ -86,7 +86,15 @@ export function validateNewUser(email, username, pass) {
 function createNewUser(email, username, pass) {
 	auth.createUserWithEmailAndPassword(email, pass)
 		.then(user => {
-			setLoggedInUser(user.uid, username);
+			user.updateProfile({
+			       displayName: "Random Name"
+			   }).then(function() {
+			       setLoggedInUser(user.uid, username);
+			   }, function(error) {
+			       // TODO: send off some sort of account error
+			       console.warn('Logged in status not set');
+			   });
+
 			addNewUserToDatabase(user.uid, user.email, username);
 			
 			serverActions.registerSuccess(user);
@@ -107,7 +115,7 @@ function createNewUser(email, username, pass) {
  */
 
 function addNewUserToDatabase(userId, email, username) {
-	// give the user their own 'table'
+	// give the user their own DB tree
 	db.ref('users/' + userId).set({
 		email: email,
 		username: username
@@ -125,7 +133,7 @@ function addNewUserToDatabase(userId, email, username) {
  * ----------------------------------------
  */
 
-function setLoggedInUser(userID, username) {
+function setLoggedInUser(userId, username) {
 	localStorage.setItem('FB_USER_ID', userId);
-	localStorage.setItem('FB_DISPLAY', username);
+	localStorage.setItem('FB_DISPLAY_NAME', username);
 }

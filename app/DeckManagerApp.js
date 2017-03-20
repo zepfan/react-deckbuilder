@@ -18,15 +18,10 @@ class DeckManagerApp extends Component {
 		super(props);
 
 		this.state = {
-			user: userStore.getUser(),
-			example: 'str'
+			user: userStore.getUser()
 		};
 
 		this.onUserChange = this.onUserChange.bind(this);
-
-		setTimeout(() => {
-			console.log('app constructor', this.state);
-		}, 3000);
 	}
 
 	/** ================ LIFECYCLE =========================== */
@@ -51,7 +46,7 @@ class DeckManagerApp extends Component {
 		this.setState({
 			user: userStore.getUser()
 		}, function() {
-			console.log('onuserchange', this.state);
+			console.log('onUserChange', this.state);
 		});
 	}
 

@@ -65,7 +65,7 @@ class UserStore extends EventEmitter {
 				this.emit('change');
 				break;
 
-			case constants.actions.LOGIN_SUCCESS:
+			case constants.actions.REGISTER_SUCCESS:
 				_user = action.user;
 				this.emit('change');
 				break;
