@@ -33,9 +33,10 @@ class Signup extends Component {
 		this.onInputChange = this.onInputChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.validateForm = this.validateForm.bind(this);
+		this.handleSignup = this.handleSignup.bind(this);
 	}
 
-	/** ================ LIFECYCLE =========================== */
+	/** ======================= LIFECYCLE ======================= */
 
 	componentWillMount() {
 		userStore.on('change', this.onUserChange);
@@ -45,7 +46,7 @@ class Signup extends Component {
 		userStore.removeListener('change', this.onUserChange);
 	}
 
-	/** ================ METHODS =========================== */
+	/** ======================= METHODS ======================= */
 
 	/**
 	 * ----------------------------------------
@@ -79,13 +80,13 @@ class Signup extends Component {
 	onSubmit(e) {
 		e.preventDefault();
 
-		this.validateForm(this.handleSignup.bind(this));
+		this.validateForm(this.handleSignup);
 	}
 
 	/**
 	 * ----------------------------------------
 	 * Validate form inputs
-	 * Currently only checking for non-empty val
+	 * Currently only checking for non-empty vals
 	 * ----------------------------------------
 	 */
 	
@@ -122,7 +123,7 @@ class Signup extends Component {
 		viewActions.validateNewUser(email, username, pass);
 	}
 
-	/** ================ RENDER =========================== */
+	/** ======================= RENDER ======================= */
 
 	render() {	
 		const { username, email, password, passwordConfirmation, isRegistering, validationErrors, registerErrors } = this.state;
@@ -173,9 +174,11 @@ class Signup extends Component {
 							error={validationErrors.passwordConfirmation}
 						/>
 
-						<button class="control-btn" type="submit" disabled={isRegistering}>Create Account</button>
+						<div class="control-submit">
+							<button class="control-btn" type="submit" disabled={isRegistering}>Create Account</button>
 
-						{isRegistering ? <Loader /> : ''}
+							{isRegistering ? <Loader /> : ''}
+						</div>
 					</form>
 				</div>
 

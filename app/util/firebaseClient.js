@@ -7,7 +7,7 @@ import * as firebase from 'firebase';
 // actions
 import * as serverActions from '../actions/serverActions';
 
-/** ================ INIT =========================== */
+/** ======================= INIT ======================= */
 
 /**
  * ----------------------------------------
@@ -34,7 +34,7 @@ export const firebaseApp = firebase.initializeApp(config);
 export const db = firebaseApp.database();
 export const auth = firebaseApp.auth();
 
-/** ================ SIGN IN =========================== */
+/** ======================= SIGN IN ======================= */
 
 /**
  * ----------------------------------------
@@ -45,7 +45,7 @@ export const auth = firebaseApp.auth();
 export function signUserIn(id, pass) {
 	auth.signInWithEmailAndPassword(id, pass)
 		.then(user => {
-			setLoggedInUser(user.uid, username);
+			setLoggedInUser(user.uid, user.displayName);
 			serverActions.loginSuccess(user);
 		})
 		.then(() => {
@@ -58,7 +58,7 @@ export function signUserIn(id, pass) {
 		});
 }
 
-/** ================ CREATE ACCOUNT =========================== */
+/** ======================= CREATE ACCOUNT ======================= */
 
 /**
  * ----------------------------------------
@@ -67,8 +67,8 @@ export function signUserIn(id, pass) {
  */
 
 export function validateNewUser(email, username, pass) {
-	db.ref('usernames/').once('value').then(function(snapshot) {
-		if(!snapshot.val()[username]) {
+	db.ref('usernames/').child(username).once('value').then((snapshot) => {
+		if(!snapshot.val()) {
 			createNewUser(email, username, pass);
 		} else {
 			let error = 'Chosen username is unavailable.'
@@ -115,15 +115,18 @@ function createNewUser(email, username, pass) {
  */
 
 function addNewUserToDatabase(userId, email, username) {
+	let userUpdates = {};
+
 	// give the user their own DB tree
-	db.ref('users/' + userId).set({
-		email: email,
-		username: username
-	});
+	userUpdates[`users/${userId}`] = { email, username };
 
 	// add their username to the usernames list
-	db.ref('usernames/').update({
-		[username]: userId
+	userUpdates[`usernames/${username}`] = { userId };
+
+	db.ref().update(userUpdates).then(() => {
+		console.log('add new user to DB success');
+	}).catch((error) => {
+		console.log('add new user to DB error');
 	});
 }
 
@@ -136,4 +139,25 @@ function addNewUserToDatabase(userId, email, username) {
 function setLoggedInUser(userId, username) {
 	localStorage.setItem('FB_USER_ID', userId);
 	localStorage.setItem('FB_DISPLAY_NAME', username);
+}
+
+/** ======================= DECKS ======================= */
+
+export function saveNewDeck(deck) {
+	const deckKey = db.ref().child('decks').push().key;
+	const userId = auth.currentUser.uid; // does this belong here?
+
+	let deckUpdates = {};
+
+	// add the deck to the `decks` tree
+	deckUpdates[`/decks/${deckKey}`] = { ...deck };
+
+	// add a reference to the deck in the user's tree
+	deckUpdates[`/users/${userId}/decks/${deckKey}`] = { deckKey };
+
+	db.ref().update(deckUpdates).then(() => {
+		console.log('save new deck success');
+	}).catch((error) => {
+		console.log('save new deck error');
+	});
 }

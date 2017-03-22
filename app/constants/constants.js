@@ -11,7 +11,8 @@ export default {
 		'LOGIN_FAILED',
 		'REGISTERING',
 		'REGISTER_SUCCESS',
-		'REGISTER_FAILED'
+		'REGISTER_FAILED',
+		'SAVING_NEW_DECK',
 	]),
 }
 

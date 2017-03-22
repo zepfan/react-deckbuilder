@@ -137,6 +137,12 @@ body {
 		margin: 3em 0 2em;
 		padding: 0 1em;
 	}
+
+	.right-col,
+	.left-col {
+		float: none;
+		width: auto;
+	}
 }
 
 /**
@@ -192,7 +198,9 @@ label {
 	text-transform: uppercase;
 }
 
-input, button, a {
+input,
+button,
+a {
 	&:focus { outline-color: @brand; }
 }
 
@@ -206,7 +214,9 @@ input, button, a {
 	box-shadow: inset 4px 4px 5px rgba(0,0,0,0.18);
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
 	.input;
 }
 
@@ -242,9 +252,25 @@ button.control-btn {
 			color: @error-color;
 		}
 
-		input {
+		input,
+		textarea,
+		select {
 			border-color: @error-color;
 		}
+	}
+}
+
+.control-submit {
+	text-align: center;
+	
+	.spinning-loader {
+		position: absolute;
+		width: 48px;
+		margin-left: 10px;
+	}
+
+	.control-btn {
+		display: inline-block;
 	}
 }
 

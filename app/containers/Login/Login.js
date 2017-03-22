@@ -30,9 +30,10 @@ class Login extends Component {
 		this.onUserChange = this.onUserChange.bind(this);
 		this.onInputChange = this.onInputChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.handleLogin = this.handleLogin.bind(this);
 	}
 
-	/** ================ LIFECYCLE =========================== */
+	/** ======================= LIFECYCLE ======================= */
 
 	componentWillMount() {
 		userStore.on('change', this.onUserChange);
@@ -42,7 +43,7 @@ class Login extends Component {
 		userStore.removeListener('change', this.onUserChange);
 	}
 
-	/** ================ METHODS =========================== */
+	/** ======================= METHODS ======================= */
 
 	onUserChange(e) {
 		this.setState({
@@ -70,13 +71,13 @@ class Login extends Component {
 	onSubmit(e) {
 		e.preventDefault();
 
-		this.validateForm(this.handleLogin.bind(this));
+		this.validateForm(this.handleLogin);
 	}
 
 	/**
 	 * ----------------------------------------
 	 * Validate form inputs
-	 * Currently only checking for non-empty val
+	 * Currently only checking for non-empty vals
 	 * ----------------------------------------
 	 */
 	
@@ -106,7 +107,7 @@ class Login extends Component {
 		viewActions.signUserIn(id, pass);
 	}
 
-	/** ================ RENDER =========================== */
+	/** ======================= RENDER ======================= */
 
 	render() {
 		const { identifier, password, isLoggingIn, validationErrors, logInErrors } = this.state;
@@ -138,9 +139,11 @@ class Login extends Component {
 							error={validationErrors.password}
 						/>
 
-						<button class="control-btn" type="submit" disabled={isLoggingIn}>Log In</button>
+						<div class="control-submit">
+							<button class="control-btn" type="submit" disabled={isLoggingIn}>Log In</button>
 
-						{isLoggingIn ? <Loader /> : ''}
+							{isLoggingIn ? <Loader /> : ''}
+						</div>
 					</form>
 				</div>
 

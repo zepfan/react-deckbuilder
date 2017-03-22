@@ -2,6 +2,8 @@ import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 import * as firebaseClient from '../util/firebaseClient';
 
+/** ======================= AUTH ======================= */
+
 /**
  * ----------------------------------------
  * Sign user in
@@ -33,4 +35,21 @@ export function validateNewUser(email, username, pass) {
 	});
 
 	firebaseClient.validateNewUser(email, username, pass);
+}
+
+/** ======================= DECKS ======================= */
+
+/**
+ * ----------------------------------------
+ * Save a new deck
+ * ----------------------------------------
+ */
+
+export function saveNewDeck(deck) {
+	dispatcher.dispatch({
+		type: constants.actions.SAVING_NEW_DECK,
+		deck
+	});
+
+	firebaseClient.saveNewDeck(deck);
 }

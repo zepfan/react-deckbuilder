@@ -24,7 +24,7 @@ class DeckManagerApp extends Component {
 		this.onUserChange = this.onUserChange.bind(this);
 	}
 
-	/** ================ LIFECYCLE =========================== */
+	/** ======================= LIFECYCLE ======================= */
 
 	componentWillMount() {
 		userStore.on('change', this.onUserChange);
@@ -34,7 +34,7 @@ class DeckManagerApp extends Component {
 		userStore.removeListener('change', this.onUserChange);
 	}
 
-	/** ================ METHODS =========================== */
+	/** ======================= METHODS ======================= */
 
 	/**
 	 * ----------------------------------------
@@ -50,7 +50,7 @@ class DeckManagerApp extends Component {
 		});
 	}
 
-	/** ================ RENDER =========================== */
+	/** ======================= RENDER ======================= */
 
 	render() {
 		return (

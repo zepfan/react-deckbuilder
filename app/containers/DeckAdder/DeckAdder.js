@@ -4,14 +4,19 @@ import React, { Component } from 'react';
 // data
 import supportedFormats from '../../data/supportedFormats';
 
+// actions
+import * as viewActions from '../../actions/viewActions';
+
 // stores
 import userStore from '../../stores/userStore';
+import deckStore from '../../stores/deckStore';
 
 // components
 import TextFieldGroup from '../../components/forms/TextFieldGroup';
 import TextAreaGroup from '../../components/forms/TextAreaGroup';
 import SelectInputGroup from '../../components/forms/SelectInputGroup';
 import CheckBoxGroup from '../../components/forms/CheckBoxGroup';
+import Loader from '../../components/Loader';
 
 class DeckAdder extends Component {
 	constructor(props) {
@@ -24,25 +29,30 @@ class DeckAdder extends Component {
 				format: '',
 				inProgress: false,
 				description: '',
-				mainboard: '',
-				sideboard: ''
-			}
+				mainboard: ''
+			},
+			validationErrors: '',
+			isSavingNewDeck: deckStore.isSavingNewDeck()
 		};
 
 		this.onUserChange = this.onUserChange.bind(this);
+		this.onDecksChange = this.onDecksChange.bind(this);
 		this.onInputChange = this.onInputChange.bind(this);
-		this.onCheckboxChange = this.onCheckboxChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.validateForm = this.validateForm.bind(this);
+		this.saveNewDeck = this.saveNewDeck.bind(this);
 	}
 
 	/** ================ LIFECYCLE =========================== */
 
 	componentWillMount() {
 		userStore.on('change', this.onUserChange);
+		deckStore.on('change', this.onDecksChange);
 	}
 
 	componentWillUnmount() {
 		userStore.removeListener('change', this.onUserChange);
+		deckStore.removeListener('change', this.onDecksChange);
 	}
 
 	/** ================ METHODS =========================== */
@@ -61,20 +71,30 @@ class DeckAdder extends Component {
 
 	/**
 	 * ----------------------------------------
+	 * Update the state when the deck store does
+	 * ----------------------------------------
+	 */
+
+	onDecksChange(e) {
+		this.setState({
+			isSavingNewDeck: deckStore.isSavingNewDeck()
+		});
+	}
+
+	/**
+	 * ----------------------------------------
 	 * Handle input changes
 	 * ----------------------------------------
 	 */
 
 	onInputChange(e) {
-		let deck = { [e.target.name]: e.target.value };
+		let deck;
 
-		this.setState({ deck: { ...this.state.deck, ...deck } }, () => {
-			console.log(this.state)
-		});
-	}
-
-	onCheckboxChange(e) {
-		let deck = { [e.target.name]: e.target.checked };
+		if(e.target.type == 'checkbox') {
+			deck = { [e.target.name]: e.target.checked };
+		} else {
+			deck = { [e.target.name]: e.target.value };
+		}
 
 		this.setState({ deck: { ...this.state.deck, ...deck } });
 	}
@@ -87,12 +107,48 @@ class DeckAdder extends Component {
 
 	onSubmit(e) {
 		e.preventDefault();
+
+		this.validateForm(this.saveNewDeck);
 	}
 
-	/** ================ RENDER =========================== */
+	/**
+	 * ----------------------------------------
+	 * Validate form inputs
+	 * Currently only checking for non-empty vals
+	 * ----------------------------------------
+	 */
+	
+	validateForm(callback) {
+		let validationErrors = {};
+
+		if(!this.state.deck.deckName) validationErrors.deckName = "Please enter a name for your deck!";
+		if(!this.state.deck.format) validationErrors.format = "Please select a format!";
+		if(!this.state.deck.description) validationErrors.description = "Please enter a description!";
+		if(!this.state.deck.mainboard) validationErrors.mainboard = "A mainbaord is required!";
+
+		this.setState({ validationErrors: {...validationErrors} }, () => {
+			if(_.isEmpty(this.state.validationErrors)) {
+				callback();
+			}
+		});
+	}
+
+	/**
+	 * ----------------------------------------
+	 * Save the deck once validated
+	 * ----------------------------------------
+	 */
+
+	saveNewDeck() {
+		const deck = this.state.deck;
+
+		viewActions.saveNewDeck(deck);
+	}
+
+	/** ======================= RENDER ======================= */
 
 	render() {
-		const { deck } = this.state;
+		const { deck, isSavingNewDeck, validationErrors } = this.state;
 
 		return (
 			<div id="deck-adder">
@@ -110,6 +166,7 @@ class DeckAdder extends Component {
 										id="deckName"
 										value={deck.deckName}
 										onChange={this.onInputChange}
+										error={validationErrors.deckName}
 									/>
 
 									{/* Format */}
@@ -121,6 +178,7 @@ class DeckAdder extends Component {
 										onChange={this.onInputChange}
 										options={supportedFormats}
 										placeholder="Select your format"
+										error={validationErrors.format}
 									/>
 
 									{/* In Progress? */}
@@ -129,8 +187,9 @@ class DeckAdder extends Component {
 										name="inProgress"
 										id="inProgress"
 										value="inProgress"
-										onChange={this.onCheckboxChange}
+										onChange={this.onInputChange}
 										checked={deck.inProgress}
+										error={validationErrors.inProgress}
 									/>
 
 									{/* Description */}
@@ -141,6 +200,7 @@ class DeckAdder extends Component {
 										onChange={this.onInputChange}
 										value={deck.description}
 										rows="4"
+										error={validationErrors.description}
 									/>
 								</div>
 
@@ -153,22 +213,16 @@ class DeckAdder extends Component {
 										onChange={this.onInputChange}
 										value={deck.mainboard}
 										rows="15"
+										error={validationErrors.mainboard}
 									/>
-
-									{/* Sideboard 
-									<TextAreaGroup
-										label="Sideboard:"
-										name="sideboard"
-										id="sideboard"
-										onChange={this.onInputChange}
-										value={deck.sideboard}
-										rows="15"
-									/>
-									*/}
 								</div>
 							</div>
 
-							<button class="control-btn" type="submit">Add This Deck</button>
+							<div class="control-submit">
+								<button class="control-btn" type="submit">Add This Deck</button>
+
+								{isSavingNewDeck ? <Loader /> : ''}
+							</div>
 						</form>
 					</div>
 				</div>

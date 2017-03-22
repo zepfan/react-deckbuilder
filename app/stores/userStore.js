@@ -3,9 +3,6 @@ import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
-// firebase
-import { auth } from '../util/firebaseClient';
-
 let _user = null,
 	_isLoggingIn = false,
 	_logInErrors = null,
@@ -40,7 +37,7 @@ class UserStore extends EventEmitter {
 		return _isRegistering;
 	}
 
-	/** ===================== HANDLE DISPATCHER ===================== */
+	/** ======================= HANDLE DISPATCHER ======================= */
 
 	handleActions(action) {
 		switch(action.type) {

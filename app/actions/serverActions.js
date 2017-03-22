@@ -2,6 +2,8 @@
 import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
+/** ======================= AUTH ======================= */
+
 /**
  * ----------------------------------------
  * Handle succesful login
