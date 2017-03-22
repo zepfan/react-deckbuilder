@@ -2,11 +2,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
+// stores
+import deckStore from '../../stores/deckStore';
+
 class DeckCatalog extends Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			decks: deckStore.getDecks()
+		};
 	}
 
 	render() {		
@@ -14,7 +19,7 @@ class DeckCatalog extends Component {
 			<div id="deck-catalog">
 				<h1>Your Decks</h1>
 
-				<div class="main-container">
+				{/*<div class="main-container">
 					<div class="formats">
 						<div class="format">
 							<div class="format-interior container-1100">
@@ -31,7 +36,7 @@ class DeckCatalog extends Component {
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>*/}
 			</div>
 		);
 	}
