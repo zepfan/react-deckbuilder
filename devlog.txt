@@ -1,0 +1,10 @@
+Right now:
+- Figure out best way to sync logged in user with the store
+- Figure out better way to handle route protection
+
+Things to do:
+- Make sign-in with Username possible
+- Change the apperance of login/signup pages if user is signed in
+
+Resources:
+http://stackoverflow.com/questions/26632415/where-should-ajax-request-be-made-in-flux-app

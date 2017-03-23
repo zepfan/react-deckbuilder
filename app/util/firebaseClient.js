@@ -7,6 +7,9 @@ import * as firebase from 'firebase';
 // actions
 import * as serverActions from '../actions/serverActions';
 
+// constants
+import constants from '../constants/constants';
+
 /** ======================= INIT ======================= */
 
 /**
@@ -87,7 +90,7 @@ function createNewUser(email, username, pass) {
 	auth.createUserWithEmailAndPassword(email, pass)
 		.then(user => {
 			user.updateProfile({
-			       displayName: "Random Name"
+			       displayName: username
 			   }).then(function() {
 			       setLoggedInUser(user.uid, username);
 			   }, function(error) {
@@ -137,8 +140,8 @@ function addNewUserToDatabase(userId, email, username) {
  */
 
 function setLoggedInUser(userId, username) {
-	localStorage.setItem('FB_USER_ID', userId);
-	localStorage.setItem('FB_DISPLAY_NAME', username);
+	localStorage.setItem(constants.storageKeys.userId, userId);
+	localStorage.setItem(constants.storageKeys.userName, username);
 }
 
 /** ======================= DECKS ======================= */

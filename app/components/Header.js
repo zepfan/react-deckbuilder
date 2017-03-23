@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
-const Header = () => {
+const Header = ({ isLoggedIn, userId, userName }) => {
 	return (
 		<header id="app-header" class="container-1100">
 			<div class="row">
@@ -21,18 +21,24 @@ const Header = () => {
 					</div>
 				</div>
 
-				<div class="right-col">
-					<div id="user-control">
-						logged in as <strong>username here</strong>
+				{isLoggedIn &&
+					<div class="right-col">
+						<div id="user-control">
+							logged in as <strong>{userName}</strong>
+
+							<button class="log-out btn">Log Out</button>
+						</div>
 					</div>
-				</div>
+				}
 			</div>
 		</header>
 	);
 }
 
 Header.propTypes = {
-	
+	isLoggedIn: PropTypes.bool,
+	userId: PropTypes.string,
+	userName: PropTypes.string
 }
 
 export default Header;

@@ -14,6 +14,11 @@ export default {
 		'REGISTER_FAILED',
 		'SAVING_NEW_DECK',
 	]),
+
+	storageKeys: {
+		userId: 'FB_USER_ID',
+		userName: 'FB_DISPLAY_NAME'
+	}
 }
 
 /**

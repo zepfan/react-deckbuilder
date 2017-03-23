@@ -4,11 +4,14 @@ import '../public/less/main.less';
 // react jazz
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, IndexRedirect, hashHistory, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect, hashHistory } from 'react-router';
 
 // firebase
 import { auth } from './util/firebaseClient';
 import './util/authTest'; /* DEBUG ONLY */
+
+// constants
+import constants from './constants/constants';
 
 // components
 import DeckManagerApp from './DeckManagerApp';
@@ -25,13 +28,17 @@ import DeckList from './containers/DeckList/DeckList';
  */
 
 function requireAuth(nextState, replace, callback) {
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-    	replace({ pathname: '/login' }); 
-    }
-    
-    callback();
-  });
+	auth.onAuthStateChanged((user) => {
+		if (!user) {
+			replace({ pathname: '/login' }); 
+
+			// ensure there's no existing keys in localStorage
+			localStorage.removeItem(constants.storageKeys.userId);
+			localStorage.removeItem(constants.storageKeys.userName);
+		}
+
+		callback();
+	});
 }
 
 /**

@@ -219,7 +219,7 @@ class DeckAdder extends Component {
 							</div>
 
 							<div class="control-submit">
-								<button class="control-btn" type="submit">Add This Deck</button>
+								<button class="control-btn btn" type="submit">Add This Deck</button>
 
 								{isSavingNewDeck ? <Loader /> : ''}
 							</div>

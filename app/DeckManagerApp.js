@@ -45,17 +45,21 @@ class DeckManagerApp extends Component {
 	onUserChange(e) {
 		this.setState({
 			user: userStore.getUser()
-		}, function() {
-			console.log('onUserChange', this.state);
 		});
 	}
 
 	/** ======================= RENDER ======================= */
 
 	render() {
+		const { user } = this.state;
+
 		return (
 			<div>
-				<Header />
+				<Header 
+					isLoggedIn={user.isLoggedIn}
+					userId={user.userId}
+					userName={user.userName}
+				/>
 
 				<RouteTransition
 					pathname={this.props.location.pathname}
@@ -66,7 +70,7 @@ class DeckManagerApp extends Component {
 						if (styles.translateY < 0) {
 							return { display: 'none' }
 						}
-							return { transform: `translateY(${styles.translateY}%)`  }
+							return { transform: `translateY(${styles.translateY}%)` }
 						}
 					}
 				>

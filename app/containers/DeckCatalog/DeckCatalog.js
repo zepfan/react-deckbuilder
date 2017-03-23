@@ -14,7 +14,7 @@ class DeckCatalog extends Component {
 		};
 	}
 
-	render() {		
+	render() {
 		return (
 			<div id="deck-catalog">
 				<h1>Your Decks</h1>

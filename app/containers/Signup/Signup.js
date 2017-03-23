@@ -175,7 +175,7 @@ class Signup extends Component {
 						/>
 
 						<div class="control-submit">
-							<button class="control-btn" type="submit" disabled={isRegistering}>Create Account</button>
+							<button class="control-btn btn" type="submit" disabled={isRegistering}>Create Account</button>
 
 							{isRegistering ? <Loader /> : ''}
 						</div>

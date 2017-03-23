@@ -3,7 +3,9 @@ import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
-let _user = null,
+let _userId = localStorage.getItem(constants.storageKeys.userId) || null,
+	_userName = localStorage.getItem(constants.storageKeys.userName) || null,
+	_isLoggedIn = !!_userId && !!_userName,
 	_isLoggingIn = false,
 	_logInErrors = null,
 	_isRegistering = false,
@@ -18,6 +20,12 @@ class UserStore extends EventEmitter {
 	 */
 
 	getUser() {
+		let _user = {
+			isLoggedIn: _isLoggedIn,
+			userId: _userId,
+			userName: _userName
+		}
+
 		return _user;
 	}
 
@@ -47,7 +55,9 @@ class UserStore extends EventEmitter {
 				break;
 
 			case constants.actions.LOGIN_SUCCESS:
-				_user = action.user;
+				_userId = action.user.uid;
+				_userName = action.user.displayName;
+				_isLoggedIn = true;
 				this.emit('change');
 				break;
 

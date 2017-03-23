@@ -140,7 +140,7 @@ class Login extends Component {
 						/>
 
 						<div class="control-submit">
-							<button class="control-btn" type="submit" disabled={isLoggingIn}>Log In</button>
+							<button class="control-btn btn" type="submit" disabled={isLoggingIn}>Log In</button>
 
 							{isLoggingIn ? <Loader /> : ''}
 						</div>
