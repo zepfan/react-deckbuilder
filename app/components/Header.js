@@ -2,6 +2,9 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
 const Header = ({ isLoggedIn, userId, userName }) => {
+
+	console.log('header props:', isLoggedIn, userId, userName);
+
 	return (
 		<header id="app-header" class="container-1100">
 			<div class="row">

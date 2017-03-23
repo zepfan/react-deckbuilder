@@ -1,6 +1,7 @@
 import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 import * as firebaseClient from '../util/firebaseClient';
+import * as mtgClient from '../util/mtgClient';
 
 /** ======================= AUTH ======================= */
 
@@ -39,17 +40,26 @@ export function validateNewUser(email, username, pass) {
 
 /** ======================= DECKS ======================= */
 
+export function validateDeckList(deck) {
+	dispatcher.dispatch({
+		type: constants.actions.VALIDATING_DECK_LIST,
+		deck
+	});
+
+	mtgClient.validateDeckList(deck);
+}
+
 /**
  * ----------------------------------------
  * Save a new deck
  * ----------------------------------------
  */
 
-export function saveNewDeck(deck) {
-	dispatcher.dispatch({
-		type: constants.actions.SAVING_NEW_DECK,
-		deck
-	});
+// export function saveNewDeck(deck) {
+// 	dispatcher.dispatch({
+// 		type: constants.actions.SAVING_NEW_DECK,
+// 		deck
+// 	});
 
-	firebaseClient.saveNewDeck(deck);
-}
+// 	firebaseClient.saveNewDeck(deck);
+// }

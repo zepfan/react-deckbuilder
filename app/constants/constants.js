@@ -6,13 +6,19 @@
 
 export default {
 	actions: mirror([
+		/* ======= Logging In ======= */
 		'LOGGING_IN',
 		'LOGIN_SUCCESS',
 		'LOGIN_FAILED',
+
+		/* ======= Registration ======= */
 		'REGISTERING',
 		'REGISTER_SUCCESS',
 		'REGISTER_FAILED',
+
+		/* ======= Decks ======= */
 		'SAVING_NEW_DECK',
+		'VALIDATING_DECK_LIST'
 	]),
 
 	storageKeys: {

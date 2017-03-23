@@ -124,7 +124,7 @@ class DeckAdder extends Component {
 		if(!this.state.deck.deckName) validationErrors.deckName = "Please enter a name for your deck!";
 		if(!this.state.deck.format) validationErrors.format = "Please select a format!";
 		if(!this.state.deck.description) validationErrors.description = "Please enter a description!";
-		if(!this.state.deck.mainboard) validationErrors.mainboard = "A mainbaord is required!";
+		if(!this.state.deck.mainboard) validationErrors.mainboard = "A mainboard is required!";
 
 		this.setState({ validationErrors: {...validationErrors} }, () => {
 			if(_.isEmpty(this.state.validationErrors)) {
@@ -142,7 +142,8 @@ class DeckAdder extends Component {
 	saveNewDeck() {
 		const deck = this.state.deck;
 
-		viewActions.saveNewDeck(deck);
+		viewActions.validateDeckList(deck);
+		// viewActions.saveNewDeck(deck);
 	}
 
 	/** ======================= RENDER ======================= */

@@ -32,6 +32,10 @@ module.exports = {
 			{
 				test: /\.svg/,
 				loader: 'svg-url-loader'
+			},
+			{ 
+				test: /\.json$/, 
+				loader: 'json-loader' 
 			}
 		]
 	},
@@ -43,8 +47,8 @@ module.exports = {
 		filename: "client.min.js"
 	},
 	plugins: debug ? [] : [
-    new webpack.optimize.DedupePlugin(),
+    	new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-  ],
+	]
 };

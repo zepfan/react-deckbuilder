@@ -55,7 +55,7 @@ ReactDOM.render(
 			{/* Protected Routes */}
 			<Route path="/dashboard" onEnter={requireAuth}>
 				<IndexRoute component={DeckCatalog} />
-				<Route path="/dashboard/decks/:id" component={DeckList}></Route>
+				<Route path="/dashboard/deck/:id" component={DeckList}></Route>
 				<Route path="/dashboard/add-deck" component={DeckAdder}></Route>
 			</Route>
 

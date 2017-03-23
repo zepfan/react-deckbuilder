@@ -1,4 +1,7 @@
 Right now:
+DeckAdder: figuring out how to validate the decks
+DeckCatalog: Dummy data that needs to come in from server
+
 - Figure out best way to sync logged in user with the store
 - Figure out better way to handle route protection
 
