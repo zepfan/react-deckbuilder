@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, IndexRedirect, hashHistory } from 'react-router';
 
 // firebase
-import { auth } from './util/firebaseClient';
+import { auth, initFirebase } from './util/firebaseClient';
 import './util/authTest'; /* DEBUG ONLY */
 
 // constants

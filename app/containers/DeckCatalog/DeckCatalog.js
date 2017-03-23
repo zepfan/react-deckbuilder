@@ -28,6 +28,8 @@ class DeckCatalog extends Component {
 		};
 	}
 
+	/** ================ RENDER =========================== */
+
 	render() {
 
 		const deckTeasers = this.state.deckTeasers.map((deckTeaser, i) => {

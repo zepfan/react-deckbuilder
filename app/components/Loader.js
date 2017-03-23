@@ -6,8 +6,6 @@ const Loader = () => {
 	);
 }
 
-Loader.propTypes = {
-	
-}
+Loader.propTypes = {}
 
 export default Loader;

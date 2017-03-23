@@ -47,18 +47,19 @@ export const auth = firebaseApp.auth();
 
 export function signUserIn(id, pass) {
 	auth.signInWithEmailAndPassword(id, pass)
-		.then(user => {
-			setLoggedInUser(user.uid, user.displayName);
-			serverActions.loginSuccess(user);
-		})
-		.then(() => {
-			hashHistory.push('/dashboard');
-		})
-		.catch(e => {
-			// stick with a simple error for now
-			let error = 'Your username or password is not correct.'
-			serverActions.loginFailed(error);
-		});
+		.then(user => _handleUserSignIn(user))
+		.then(() => hashHistory.push('/dashboard'))
+		.catch(e => _handleSignInError(e));
+}
+
+function _handleUserSignIn(user) {
+	setLoggedInUser(user.uid, user.displayName);
+	serverActions.loginSuccess(user);
+}
+
+function _handleSignInError(e) {
+	let error = 'Your username or password is not correct.'
+	serverActions.loginFailed(error);
 }
 
 /** ======================= CREATE ACCOUNT ======================= */
@@ -72,7 +73,7 @@ export function signUserIn(id, pass) {
 export function validateNewUser(email, username, pass) {
 	db.ref('usernames/').child(username).once('value').then((snapshot) => {
 		if(!snapshot.val()) {
-			createNewUser(email, username, pass);
+			_createNewUser(email, username, pass);
 		} else {
 			let error = 'Chosen username is unavailable.'
 			serverActions.registerFailed(error);
@@ -80,35 +81,33 @@ export function validateNewUser(email, username, pass) {
 	});
 }
 
+
 /**
  * ----------------------------------------
  * Create new user account in Auth
  * ----------------------------------------
  */
 
-function createNewUser(email, username, pass) {
+function _createNewUser(email, username, pass) {
 	auth.createUserWithEmailAndPassword(email, pass)
-		.then(user => {
-			user.updateProfile({
-			       displayName: username
-			   }).then(function() {
-			       setLoggedInUser(user.uid, username);
-			   }, function(error) {
-			       // TODO: send off some sort of account error
-			       console.warn('Logged in status not set');
-			   });
+		.then(user => _handleNewUser(user, username))
+		.then(() => hashHistory.push('/dashboard'))
+		.catch(e => _handleSignUpError());
+}
 
-			addNewUserToDatabase(user.uid, user.email, username);
-			
-			serverActions.registerSuccess(user);
-		})
-		.then(() => {
-			hashHistory.push('/dashboard');
-		})
-		.catch(e => {
-			let error = 'There was a problem. Please try again.'
-			serverActions.registerFailed(error);
-		});
+function _handleNewUser(user, username) {
+	user.updateProfile({ displayName: username })
+		.then(() => setLoggedInUser(user.uid, username))
+		.catch(e => console.warn('Logged in status not set'));
+
+	addNewUserToDatabase(user.uid, user.email, username);
+	
+	serverActions.registerSuccess(user);
+}
+
+function _handleSignUpError(e) {
+	let error = 'There was a problem. Please try again.'
+	serverActions.registerFailed(error);
 }
 
 /**

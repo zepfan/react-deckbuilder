@@ -142,7 +142,7 @@ class DeckAdder extends Component {
 	saveNewDeck() {
 		const deck = this.state.deck;
 
-		viewActions.validateDeckList(deck);
+		viewActions.validateDeckList(deck.mainboard);
 		// viewActions.saveNewDeck(deck);
 	}
 
