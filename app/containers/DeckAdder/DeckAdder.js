@@ -27,14 +27,15 @@ class DeckAdder extends Component {
 			deck: {
 				deckName: '',
 				format: '',
+				commander: '',
+				featuredCard: '',
 				inProgress: false,
 				isPrivate: false,
 				description: '',
 				mainboard: '',
 				sideboard: '',
-				commander: ''
 			},
-			visibleTab: 'mainboard',
+			visibleTab: 'mainboard-tab',
 			validationErrors: '',
 			deckErrors: deckStore.getDeckErrors(),
 			isSavingNewDeck: deckStore.isSavingNewDeck()
@@ -43,8 +44,10 @@ class DeckAdder extends Component {
 		this.onUserChange = this.onUserChange.bind(this);
 		this.onDecksChange = this.onDecksChange.bind(this);
 		this.onInputChange = this.onInputChange.bind(this);
+		this.changeTabs = this.changeTabs.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
 		this.validateForm = this.validateForm.bind(this);
+		this.parseDeckList = this.parseDeckList.bind(this);
 		this.saveNewDeck = this.saveNewDeck.bind(this);
 	}
 
@@ -89,6 +92,16 @@ class DeckAdder extends Component {
 
 	/**
 	 * ----------------------------------------
+	 * Toggle the mainboard/sideboard tabs
+	 * ----------------------------------------
+	 */
+
+	changeTabs(e) {
+		this.setState({ visibleTab: e.target.id });
+	}
+
+	/**
+	 * ----------------------------------------
 	 * Handle input changes
 	 * ----------------------------------------
 	 */
@@ -114,7 +127,7 @@ class DeckAdder extends Component {
 	onSubmit(e) {
 		e.preventDefault();
 
-		this.validateForm(this.saveNewDeck);
+		this.validateForm(this.state.deck);
 	}
 
 	/**
@@ -123,7 +136,7 @@ class DeckAdder extends Component {
 	 * ----------------------------------------
 	 */
 	
-	validateForm(callback) {
+	validateForm(deck) {
 		let validationErrors = {};
 
 		if(!this.state.deck.deckName) validationErrors.deckName = "Please enter a name for your deck!";
@@ -131,11 +144,63 @@ class DeckAdder extends Component {
 		if(!this.state.deck.description) validationErrors.description = "Please enter a description!";
 		if(!this.state.deck.mainboard) validationErrors.mainboard = "A mainboard is required!";
 
+		if(this.state.deck.format == 'Commander') {
+			if(!this.state.deck.commander) validationErrors.commander = "Please input your commander!";	
+		} else {
+			if(!this.state.deck.featuredCard) validationErrors.featuredCard = "Please choose a featured card!";
+		}
+
 		this.setState({ validationErrors: {...validationErrors} }, () => {
 			if(_.isEmpty(this.state.validationErrors)) {
-				callback();
+				this.saveNewDeck(deck);
 			}
 		});
+	}
+
+	/**
+	 * ----------------------------------------
+	 * Prep the deck for neat travel
+	 * ----------------------------------------
+	 */
+
+	parseDeckList(deckArr) {
+		const quantityRegex = /(\d\s?|[x]\s|^\s|\s$)/g,
+			categoryRegex = /(#.+?(?=[\s])|#.+$)/g,
+			specialRegex = /([*].+)/g,
+			spacesRegex = /\s/g,
+			specialCharsRegex = /([^\w\s|-])/g;
+
+		// remove any empty values
+		deckArr = deckArr.filter(n => { return n !== '' });
+
+		deckArr = deckArr.map((card) => {
+			let cardObj = {};
+			
+			// parse the quantity
+			cardObj.quantity = card.match(quantityRegex);
+			cardObj.quantity = cardObj.quantity ? parseInt(cardObj.quantity.join(''), 10) : 1;
+			card = card.replace(quantityRegex, '');
+
+			// parse the custom category
+			cardObj.category = card.match(categoryRegex);
+			cardObj.category = cardObj.category ? cardObj.category.join('').trim().substring(1) : null;
+			card = card.replace(categoryRegex, '');
+
+			// parse any special flags
+			cardObj.special = card.match(specialRegex);
+			cardObj.special = cardObj.special ? cardObj.special.join('').trim().substring(1).slice(0, -1) : null;
+			card = card.replace(specialRegex, '');
+
+			// parse originial name
+			cardObj.name = card.trim();
+
+			// format card name for api usage
+			cardObj.formattedName = card.trim().replace(specialCharsRegex, '').toLowerCase().replace(spacesRegex, '-');
+
+			return cardObj;
+		});
+
+		return deckArr;
 	}
 
 	/**
@@ -144,17 +209,19 @@ class DeckAdder extends Component {
 	 * ----------------------------------------
 	 */
 
-	saveNewDeck() {
-		const deck = this.state.deck;
+	saveNewDeck(deck) {
+		const mainboard = this.parseDeckList(deck.mainboard.split('\n')),
+			sideboard = this.parseDeckList(deck.sideboard.split('\n'));
+			
+		deck = { ...deck, mainboard, sideboard };
 
-		// goes through server-side validation first
-		viewActions.validateDeckList(deck.mainboard);
+		viewActions.validateDeckList(deck);
 	}
 
 	/** ======================= RENDER ======================= */
 
 	render() {
-		const { deck, isSavingNewDeck, validationErrors, deckErrors } = this.state;
+		const { deck, isSavingNewDeck, validationErrors, deckErrors, visibleTab } = this.state;
 
 		return (
 			<div id="deck-adder">
@@ -189,17 +256,38 @@ class DeckAdder extends Component {
 										error={validationErrors.format}
 									/>
 
+									{/* Choose a featured card if not EDH */}
+									<TextFieldGroup
+										label="Choose a featured card:"
+										name="featuredCard"
+										id="featuredCard"
+										className={deck.format !== 'Commander' ? 'visible anim-slide-down' : 'anim-slide-up'}
+										value={deck.featuredCard}
+										onChange={this.onInputChange}
+										error={validationErrors.featuredCard}
+									/>
+
 									{/* Choose a commander if format is EDH */}
-									{deck.format == 'Commander' &&
-										<TextFieldGroup
-											label="Commander:"
-											name="commander"
-											id="commander"
-											value={deck.commander}
-											onChange={this.onInputChange}
-											error={validationErrors.commander}
-										/>
-									}
+									<TextFieldGroup
+										label="Commander:"
+										name="commander"
+										id="commander"
+										className={deck.format == 'Commander' ? 'visible anim-slide-down' : 'anim-slide-up'}
+										value={deck.commander}
+										onChange={this.onInputChange}
+										error={validationErrors.commander}
+									/>
+
+									{/* Description */}
+									<TextAreaGroup
+										label="Description:"
+										name="description"
+										id="description"
+										onChange={this.onInputChange}
+										value={deck.description}
+										rows="4"
+										error={validationErrors.description}
+									/>
 
 									{/* In Progress? */}
 									<CheckBoxGroup
@@ -222,17 +310,6 @@ class DeckAdder extends Component {
 										checked={deck.isPrivate}
 										error={validationErrors.isPrivate}
 									/>
-
-									{/* Description */}
-									<TextAreaGroup
-										label="Description:"
-										name="description"
-										id="description"
-										onChange={this.onInputChange}
-										value={deck.description}
-										rows="4"
-										error={validationErrors.description}
-									/>
 								</div>
 
 								<div class="right-col">
@@ -241,20 +318,24 @@ class DeckAdder extends Component {
 										label="Mainboard:"
 										name="mainboard"
 										id="mainboard"
+										onClick={this.changeTabs}
 										onChange={this.onInputChange}
 										value={deck.mainboard}
-										rows="15"
+										rows="20"
 										error={validationErrors.mainboard}
+										className={visibleTab == 'mainboard-tab' ? 'visible' : null}
 									/>
 
 									<TextAreaGroup
 										label="Sideboard:"
 										name="sideboard"
 										id="sideboard"
+										onClick={this.changeTabs}
 										onChange={this.onInputChange}
 										value={deck.sideboard}
-										rows="15"
+										rows="20"
 										error={validationErrors.sideboard}
+										className={visibleTab == 'sideboard-tab' ? 'visible' : null}
 									/>
 								</div>
 							</div>

@@ -40,10 +40,10 @@ const mtg = {
 	getCardsArray: function(cardsArr, callback) {
 		let promiseArr = [];
 
-		cardsArr.forEach((cardName, i) => {
-			promiseArr[i] = fetch(cards_url + cardName)
+		cardsArr.forEach((card, i) => {
+			promiseArr[i] = fetch(cards_url + card.formattedName)
 				.then(response => { return response.json() })
-				.then(json => { return {[cardName]:json} })
+				.then(json => { return {[card.formattedName]:json} })
 				.catch(e => { this._handleErrors(e) });
 		});
 
@@ -72,55 +72,53 @@ const mtg = {
  */
 
 export function validateDeckList(deck) {
-	let origDeck = deck,
-		deckArr = _cardArrayFormatter(deck),
-		deckErrors = [],
+	let deckErrors = [],
 		errorMsg = '';
 
-	// make the requests and handle the response
-	mtg.getCardsArray(deckArr.formatted, (response) => {
+	const origDeck = deck,
+		deckArr = [...deck.mainboard, ...deck.sideboard];
+
+	mtg.getCardsArray(deckArr, (response) => {
 		response.forEach((card, i) => {
 			// build errors array
 			let key = Object.keys(card);
 			if(card[key].errors) deckErrors.push(key[0]);
 		});
 
-		if(!deckErrors) {
-			// passes validation
-			serverActions.deckValidationSuccess();
-		} else {
-			// handle the errors
-			deckArr.formatted.forEach((val, i) => {
-				deckErrors.forEach((error, j) => {
-					if(val == error) errorMsg += `${deckArr.originial[i]}, `;
-				});
-			});
-
-			errorMsg = errorMsg.trim().replace(/,$/g, '')
-			errorMsg = `The following cards are unknown and can't be added, please ensure that you have spelled them correctly: ${errorMsg}`
-
-			serverActions.deckValidationFailed(errorMsg);
-		}
+		console.log(deckErrors);
 	});
 }
 
-/** ======================= HELPER METHODS ======================= */
 
-function _cardArrayFormatter(cardlist) {
-	let deckArr = cardlist.split('\n'),
-		deckArrOrig = [],
-		cardNameOrig = '';
+// export function validateDeckList(deck) {
+// 	let origDeck = deck,
+// 		deckArr = _cardArrayFormatter(deck),
+// 		deckErrors = [],
+// 		errorMsg = '';
 
-	// remove the quantities and spaces
-	deckArr = deckArr.map((cardName) => {
-		cardNameOrig = cardName.replace(/(\d\s?|[x]\s|^\s|\s$)/gm, '');
-		cardName = cardNameOrig.replace(/\s/gm, '-');
-		cardName = cardName.toLowerCase();
+// 	// make the requests and handle the response
+// 	mtg.getCardsArray(deckArr.formatted, (response) => {
+// 		response.forEach((card, i) => {
+// 			// build errors array
+// 			let key = Object.keys(card);
+// 			if(card[key].errors) deckErrors.push(key[0]);
+// 		});
 
-		deckArrOrig.push(cardNameOrig)
-		
-		return cardName;
-	});
+// 		if(!deckErrors) {
+// 			// passes validation
+// 			serverActions.deckValidationSuccess();
+// 		} else {
+// 			// handle the errors
+// 			deckArr.formatted.forEach((val, i) => {
+// 				deckErrors.forEach((error, j) => {
+// 					if(val == error) errorMsg += `${deckArr.originial[i]}, `;
+// 				});
+// 			});
 
-	return { formatted: deckArr, originial: deckArrOrig };
-}
+// 			errorMsg = errorMsg.trim().replace(/,$/g, '');
+// 			errorMsg = `The following cards are unknown and can't be added, please ensure that you have spelled them correctly: ${errorMsg}`;
+
+// 			serverActions.deckValidationFailed(errorMsg);
+// 		}
+// 	});
+// }

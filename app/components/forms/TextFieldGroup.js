@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
-const TextFieldGroup = ({ id, label, onChange, onBlur, checked, type, name, error }) => {
+const TextFieldGroup = ({ id, className, label, onChange, onBlur, checked, type, name, error }) => {
 	return (
-		<div id={`${id}-group`} class={['form-group text-field-group', error ? 'has-error' : ''].join(' ')}>
+		<div id={`${id}-group`} class={['form-group text-field-group', className, error ? 'has-error' : ''].join(' ')}>
 			<label for={id} class="control-label">{label}</label>
 			<input 
 				onChange={onChange}
@@ -12,7 +12,7 @@ const TextFieldGroup = ({ id, label, onChange, onBlur, checked, type, name, erro
 				type={type}
 				name={name}
 				id={id}
-				class="control-input"
+				class={"control-input"}
 			/>
 			{error ? <div class="error-block">{error}</div> : ''}
 		</div>

@@ -7,9 +7,8 @@ Things to do:
 - Make sign-in with Username possible
 - Change the apperance of login/signup pages if user is signed in
 
-Resources:
-http://stackoverflow.com/questions/26632415/where-should-ajax-request-be-made-in-flux-app
 
+// still needed: dateAdded, lastUpdated, owner_name
 
 /** schema for decks */
 "3kkhkhskdfhfwf": {
@@ -47,3 +46,22 @@ http://stackoverflow.com/questions/26632415/where-should-ajax-request-be-made-in
         },
     ]
 }
+
+
+
+1x Acquire #Theft
+1x Akroma's Memorial #Buff
+1x Faerie Artisans #Copy
+1x Gilded Lotus #Mana-Rock
+1x Hallowed Burial #Removal
+9x Hanna, Ship's Navigator *CMDR* #Commander
+1x Jareth, Leonine Titan #Pillowfort
+1x Mind's Dilation #Theft
+Omniscience
+Nath of the Gilt-Leaf
+Palinchron #Win-Conditions
+Pariah #Pillowfort
+Plains #Mana-Land
+Plea for Guidance #Tutors
+Propaganda #Pillowfort
+Prowler's Helm #Buff
