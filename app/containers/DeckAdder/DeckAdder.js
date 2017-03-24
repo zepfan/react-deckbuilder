@@ -28,10 +28,15 @@ class DeckAdder extends Component {
 				deckName: '',
 				format: '',
 				inProgress: false,
+				isPrivate: false,
 				description: '',
-				mainboard: ''
+				mainboard: '',
+				sideboard: '',
+				commander: ''
 			},
+			visibleTab: 'mainboard',
 			validationErrors: '',
+			deckErrors: deckStore.getDeckErrors(),
 			isSavingNewDeck: deckStore.isSavingNewDeck()
 		};
 
@@ -77,7 +82,8 @@ class DeckAdder extends Component {
 
 	onDecksChange(e) {
 		this.setState({
-			isSavingNewDeck: deckStore.isSavingNewDeck()
+			isSavingNewDeck: deckStore.isSavingNewDeck(),
+			deckErrors: deckStore.getDeckErrors()
 		});
 	}
 
@@ -113,8 +119,7 @@ class DeckAdder extends Component {
 
 	/**
 	 * ----------------------------------------
-	 * Validate form inputs
-	 * Currently only checking for non-empty vals
+	 * Client-side form input validation
 	 * ----------------------------------------
 	 */
 	
@@ -142,14 +147,14 @@ class DeckAdder extends Component {
 	saveNewDeck() {
 		const deck = this.state.deck;
 
+		// goes through server-side validation first
 		viewActions.validateDeckList(deck.mainboard);
-		// viewActions.saveNewDeck(deck);
 	}
 
 	/** ======================= RENDER ======================= */
 
 	render() {
-		const { deck, isSavingNewDeck, validationErrors } = this.state;
+		const { deck, isSavingNewDeck, validationErrors, deckErrors } = this.state;
 
 		return (
 			<div id="deck-adder">
@@ -157,6 +162,8 @@ class DeckAdder extends Component {
 
 				<div class="container-1100">
 					<div class="main-container">
+						{deckErrors ? <span class="error-msg">{deckErrors}</span> : ''}
+
 						<form onSubmit={this.onSubmit}>
 							<div class="row">
 								<div class="left-col">
@@ -182,15 +189,38 @@ class DeckAdder extends Component {
 										error={validationErrors.format}
 									/>
 
+									{/* Choose a commander if format is EDH */}
+									{deck.format == 'Commander' &&
+										<TextFieldGroup
+											label="Commander:"
+											name="commander"
+											id="commander"
+											value={deck.commander}
+											onChange={this.onInputChange}
+											error={validationErrors.commander}
+										/>
+									}
+
 									{/* In Progress? */}
 									<CheckBoxGroup
-										label="Is this deck In Progress?"
+										label="Is this deck in progress?"
 										name="inProgress"
 										id="inProgress"
 										value="inProgress"
 										onChange={this.onInputChange}
 										checked={deck.inProgress}
 										error={validationErrors.inProgress}
+									/>
+
+									{/* In Private? */}
+									<CheckBoxGroup
+										label="Do you want to make this deck private?"
+										name="isPrivate"
+										id="isPrivate"
+										value="isPrivate"
+										onChange={this.onInputChange}
+										checked={deck.isPrivate}
+										error={validationErrors.isPrivate}
 									/>
 
 									{/* Description */}
@@ -215,6 +245,16 @@ class DeckAdder extends Component {
 										value={deck.mainboard}
 										rows="15"
 										error={validationErrors.mainboard}
+									/>
+
+									<TextAreaGroup
+										label="Sideboard:"
+										name="sideboard"
+										id="sideboard"
+										onChange={this.onInputChange}
+										value={deck.sideboard}
+										rows="15"
+										error={validationErrors.sideboard}
 									/>
 								</div>
 							</div>

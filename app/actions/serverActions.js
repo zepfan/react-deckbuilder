@@ -55,3 +55,30 @@ export function registerFailed(errors) {
 		errors
 	});
 }
+
+/** ======================= DECKS ======================= */
+
+/**
+ * ----------------------------------------
+ * Handle succesful deck validation
+ * ----------------------------------------
+ */
+
+export function deckValidationSuccess() {
+	dispatcher.dispatch({
+		type: constants.actions.DECK_VALIDATION_SUCCESS
+	});
+}
+
+/**
+ * ----------------------------------------
+ * Catch deck validation errors
+ * ----------------------------------------
+ */
+
+export function deckValidationFailed(errors) {
+	dispatcher.dispatch({
+		type: constants.actions.DECK_VALIDATION_FAILED,
+		errors
+	});
+}

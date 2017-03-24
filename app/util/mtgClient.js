@@ -72,45 +72,55 @@ const mtg = {
  */
 
 export function validateDeckList(deck) {
-	let deckArr = _cardArrayFormatter(deck, 'forward');
-	let deckErrors = [];
+	let origDeck = deck,
+		deckArr = _cardArrayFormatter(deck),
+		deckErrors = [],
+		errorMsg = '';
 
 	// make the requests and handle the response
-	mtg.getCardsArray(deckArr, (response) => {
+	mtg.getCardsArray(deckArr.formatted, (response) => {
 		response.forEach((card, i) => {
+			// build errors array
 			let key = Object.keys(card);
-
-			card[key].errors ? deckErrors.push(key[0]) : null;
+			if(card[key].errors) deckErrors.push(key[0]);
 		});
 
-		console.log(deckErrors);
+		if(!deckErrors) {
+			// passes validation
+			serverActions.deckValidationSuccess();
+		} else {
+			// handle the errors
+			deckArr.formatted.forEach((val, i) => {
+				deckErrors.forEach((error, j) => {
+					if(val == error) errorMsg += `${deckArr.originial[i]}, `;
+				});
+			});
+
+			errorMsg = errorMsg.trim().replace(/,$/g, '')
+			errorMsg = `The following cards are unknown and can't be added, please ensure that you have spelled them correctly: ${errorMsg}`
+
+			serverActions.deckValidationFailed(errorMsg);
+		}
 	});
 }
 
 /** ======================= HELPER METHODS ======================= */
 
-function _cardArrayFormatter(cardlist, direction) {
-	let deckArr = cardlist.split('\n');
+function _cardArrayFormatter(cardlist) {
+	let deckArr = cardlist.split('\n'),
+		deckArrOrig = [],
+		cardNameOrig = '';
 
 	// remove the quantities and spaces
 	deckArr = deckArr.map((cardName) => {
-		cardName = cardName.replace(/(\d\s?|[x]\s|^\s|\s$)/gm, '');
-		cardName = cardName.replace(/\s/gm, '-');
+		cardNameOrig = cardName.replace(/(\d\s?|[x]\s|^\s|\s$)/gm, '');
+		cardName = cardNameOrig.replace(/\s/gm, '-');
 		cardName = cardName.toLowerCase();
+
+		deckArrOrig.push(cardNameOrig)
+		
 		return cardName;
 	});
 
-	return deckArr;
+	return { formatted: deckArr, originial: deckArrOrig };
 }
-
-
-
-let testlist = {};
-testlist.mainboard = `1x counterspell
-10x Island
-23x Swamp
-12x Fingle-Fangle
-deedly dumb doo foo
-1x Eight-and-a-Half-Tailz`
-
-validateDeckList(testlist.mainboard);

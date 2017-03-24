@@ -4,7 +4,8 @@ import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
 let _decks = null,
-	_isSavingNewDeck = false;
+	_isSavingNewDeck = false,
+	_deckErrors = false;
 
 class DeckStore extends EventEmitter {
 
@@ -22,12 +23,21 @@ class DeckStore extends EventEmitter {
 		return _isSavingNewDeck;
 	}
 
+	getDeckErrors() {
+		return _deckErrors;
+	}
+
 	/** ======================= HANDLE DISPATCHER ======================= */
 
 	handleActions(action) {
 		switch(action.type) {
 			case constants.actions.SAVING_NEW_DECK:
 				_isSavingNewDeck = true;
+				this.emit('change');
+				break;
+
+			case constants.actions.DECK_VALIDATION_FAILED:
+				_deckErrors = action.errors;
 				this.emit('change');
 				break;
 

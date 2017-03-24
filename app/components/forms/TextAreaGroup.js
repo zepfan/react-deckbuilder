@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const TextAreaGroup = ({ id, label, onChange, onBlur, value, name, rows, error }) => {
 	return (
-		<div class={['form-group textarea-group', error ? 'has-error' : ''].join(' ')}>
+		<div id={`${id}-group`} class={['form-group textarea-group', error ? 'has-error' : ''].join(' ')}>
 			<label for={id} class="control-label">{label}</label>
 			<textarea 
 				onChange={onChange}

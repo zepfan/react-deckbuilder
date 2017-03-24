@@ -9,3 +9,41 @@ Things to do:
 
 Resources:
 http://stackoverflow.com/questions/26632415/where-should-ajax-request-be-made-in-flux-app
+
+
+/** schema for decks */
+"3kkhkhskdfhfwf": {
+    "name": "The God Squad",
+    "format": "Commander",
+    "commander": "Lorthos, the Tidemaker",
+    "dateAdded": "20293-239023i-2323",
+    "lastUpdated": "20913203-23233",
+    "owner_name": "zepfan",
+    "in_progress": false,
+    "is_private": true,
+    "description": "This is a blah bloo blee deck",
+
+    "mainboard": [
+        {
+            "name": "Beacon of Tomorrow",
+            "id": "beacon-of-tomorrow",
+            "multiverse_id": 417575,
+            "types": ["artifact"],
+            "quantitiy": 1,
+            "cmc": 3,
+            "colors": ["white", "blue"]
+        },
+    ],
+
+    "sideboard": [
+        {
+            "name": "Beacon of Tomorrow",
+            "id": "beacon-of-tomorrow",
+            "multiverse_id": 417575,
+            "types": ["artifact"],
+            "quantitiy": 1,
+            "cmc": 3,
+            "colors": ["white", "blue"]
+        },
+    ]
+}

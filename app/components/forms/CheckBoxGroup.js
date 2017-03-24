@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const CheckBoxGroup = ({ id, label, name, onChange, onBlur, value, checked, error }) => {
 	return (
-		<div class={['form-group checkbox-group', error ? 'has-error' : ''].join(' ')}>
+		<div id={`${id}-group`} class={['form-group checkbox-group', error ? 'has-error' : ''].join(' ')}>
 			<label for={id} class="control-label">{label}</label>
 			<input 
 				onChange={onChange}

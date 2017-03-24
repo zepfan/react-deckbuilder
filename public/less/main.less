@@ -132,6 +132,18 @@ body {
 	}
 }
 
+.error-msg {
+	display: block;
+	background: #b75232;
+	border: 2px solid #e86035;
+	padding: 10px 25px;
+	font-size: 1.1em;
+	line-height: 1.4em;
+	text-align: center;
+	margin: 0 0 1em;
+}
+
+
 @media (max-width: @widthMobile) {
 	.app-interior {
 		margin: 3em 0 2em;
@@ -204,6 +216,8 @@ label {
 
 input,
 button,
+select,
+textarea,
 a {
 	&:focus { outline-color: @brand; }
 }
@@ -256,6 +270,13 @@ button.control-btn {
 
 .form-group {
 	margin: 0 0 22px;
+
+	&.checkbox-group {
+		label {
+			float: left;
+			margin-right: 10px;
+		}
+	}
 
 	&.has-error {
 		.error-block {
@@ -493,6 +514,30 @@ button.control-btn {
 	.right-col {
 		padding: 0 1em;
 		position: relative;
+	}
+
+	#mainboard-group,
+	#sideboard-group {
+		position: absolute;
+		top: 0;
+		width: calc(~'100% - 2em');
+
+		label {
+			position: relative;
+			background: #555;
+			width: auto;
+			display: inline-block;
+			padding: 8px 12px;
+			margin-bottom: 0;
+			border-radius: 3px 3px 0 0;
+			z-index: 100;
+		}
+	}
+
+	#sideboard-group {
+		label {
+			left: 150px;
+		}
 	}
 }
 

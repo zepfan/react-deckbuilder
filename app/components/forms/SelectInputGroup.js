@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 
 const SelectInputGroup = ({ id, label, onChange, onBlur, value, name, error, options, placeholder }) => {
 	return (
-		<div class={['form-group select-group', error ? 'has-error' : ''].join(' ')}>
+		<div id={`${id}-group`} class={['form-group select-group', error ? 'has-error' : ''].join(' ')}>
 			<label for={id} class="control-label">{label}</label>
 			<select 
 				onChange={onChange}

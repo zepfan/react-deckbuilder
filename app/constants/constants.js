@@ -18,7 +18,9 @@ export default {
 
 		/* ======= Decks ======= */
 		'SAVING_NEW_DECK',
-		'VALIDATING_DECK_LIST'
+		'VALIDATING_DECK_LIST',
+		'DECK_VALIDATION_SUCCESS',
+		'DECK_VALIDATION_FAILED'
 	]),
 
 	storageKeys: {

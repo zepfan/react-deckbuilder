@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link, IndexLink } from 'react-router';
 
 const Header = ({ isLoggedIn, userId, userName }) => {
 
@@ -17,9 +17,8 @@ const Header = ({ isLoggedIn, userId, userName }) => {
 
 					<div id="primary-navigation">
 						<ul>
-							<li><Link activeClassName="active" to="/dashboard">Your Decks</Link></li>
-							<li><Link to="/dashboard/add-deck">Add New Deck</Link></li>
-							<li><Link>Deck Builder</Link></li>
+							<li><IndexLink activeClassName="active" to="/dashboard">Your Decks</IndexLink></li>
+							<li><Link activeClassName="active" to="/dashboard/add-deck">Add New Deck</Link></li>
 						</ul>
 					</div>
 				</div>
