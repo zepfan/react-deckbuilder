@@ -48,18 +48,3 @@ export function validateDeckList(deck) {
 
 	mtgClient.validateDeckList(deck);
 }
-
-/**
- * ----------------------------------------
- * Save a new deck
- * ----------------------------------------
- */
-
-// export function saveNewDeck(deck) {
-// 	dispatcher.dispatch({
-// 		type: constants.actions.SAVING_NEW_DECK,
-// 		deck
-// 	});
-
-// 	firebaseClient.saveNewDeck(deck);
-// }

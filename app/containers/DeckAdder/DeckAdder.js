@@ -38,7 +38,7 @@ class DeckAdder extends Component {
 			visibleTab: 'mainboard-tab',
 			validationErrors: '',
 			deckErrors: deckStore.getDeckErrors(),
-			isSavingNewDeck: deckStore.isSavingNewDeck()
+			isSavingNewDeck: deckStore.isSubmittingNewDeck()
 		};
 
 		this.onUserChange = this.onUserChange.bind(this);
@@ -85,7 +85,7 @@ class DeckAdder extends Component {
 
 	onDecksChange(e) {
 		this.setState({
-			isSavingNewDeck: deckStore.isSavingNewDeck(),
+			isSavingNewDeck: deckStore.isSubmittingNewDeck(),
 			deckErrors: deckStore.getDeckErrors()
 		});
 	}
@@ -127,7 +127,15 @@ class DeckAdder extends Component {
 	onSubmit(e) {
 		e.preventDefault();
 
-		this.validateForm(this.state.deck);
+		let deck = this.state.deck;
+
+		if(deck.format == 'Commander') {
+			delete deck['featuredCard'];
+		} else {
+			delete deck['commander'];
+		}
+
+		this.validateForm(deck);
 	}
 
 	/**
@@ -200,6 +208,8 @@ class DeckAdder extends Component {
 			return cardObj;
 		});
 
+		// TODO: Handle any duplicate cards in the deck
+
 		return deckArr;
 	}
 
@@ -210,9 +220,9 @@ class DeckAdder extends Component {
 	 */
 
 	saveNewDeck(deck) {
-		const mainboard = this.parseDeckList(deck.mainboard.split('\n')),
+		let mainboard = this.parseDeckList(deck.mainboard.split('\n')),
 			sideboard = this.parseDeckList(deck.sideboard.split('\n'));
-			
+
 		deck = { ...deck, mainboard, sideboard };
 
 		viewActions.validateDeckList(deck);

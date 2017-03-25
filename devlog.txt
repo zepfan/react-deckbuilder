@@ -10,6 +10,13 @@ Things to do:
 
 // still needed: dateAdded, lastUpdated, owner_name
 
+category
+formattedName
+name
+quantity
+special
+
+
 /** schema for decks */
 "3kkhkhskdfhfwf": {
     "name": "The God Squad",
@@ -49,6 +56,17 @@ Things to do:
 
 
 
+2x Omniscience
+1x Omniscience
+1x Faerie Artisans #Copy
+2x Faerie Artisans #Copy
+Jareth, Leonine Titan #Pillowfort
+Jareth, Leonine Titan
+10x Plains #Mana-Land
+Plains #Mana-Land
+Pariah #Pillowfort
+
+
 1x Acquire #Theft
 1x Akroma's Memorial #Buff
 1x Faerie Artisans #Copy
@@ -64,4 +82,3 @@ Pariah #Pillowfort
 Plains #Mana-Land
 Plea for Guidance #Tutors
 Propaganda #Pillowfort
-Prowler's Helm #Buff

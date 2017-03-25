@@ -158,8 +158,9 @@ export function saveNewDeck(deck) {
 	deckUpdates[`/users/${userId}/decks/${deckKey}`] = { deckKey };
 
 	db.ref().update(deckUpdates).then(() => {
-		console.log('save new deck success');
+		serverActions.saveNewDeckSuccess(deckKey);
+		hashHistory.push(`/dashboard/deck/${deckKey}`);
 	}).catch((error) => {
-		console.log('save new deck error');
+		serverActions.saveNewDeckFailed(error);
 	});
 }

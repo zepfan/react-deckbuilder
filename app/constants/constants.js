@@ -18,6 +18,8 @@ export default {
 
 		/* ======= Decks ======= */
 		'SAVING_NEW_DECK',
+		'SAVE_NEW_DECK_SUCCESS',
+		'SAVE_NEW_DECK_FAILED',
 		'VALIDATING_DECK_LIST',
 		'DECK_VALIDATION_SUCCESS',
 		'DECK_VALIDATION_FAILED'

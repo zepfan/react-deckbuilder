@@ -1,6 +1,7 @@
 // flux jazz
 import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
+import * as firebaseClient from '../util/firebaseClient';
 
 /** ======================= AUTH ======================= */
 
@@ -64,10 +65,13 @@ export function registerFailed(errors) {
  * ----------------------------------------
  */
 
-export function deckValidationSuccess() {
+export function deckValidationSuccess(deck) {
 	dispatcher.dispatch({
-		type: constants.actions.DECK_VALIDATION_SUCCESS
+		type: constants.actions.DECK_VALIDATION_SUCCESS,
+		deck
 	});
+
+	saveNewDeck(deck);
 }
 
 /**
@@ -79,6 +83,47 @@ export function deckValidationSuccess() {
 export function deckValidationFailed(errors) {
 	dispatcher.dispatch({
 		type: constants.actions.DECK_VALIDATION_FAILED,
+		errors
+	});
+}
+
+/**
+ * ----------------------------------------
+ * Add a validated deck to the database
+ * ----------------------------------------
+ */
+
+export function saveNewDeck(deck) {
+	dispatcher.dispatch({
+		type: constants.actions.SAVING_NEW_DECK,
+		deck
+	});
+	
+	firebaseClient.saveNewDeck(deck);
+}
+
+/**
+ * ----------------------------------------
+ * Handle successfully saved new deck
+ * ----------------------------------------
+ */
+
+export function saveNewDeckSuccess(deckKey) {
+	dispatcher.dispatch({
+		type: constants.actions.SAVE_NEW_DECK_SUCCESS,
+		deckKey
+	});
+}
+
+/**
+ * ----------------------------------------
+ * Catch errors from saving a new deck
+ * ----------------------------------------
+ */
+
+export function saveNewDeckFailed(errors) {
+	dispatcher.dispatch({
+		type: constants.actions.SAVE_NEW_DECK_FAILED,
 		errors
 	});
 }

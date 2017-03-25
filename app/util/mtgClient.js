@@ -41,9 +41,9 @@ const mtg = {
 		let promiseArr = [];
 
 		cardsArr.forEach((card, i) => {
-			promiseArr[i] = fetch(cards_url + card.formattedName)
+			promiseArr[i] = fetch(cards_url + card)
 				.then(response => { return response.json() })
-				.then(json => { return {[card.formattedName]:json} })
+				.then(json => { return {[card]:json} })
 				.catch(e => { this._handleErrors(e) });
 		});
 
@@ -72,53 +72,84 @@ const mtg = {
  */
 
 export function validateDeckList(deck) {
-	let deckErrors = [],
-		errorMsg = '';
+	let submittedDeck = deck,
+		deckArrOrig = [],
+		deckArr = [],
+		deckErrors = [];
 
-	const origDeck = deck,
-		deckArr = [...deck.mainboard, ...deck.sideboard];
+	// set up these two arrays to compare later
+	deckArrOrig = [...deck.mainboard, ...deck.sideboard];
+	deckArr = deckArrOrig.map((card) => { return card.formattedName; })
 
+	// send off the requeset
 	mtg.getCardsArray(deckArr, (response) => {
+		deckArr = response;
+
+		// build the `deckErrors` array if cards are not found
 		response.forEach((card, i) => {
-			// build errors array
 			let key = Object.keys(card);
 			if(card[key].errors) deckErrors.push(key[0]);
 		});
 
-		console.log(deckErrors);
+		// handle success/fail
+		if(!deckErrors.length) {
+			let deck = _completeDeckObj(submittedDeck, deckArr);
+			 serverActions.deckValidationSuccess(deck);
+		} else {
+			_handleDeckListErrors(deckArrOrig, deckErrors);
+		}
 	});
 }
 
+function _completeDeckObj(submittedDeck, deckArr) {
+	let completedDeck = submittedDeck,
+		mainboardCards,
+		sideboardCards;
 
-// export function validateDeckList(deck) {
-// 	let origDeck = deck,
-// 		deckArr = _cardArrayFormatter(deck),
-// 		deckErrors = [],
-// 		errorMsg = '';
+	mainboardCards = deckArr.slice(0, submittedDeck.mainboard.length);
+	sideboardCards = deckArr.slice(submittedDeck.mainboard.length);
 
-// 	// make the requests and handle the response
-// 	mtg.getCardsArray(deckArr.formatted, (response) => {
-// 		response.forEach((card, i) => {
-// 			// build errors array
-// 			let key = Object.keys(card);
-// 			if(card[key].errors) deckErrors.push(key[0]);
-// 		});
+	completedDeck.mainboard.forEach((obj, i) => {
+		mainboardCards.forEach((card, j) => {
+			let key = Object.keys(card);
+			if(obj.formattedName == card[key].id) {
+				obj.types = card[key].types ? card[key].types : null;
+				obj.cmc = card[key].cmc ? card[key].cmc : null;
+				obj.colors = card[key].colors ? card[key].colors : 'colorless';
+			}
+		});
+	});
 
-// 		if(!deckErrors) {
-// 			// passes validation
-// 			serverActions.deckValidationSuccess();
-// 		} else {
-// 			// handle the errors
-// 			deckArr.formatted.forEach((val, i) => {
-// 				deckErrors.forEach((error, j) => {
-// 					if(val == error) errorMsg += `${deckArr.originial[i]}, `;
-// 				});
-// 			});
+	completedDeck.sideboard.forEach((obj, i) => {
+		sideboardCards.forEach((card, j) => {
+			let key = Object.keys(card);
+			if(obj.formattedName == card[key].id) {
+				obj.types = card[key].types ? card[key].types : null;
+				obj.cmc = card[key].cmc ? card[key].cmc : null;
+				obj.colors = card[key].colors ? card[key].colors : 'colorless';
+			}
+		});
+	});
 
-// 			errorMsg = errorMsg.trim().replace(/,$/g, '');
-// 			errorMsg = `The following cards are unknown and can't be added, please ensure that you have spelled them correctly: ${errorMsg}`;
+	completedDeck.dateAdded = Date.now();
+	completedDeck.lastUpdated = null;
 
-// 			serverActions.deckValidationFailed(errorMsg);
-// 		}
-// 	});
-// }
+	return completedDeck;
+}
+
+function _handleDeckListErrors(deckArrOrig, deckErrors) {
+	let errorMsg = '';
+
+	deckArrOrig.forEach((val, i) => {
+		deckErrors.forEach((error, j) => {
+			if(val.formattedName == error) {
+				errorMsg += `${val.name}, `;
+			}
+		});
+	});
+
+	errorMsg = errorMsg.trim().replace(/,$/g, '');
+	errorMsg = `The following cards are unknown and can't be added, please ensure that you have spelled them correctly: ${errorMsg}`;
+
+	serverActions.deckValidationFailed(errorMsg);
+}

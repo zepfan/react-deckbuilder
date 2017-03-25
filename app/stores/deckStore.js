@@ -4,7 +4,7 @@ import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
 let _decks = null,
-	_isSavingNewDeck = false,
+	_isSubmittingNewDeck = false,
 	_deckErrors = false;
 
 class DeckStore extends EventEmitter {
@@ -19,8 +19,8 @@ class DeckStore extends EventEmitter {
 		return _decks;
 	}
 
-	isSavingNewDeck() {
-		return _isSavingNewDeck;
+	isSubmittingNewDeck() {
+		return _isSubmittingNewDeck;
 	}
 
 	getDeckErrors() {
@@ -31,8 +31,8 @@ class DeckStore extends EventEmitter {
 
 	handleActions(action) {
 		switch(action.type) {
-			case constants.actions.SAVING_NEW_DECK:
-				_isSavingNewDeck = true;
+			case constants.actions.VALIDATING_DECK_LIST:
+				_isSubmittingNewDeck = true;
 				this.emit('change');
 				break;
 
