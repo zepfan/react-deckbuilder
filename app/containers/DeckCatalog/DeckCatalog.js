@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
+// actions
+import * as viewActions from '../../actions/viewActions';
+
 // stores
 import deckStore from '../../stores/deckStore';
 
@@ -11,36 +14,14 @@ class DeckCatalog extends Component {
 
 		this.state = {
 			decks: deckStore.getDecks(),
-			deckTeasers: [
-				{
-					deckId: '23asdf33',
-					deckName: 'Badass Deck',
-					deckImage: 'asfasdf',
-					format: 'Modern'
-				},
-				{
-					deckId: '23asdf33',
-					deckName: 'Badass Deck',
-					deckImage: 'asfasdf',
-					format: 'Commander'
-				}
-			],
 		};
+
+		viewActions.getUsersDecks();
 	}
 
 	/** ================ RENDER =========================== */
 
 	render() {
-
-		const deckTeasers = this.state.deckTeasers.map((deckTeaser, i) => {
-			return <li key={i}>
-						<Link to="/">
-							<img src="#" />
-							<h3>{deckTeaser.deckName}</h3>
-						</Link>
-					</li>;
-		});
-
 		return (
 			<div id="deck-catalog">
 				<h1>Your Decks</h1>
@@ -52,7 +33,12 @@ class DeckCatalog extends Component {
 								<h2>Commander:</h2>
 
 								<ul class="decks">
-									{deckTeasers}
+									<li>
+										<Link to="/">
+											<img src="#" />
+											<h3>Deck Name</h3>
+										</Link>
+									</li>
 								</ul>
 							</div>
 						</div>

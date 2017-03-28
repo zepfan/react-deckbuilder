@@ -77,11 +77,12 @@ export function validateDeckList(deck) {
 		deckArr = [],
 		deckErrors = [];
 
-	// set up these two arrays to compare later
+	// save the originial deck as it was submitted
 	deckArrOrig = [...deck.mainboard, ...deck.sideboard];
+
+	// create a new array formatted for the endpoint
 	deckArr = deckArrOrig.map((card) => { return card.formattedName; })
 
-	// send off the requeset
 	mtg.getCardsArray(deckArr, (response) => {
 		deckArr = response;
 
@@ -94,52 +95,55 @@ export function validateDeckList(deck) {
 		// handle success/fail
 		if(!deckErrors.length) {
 			let deck = _completeDeckObj(submittedDeck, deckArr);
-			 serverActions.deckValidationSuccess(deck);
+			serverActions.deckValidationSuccess(deck);
 		} else {
 			_handleDeckListErrors(deckArrOrig, deckErrors);
 		}
 	});
 }
 
+// build the final deck list object to send off
 function _completeDeckObj(submittedDeck, deckArr) {
 	let completedDeck = submittedDeck,
 		mainboardCards,
 		sideboardCards;
 
+	// split the single array back into mainboard/sideboard arrays
 	mainboardCards = deckArr.slice(0, submittedDeck.mainboard.length);
 	sideboardCards = deckArr.slice(submittedDeck.mainboard.length);
 
-	completedDeck.mainboard.forEach((obj, i) => {
-		mainboardCards.forEach((card, j) => {
-			let key = Object.keys(card);
-			if(obj.formattedName == card[key].id) {
-				obj.types = card[key].types ? card[key].types : null;
-				obj.cmc = card[key].cmc ? card[key].cmc : null;
-				obj.colors = card[key].colors ? card[key].colors : 'colorless';
-			}
-		});
-	});
+	// splice the arrays
+	completedDeck.mainboard = _spliceDeckArrays(completedDeck.mainboard, mainboardCards);
+	completedDeck.sideboard = _spliceDeckArrays(completedDeck.sideboard, sideboardCards);
 
-	completedDeck.sideboard.forEach((obj, i) => {
-		sideboardCards.forEach((card, j) => {
-			let key = Object.keys(card);
-			if(obj.formattedName == card[key].id) {
-				obj.types = card[key].types ? card[key].types : null;
-				obj.cmc = card[key].cmc ? card[key].cmc : null;
-				obj.colors = card[key].colors ? card[key].colors : 'colorless';
-			}
-		});
-	});
-
+	// add timestamps
 	completedDeck.dateAdded = Date.now();
 	completedDeck.lastUpdated = null;
 
 	return completedDeck;
 }
 
+// add extra card information from the API results to the originial deck
+function _spliceDeckArrays(list, board) {
+	list.forEach((obj, i) => {
+		board.forEach((card, j) => {
+			let key = Object.keys(card);
+			if(obj.formattedName == card[key].id) {
+				obj.types = card[key].types ? card[key].types : null;
+				obj.cmc = card[key].cmc ? card[key].cmc : null;
+				obj.colors = card[key].colors ? card[key].colors : 'colorless';
+			}
+		});
+	});
+
+	return list;
+}
+
+// handle any errors
 function _handleDeckListErrors(deckArrOrig, deckErrors) {
 	let errorMsg = '';
 
+	// compare the formatted names to how they were originially submitted
 	deckArrOrig.forEach((val, i) => {
 		deckErrors.forEach((error, j) => {
 			if(val.formattedName == error) {

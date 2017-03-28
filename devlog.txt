@@ -1,20 +1,12 @@
-Right now:
-- Finish mtgClient deckValidation function
-- Figure out best way to sync logged in user with the store
-- Figure out better way to handle route protection
-
 Things to do:
 - Make sign-in with Username possible
 - Change the apperance of login/signup pages if user is signed in
+- Validation for "Featured Card"/"Commander" cards
+- Handling duplicate cards in deck list
+- Figure out best way to sync logged in user with the store
+- Figure out better way to handle route protection
 
 
-// still needed: dateAdded, lastUpdated, owner_name
-
-category
-formattedName
-name
-quantity
-special
 
 
 /** schema for decks */
@@ -56,29 +48,164 @@ special
 
 
 
-2x Omniscience
-1x Omniscience
-1x Faerie Artisans #Copy
-2x Faerie Artisans #Copy
-Jareth, Leonine Titan #Pillowfort
-Jareth, Leonine Titan
-10x Plains #Mana-Land
-Plains #Mana-Land
-Pariah #Pillowfort
+1x Academy Ruins #Mana-Land 
+1x Acquire #Theft 
+1x Akroma's Memorial #Buff 
+1x Azorius Chancery #Mana-Land 
+1x Blade of Selves #Buff 
+1x Brave the Sands #Buff 
+1x Caged Sun #Mana-Rock 
+1x Cauldron of Souls #Buff 
+1x Command Tower #Mana-Land 
+1x Commander's Sphere #Mana-Rock 
+1x Counterspell #Counterspells 
+1x Darksteel Forge #Buff 
+1x Darksteel Ingot #Mana-Rock 
+1x Darksteel Plate #Buff 
+1x Dawnglare Invoker #Debuff 
+1x Deadeye Navigator #Win-Conditions 
+1x Deny Existence #Counterspells 
+1x Descend upon the Sinful #Removal 
+1x Dispeller's Capsule #Removal 
+1x Duelist's Heritage #Buff 
+1x Emeria Shepherd #Recursion 
+1x Epiphany at the Drownyard #Card-Draw 
+1x Everflowing Chalice #Mana-Rock 
+1x Fabricate #Tutors 
+1x Faerie Artisans #Copy 
+1x Fortified Rampart #Pillowfort 
+1x Future Sight #Card-Draw 
+1x Ghostly Prison #Pillowfort 
+1x Gideon, Ally of Zendikar #Tokens 
+1x Gilded Lotus #Mana-Rock 
+1x Hallowed Burial #Removal 
+1x Hanna, Ship's Navigator *CMDR* #Commander 
+1x Illusory Gains #Theft 
+1x Increasing Devotion #Tokens 
+12x Island #Mana-Land 
+1x Jareth, Leonine Titan #Pillowfort 
+1x Master Transmuter #Cheaters 
+1x Memnarch #Win-Conditions 
+1x Metalwork Colossus #Win-Conditions 
+1x Mind's Dilation #Theft 
+1x Negate #Counterspells 
+1x Not Forgotten #Recursion 
+1x Omniscience #Cheaters 
+1x Opal Palace #Mana-Land 
+1x Open the Vaults #Recursion 
+1x Palinchron #Win-Conditions 
+1x Pariah #Pillowfort 
+15x Plains #Mana-Land 
+1x Plea for Guidance #Tutors 
+1x Propaganda #Pillowfort 
+1x Prowler's Helm #Buff 
+1x Quicksilver Amulet #Cheaters 
+1x Refurbish #Recursion 
+1x Reliquary Tower #Mana-Land 
+1x Retreat to Emeria #Tokens 
+1x Rhystic Study #Card-Draw 
+1x Rite of Replication #Copy 
+1x Rush of Knowledge #Card-Draw 
+1x Saheeli's Artistry #Copy 
+1x Sculpting Steel #Copy 
+1x Sigil of Distinction #Buff 
+1x Sol Ring #Mana-Rock 
+1x Solemn Simulacrum #Mana-Ramp 
+1x Soul of New Phyrexia #Pillowfort 
+1x Sublime Exhalation #Removal 
+1x Sun Titan #Recursion 
+1x Swiftfoot Boots #Buff 
+1x Temple of the False God #Mana-Land 
+1x Tezzeret the Seeker #Tutors 
+1x Thada Adel, Acquisitor #Theft 
+1x Thought Reflection #Card-Draw 
+1x Thought Vessel #Mana-Rock 
+1x Turn Aside #Counterspells 
+1x Unwinding Clock #Cheaters 
+1x Vivid Meadow #Mana-Land 
 
 
-1x Acquire #Theft
-1x Akroma's Memorial #Buff
-1x Faerie Artisans #Copy
-1x Gilded Lotus #Mana-Rock
-1x Hallowed Burial #Removal
-9x Hanna, Ship's Navigator *CMDR* #Commander
-1x Jareth, Leonine Titan #Pillowfort
-1x Mind's Dilation #Theft
-Omniscience
-Nath of the Gilt-Leaf
-Palinchron #Win-Conditions
-Pariah #Pillowfort
-Plains #Mana-Land
-Plea for Guidance #Tutors
-Propaganda #Pillowfort
+
+
+
+
+
+
+
+
+
+1x Academy Ruins 
+1x Animate Dead 
+1x Arcane Lighthouse 
+1x Bribery 
+1x Caged Sun 
+1x Chromatic Lantern 
+1x Command Tower 
+1x Consecrated Sphinx 
+1x Consuming Aberration *F* 
+1x Counterspell 
+1x Crawlspace 
+1x Curse of the Swine 
+1x Cyclonic Rift 
+1x Dark Ritual 
+1x Darksteel Plate 
+1x Demonic Tutor 
+1x Dimir Aqueduct 
+1x Dissolve *F* 
+1x Drowned Catacomb 
+1x Entomb 
+1x Evil Twin 
+1x Extraplanar Lens 
+1x Filth 
+1x Fireshrieker 
+1x Fog Bank 
+1x Gilded Lotus *F* 
+1x Grafted Exoskeleton 
+1x Guard Gomazoa 
+1x Halimar Depths 
+1x Hedron Archive 
+1x Hedron Matrix 
+1x High Tide 
+1x Lazav, Dimir Mastermind 
+1x Liliana Vess 
+1x Memory Plunder 
+1x Mind's Dilation 
+1x Mindslaver 
+1x Mortuary Mire 
+1x Mulldrifter 
+1x Mystical Tutor 
+1x Necropotence *F* 
+1x Nevinyrral's Disk 
+1x Omniscience 
+1x Phyresis 
+1x Phyrexian Arena 
+1x Propaganda 
+1x Psychic Strike 
+1x Pull from the Deep 
+1x Quietus Spike 
+1x Reanimate 
+1x Reliquary Tower 
+1x Rhystic Study *F* 
+1x Rogue's Passage 
+1x Rune-Scarred Demon *F* 
+1x Sensei's Divining Top 
+15x Snow-Covered Island 
+12x Snow-Covered Swamp 
+1x Sol Ring 
+1x Sorin Markov 
+1x Sunken Hollow *F* 
+1x Swiftfoot Boots 
+1x Tainted Isle 
+1x Temple of the False God 
+1x Temporal Mastery 
+1x Thassa, God of the Sea 
+1x Thought Vessel 
+1x Thran Dynamo 
+1x Traumatize 
+1x Treachery 
+1x Turn Aside 
+1x Urborg, Tomb of Yawgmoth *F* 
+1x Vampiric Tutor 
+1x Wonder 
+1x Wound Reflection 
+1x Wrexial, the Risen Deep *CMDR*

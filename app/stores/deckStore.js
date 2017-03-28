@@ -36,8 +36,14 @@ class DeckStore extends EventEmitter {
 				this.emit('change');
 				break;
 
+			case constants.actions.DECK_VALIDATION_SUCCESS:
+				_isSubmittingNewDeck = false;
+				this.emit('change');
+				break;
+
 			case constants.actions.DECK_VALIDATION_FAILED:
 				_deckErrors = action.errors;
+				_isSubmittingNewDeck = false;
 				this.emit('change');
 				break;
 

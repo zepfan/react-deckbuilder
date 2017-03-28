@@ -76,6 +76,21 @@ export function deckValidationSuccess(deck) {
 
 /**
  * ----------------------------------------
+ * Add a validated deck to the database
+ * ----------------------------------------
+ */
+
+function _saveNewDeck(deck) {
+	dispatcher.dispatch({
+		type: constants.actions.SAVING_NEW_DECK,
+		deck
+	});
+	
+	firebaseClient.saveNewDeck(deck);
+}
+
+/**
+ * ----------------------------------------
  * Catch deck validation errors
  * ----------------------------------------
  */
@@ -85,21 +100,6 @@ export function deckValidationFailed(errors) {
 		type: constants.actions.DECK_VALIDATION_FAILED,
 		errors
 	});
-}
-
-/**
- * ----------------------------------------
- * Add a validated deck to the database
- * ----------------------------------------
- */
-
-export function saveNewDeck(deck) {
-	dispatcher.dispatch({
-		type: constants.actions.SAVING_NEW_DECK,
-		deck
-	});
-	
-	firebaseClient.saveNewDeck(deck);
 }
 
 /**

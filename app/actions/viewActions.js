@@ -40,6 +40,12 @@ export function validateNewUser(email, username, pass) {
 
 /** ======================= DECKS ======================= */
 
+/**
+ * ----------------------------------------
+ * Validate a deck list/send it off for save
+ * ----------------------------------------
+ */
+
 export function validateDeckList(deck) {
 	dispatcher.dispatch({
 		type: constants.actions.VALIDATING_DECK_LIST,
@@ -47,4 +53,14 @@ export function validateDeckList(deck) {
 	});
 
 	mtgClient.validateDeckList(deck);
+}
+
+/**
+ * ----------------------------------------
+ * Retrieve the user's decks
+ * ----------------------------------------
+ */
+
+export function getUsersDecks() {
+	firebaseClient.getUsersDecks();
 }

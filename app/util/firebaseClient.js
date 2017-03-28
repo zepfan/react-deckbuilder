@@ -145,6 +145,12 @@ function setLoggedInUser(userId, username) {
 
 /** ======================= DECKS ======================= */
 
+/**
+ * ----------------------------------------
+ * Saves a new deck to the database
+ * ----------------------------------------
+ */
+
 export function saveNewDeck(deck) {
 	const deckKey = db.ref().child('decks').push().key;
 	const userId = auth.currentUser.uid; // does this belong here?
@@ -164,3 +170,28 @@ export function saveNewDeck(deck) {
 		serverActions.saveNewDeckFailed(error);
 	});
 }
+
+/**
+ * ----------------------------------------
+ * Retrieves the logged in user's decks
+ * ----------------------------------------
+ */
+
+export function getUsersDecks() {
+	const userId = auth.currentUser.uid;
+
+	db.ref(`/users/${userId}/decks`).once('value')
+		.then(snapshot => { return snapshot.val() })
+		.then(val => { _somethingAfter(val) })
+		.catch(e => { console.log('decks error') });
+}
+
+function _somethingAfter(val) {
+	Object.entries(val).forEach(([key, value]) => {
+	    console.log(value.deckKey);
+	});
+}
+
+
+
+

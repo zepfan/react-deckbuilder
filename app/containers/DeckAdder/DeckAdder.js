@@ -167,12 +167,27 @@ class DeckAdder extends Component {
 
 	/**
 	 * ----------------------------------------
+	 * Save the deck once validated
+	 * ----------------------------------------
+	 */
+
+	saveNewDeck(deck) {
+		let mainboard = this.parseDeckList(deck.mainboard.split('\n')),
+			sideboard = this.parseDeckList(deck.sideboard.split('\n'));
+
+		deck = { ...deck, mainboard, sideboard };
+
+		viewActions.validateDeckList(deck);
+	}
+
+	/**
+	 * ----------------------------------------
 	 * Prep the deck for neat travel
 	 * ----------------------------------------
 	 */
 
 	parseDeckList(deckArr) {
-		const quantityRegex = /(\d\s?|[x]\s|^\s|\s$)/g,
+		const quantityRegex = /(\d\s?|[x]\s\b|^\s|\s$)/gi,
 			categoryRegex = /(#.+?(?=[\s])|#.+$)/g,
 			specialRegex = /([*].+)/g,
 			spacesRegex = /\s/g,
@@ -208,24 +223,7 @@ class DeckAdder extends Component {
 			return cardObj;
 		});
 
-		// TODO: Handle any duplicate cards in the deck
-
 		return deckArr;
-	}
-
-	/**
-	 * ----------------------------------------
-	 * Save the deck once validated
-	 * ----------------------------------------
-	 */
-
-	saveNewDeck(deck) {
-		let mainboard = this.parseDeckList(deck.mainboard.split('\n')),
-			sideboard = this.parseDeckList(deck.sideboard.split('\n'));
-
-		deck = { ...deck, mainboard, sideboard };
-
-		viewActions.validateDeckList(deck);
 	}
 
 	/** ======================= RENDER ======================= */
