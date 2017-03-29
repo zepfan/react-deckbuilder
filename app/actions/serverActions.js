@@ -71,7 +71,7 @@ export function deckValidationSuccess(deck) {
 		deck
 	});
 
-	saveNewDeck(deck);
+	_saveNewDeck(deck);
 }
 
 /**
@@ -125,5 +125,18 @@ export function saveNewDeckFailed(errors) {
 	dispatcher.dispatch({
 		type: constants.actions.SAVE_NEW_DECK_FAILED,
 		errors
+	});
+}
+
+/**
+ * ----------------------------------------
+ * Recieved a user's deck from the DB
+ * ----------------------------------------
+ */
+
+ export function decksRecieved(decks) {
+	dispatcher.dispatch({
+		type: constants.actions.DECKS_RECIEVED,
+		decks
 	});
 }

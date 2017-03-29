@@ -132,6 +132,7 @@ function _spliceDeckArrays(list, board) {
 				obj.types = card[key].types ? card[key].types : null;
 				obj.cmc = card[key].cmc ? card[key].cmc : null;
 				obj.colors = card[key].colors ? card[key].colors : 'colorless';
+				obj.multiverseId = card[key].editions[card[key].editions.length - 1].multiverse_id ? card[key].editions[0].multiverse_id : 0;
 			}
 		});
 	});

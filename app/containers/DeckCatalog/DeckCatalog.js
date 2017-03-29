@@ -16,12 +16,48 @@ class DeckCatalog extends Component {
 			decks: deckStore.getDecks(),
 		};
 
+		this.onDecksChange = this.onDecksChange.bind(this);
+
 		viewActions.getUsersDecks();
+	}
+
+	/** ================ LIFECYCLE =========================== */
+
+	componentWillMount() {
+		deckStore.on('change', this.onDecksChange);
+	}
+
+	componentWillUnmount() {
+		deckStore.removeListener('change', this.onDecksChange);
+	}
+
+	/** ================ METHODS =========================== */
+
+	/**
+	 * ----------------------------------------
+	 * Update the state when the deck store does
+	 * ----------------------------------------
+	 */
+
+	onDecksChange(e) {
+		this.setState({
+			decks: deckStore.getDecks(),
+		});
 	}
 
 	/** ================ RENDER =========================== */
 
 	render() {
+		console.log(this.state.decks);
+		let items = this.state.decks.map((deck, i) => {
+			return <li key={i}>
+						<Link to="/">
+							<img src="https://image.deckbrew.com/mtg/multiverseid/0.jpg" />
+							<h3>{deck.deckName}</h3>
+						</Link>
+					</li>;
+		});
+
 		return (
 			<div id="deck-catalog">
 				<h1>Your Decks</h1>
@@ -33,12 +69,7 @@ class DeckCatalog extends Component {
 								<h2>Commander:</h2>
 
 								<ul class="decks">
-									<li>
-										<Link to="/">
-											<img src="#" />
-											<h3>Deck Name</h3>
-										</Link>
-									</li>
+									{items}
 								</ul>
 							</div>
 						</div>

@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
-let _decks = null,
+let _decks = [],
 	_isSubmittingNewDeck = false,
 	_deckErrors = false;
 
@@ -44,6 +44,11 @@ class DeckStore extends EventEmitter {
 			case constants.actions.DECK_VALIDATION_FAILED:
 				_deckErrors = action.errors;
 				_isSubmittingNewDeck = false;
+				this.emit('change');
+				break;
+
+			case constants.actions.DECKS_RECIEVED:
+				_decks = action.decks;
 				this.emit('change');
 				break;
 

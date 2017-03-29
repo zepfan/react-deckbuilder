@@ -81,7 +81,6 @@ export function validateNewUser(email, username, pass) {
 	});
 }
 
-
 /**
  * ----------------------------------------
  * Create new user account in Auth
@@ -179,19 +178,31 @@ export function saveNewDeck(deck) {
 
 export function getUsersDecks() {
 	const userId = auth.currentUser.uid;
+	let deckKeys = [];
 
-	db.ref(`/users/${userId}/decks`).once('value')
-		.then(snapshot => { return snapshot.val() })
-		.then(val => { _somethingAfter(val) })
-		.catch(e => { console.log('decks error') });
-}
+	db.ref(`/users/${userId}/decks`).once('value').then(snapshot => {
+		Object.entries(snapshot.val()).forEach(([key, value]) => {
+		    deckKeys.push(value.deckKey);
+		});
 
-function _somethingAfter(val) {
-	Object.entries(val).forEach(([key, value]) => {
-	    console.log(value.deckKey);
+		_getDeckObjects(deckKeys);
+	}).catch(e => {
+		console.log('decks error', e)
 	});
 }
 
+function _getDeckObjects(deckKeys) {
+	let decks = [];
+
+	deckKeys.forEach(deckKey => {
+		db.ref(`/decks/${deckKey}`).once('value').then(snapshot => { 
+			decks.push(snapshot.val());
+			serverActions.decksRecieved(decks);
+		}).catch(e => {
+			console.log('inner decks error', e)
+		});
+	});
+}
 
 
 
