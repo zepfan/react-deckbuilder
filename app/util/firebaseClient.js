@@ -91,7 +91,7 @@ function _createNewUser(email, username, pass) {
 	auth.createUserWithEmailAndPassword(email, pass)
 		.then(user => _handleNewUser(user, username))
 		.then(() => hashHistory.push('/dashboard'))
-		.catch(e => _handleSignUpError());
+		.catch(e => _handleSignUpError(e));
 }
 
 function _handleNewUser(user, username) {
@@ -106,6 +106,7 @@ function _handleNewUser(user, username) {
 
 function _handleSignUpError(e) {
 	let error = 'There was a problem. Please try again.'
+	console.log(e);
 	serverActions.registerFailed(error);
 }
 
@@ -181,11 +182,13 @@ export function getUsersDecks() {
 	let deckKeys = [];
 
 	db.ref(`/users/${userId}/decks`).once('value').then(snapshot => {
-		Object.entries(snapshot.val()).forEach(([key, value]) => {
-		    deckKeys.push(value.deckKey);
-		});
+		if(snapshot.val()) {
+			Object.entries(snapshot.val()).forEach(([key, value]) => {
+			    deckKeys.push(value.deckKey);
+			});
 
-		_getDeckObjects(deckKeys);
+			_getDeckObjects(deckKeys);
+		}
 	}).catch(e => {
 		console.log('decks error', e)
 	});

@@ -146,20 +146,37 @@ class DeckAdder extends Component {
 	
 	validateForm(deck) {
 		let validationErrors = {};
+		let { deckName, format, description, mainboard, commander, featuredCard } = this.state;
 
-		if(!this.state.deck.deckName) validationErrors.deckName = "Please enter a name for your deck!";
-		if(!this.state.deck.format) validationErrors.format = "Please select a format!";
-		if(!this.state.deck.description) validationErrors.description = "Please enter a description!";
-		if(!this.state.deck.mainboard) validationErrors.mainboard = "A mainboard is required!";
+		if (!deck.deckName) validationErrors.deckName = "Please enter a name for your deck!";
+		if (!deck.format) validationErrors.format = "Please select a format!";
+		if (!deck.description) validationErrors.description = "Please enter a description!";
+		if (!deck.mainboard) validationErrors.mainboard = "A mainboard is required!";
+		if (deck.format == 'Commander' && !deck.commander) validationErrors.commander = "Please input your commander!";
+		if (deck.format != 'Commander' && !deck.featuredCard) validationErrors.featuredCard = "Please choose a featured card!";
 
-		if(this.state.deck.format == 'Commander') {
-			if(!this.state.deck.commander) validationErrors.commander = "Please input your commander!";	
-		} else {
-			if(!this.state.deck.featuredCard) validationErrors.featuredCard = "Please choose a featured card!";
+		if (deck.format == 'Commander' && deck.commander) {
+			let re = new RegExp(deck.commander, 'gm');
+
+			if (re.test(deck.mainboard)) {
+				deck.mainboard = deck.mainboard.replace(re, `${deck.commander} *CMDR*`);
+			} else {
+				validationErrors.commander = "Your commander must be present in your mainboard";
+			}
+		}
+
+		if (deck.format != 'Commander' && deck.featuredCard) {
+			let re = new RegExp(deck.featuredCard, 'gm');
+
+			if (re.test(deck.mainboard)) {
+				deck.mainboard = deck.mainboard.replace(re, `${deck.featuredCard} *FEAT*`);
+			} else {
+				validationErrors.featuredCard = "The featured card must be in your mainboard";
+			}
 		}
 
 		this.setState({ validationErrors: {...validationErrors} }, () => {
-			if(_.isEmpty(this.state.validationErrors)) {
+			if (_.isEmpty(this.state.validationErrors)) {
 				this.saveNewDeck(deck);
 			}
 		});

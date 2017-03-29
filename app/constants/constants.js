@@ -24,6 +24,7 @@ export default {
 		'DECK_VALIDATION_SUCCESS',
 		'DECK_VALIDATION_FAILED',
 		'DECKS_RECIEVED',
+		'NO_DECKS_FOUND',
 	]),
 
 	storageKeys: {

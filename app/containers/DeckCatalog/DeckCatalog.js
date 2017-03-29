@@ -49,14 +49,25 @@ class DeckCatalog extends Component {
 
 	render() {
 		console.log(this.state.decks);
-		let items = this.state.decks.map((deck, i) => {
-			return <li key={i}>
-						<Link to="/">
-							<img src="https://image.deckbrew.com/mtg/multiverseid/0.jpg" />
-							<h3>{deck.deckName}</h3>
-						</Link>
-					</li>;
-		});
+		
+		let decksDisplay;
+
+		if (this.state.decks.length) {
+			decksDisplay = this.state.decks.map((deck, i) => {
+				return <li key={i}>
+							<Link to="/">
+								<img src="https://image.deckbrew.com/mtg/multiverseid/0.jpg" />
+								<h3>{deck.deckName}</h3>
+							</Link>
+						</li>;
+			});
+		} else {
+			decksDisplay = <div id="no-decks-found" class="panel">
+								<p>No decks found!<br /> 
+									<Link to="/dashboard/add-deck">Click here to create your first one!</Link>
+								</p>
+							</div>
+		}
 
 		return (
 			<div id="deck-catalog">
@@ -64,15 +75,17 @@ class DeckCatalog extends Component {
 
 				<div class="main-container">
 					<div class="formats">
-						<div class="format">
+						{decksDisplay}
+
+						{/*<div class="format">
 							<div class="format-interior container-1100">
 								<h2>Commander:</h2>
 
 								<ul class="decks">
-									{items}
+									
 								</ul>
 							</div>
-						</div>
+						</div>*/}
 					</div>
 				</div>
 			</div>

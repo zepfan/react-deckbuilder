@@ -142,7 +142,7 @@ Things to do:
 1x Chromatic Lantern 
 1x Command Tower 
 1x Consecrated Sphinx 
-1x Consuming Aberration *F* 
+1x Consuming Aberration
 1x Counterspell 
 1x Crawlspace 
 1x Curse of the Swine 
@@ -151,7 +151,7 @@ Things to do:
 1x Darksteel Plate 
 1x Demonic Tutor 
 1x Dimir Aqueduct 
-1x Dissolve *F* 
+1x Dissolve
 1x Drowned Catacomb 
 1x Entomb 
 1x Evil Twin 
@@ -159,7 +159,7 @@ Things to do:
 1x Filth 
 1x Fireshrieker 
 1x Fog Bank 
-1x Gilded Lotus *F* 
+1x Gilded Lotus
 1x Grafted Exoskeleton 
 1x Guard Gomazoa 
 1x Halimar Depths 
@@ -174,7 +174,7 @@ Things to do:
 1x Mortuary Mire 
 1x Mulldrifter 
 1x Mystical Tutor 
-1x Necropotence *F* 
+1x Necropotence
 1x Nevinyrral's Disk 
 1x Omniscience 
 1x Phyresis 
@@ -185,15 +185,15 @@ Things to do:
 1x Quietus Spike 
 1x Reanimate 
 1x Reliquary Tower 
-1x Rhystic Study *F* 
+1x Rhystic Study
 1x Rogue's Passage 
-1x Rune-Scarred Demon *F* 
+1x Rune-Scarred Demon
 1x Sensei's Divining Top 
 15x Snow-Covered Island 
 12x Snow-Covered Swamp 
 1x Sol Ring 
 1x Sorin Markov 
-1x Sunken Hollow *F* 
+1x Sunken Hollow
 1x Swiftfoot Boots 
 1x Tainted Isle 
 1x Temple of the False God 
@@ -204,8 +204,8 @@ Things to do:
 1x Traumatize 
 1x Treachery 
 1x Turn Aside 
-1x Urborg, Tomb of Yawgmoth *F* 
+1x Urborg, Tomb of Yawgmoth
 1x Vampiric Tutor 
 1x Wonder 
 1x Wound Reflection 
-1x Wrexial, the Risen Deep *CMDR*
+1x Wrexial, the Risen Deep
