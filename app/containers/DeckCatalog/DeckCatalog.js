@@ -53,13 +53,25 @@ class DeckCatalog extends Component {
 		let decksDisplay;
 
 		if (this.state.decks.length) {
+			let featuredCardImage;
+
 			decksDisplay = this.state.decks.map((deck, i) => {
+
+				deck.mainboard.forEach((card) => {
+					if(card.special == 'CMDR' || card.special == 'FEAT') {
+						featuredCardImage = `https://image.deckbrew.com/mtg/multiverseid/${card.multiverseId}.jpg`;
+					}
+				});
+
 				return <li key={i}>
 							<Link to="/">
-								<img src="https://image.deckbrew.com/mtg/multiverseid/0.jpg" />
+								<div class="featured-card">
+									<img src={featuredCardImage} />
+								</div>
 								<h3>{deck.deckName}</h3>
 							</Link>
 						</li>;
+
 			});
 		} else {
 			decksDisplay = <div id="no-decks-found" class="panel">
@@ -75,17 +87,15 @@ class DeckCatalog extends Component {
 
 				<div class="main-container">
 					<div class="formats">
-						{decksDisplay}
-
-						{/*<div class="format">
+						<div class="format">
 							<div class="format-interior container-1100">
 								<h2>Commander:</h2>
 
 								<ul class="decks">
-									
+									{decksDisplay}
 								</ul>
 							</div>
-						</div>*/}
+						</div>
 					</div>
 				</div>
 			</div>

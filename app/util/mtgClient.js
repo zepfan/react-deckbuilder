@@ -129,10 +129,22 @@ function _spliceDeckArrays(list, board) {
 		board.forEach((card, j) => {
 			let key = Object.keys(card);
 			if(obj.formattedName == card[key].id) {
+				// card types
 				obj.types = card[key].types ? card[key].types : null;
+				
+				// cmc
 				obj.cmc = card[key].cmc ? card[key].cmc : null;
+				
+				// colors
 				obj.colors = card[key].colors ? card[key].colors : 'colorless';
-				obj.multiverseId = card[key].editions[card[key].editions.length - 1].multiverse_id ? card[key].editions[card[key].editions.length - 1].multiverse_id : 0;
+
+				// multiverse ID
+				if(card[key].editions) {
+					card[key].editions.some((edition) => {
+						obj.multiverseId = edition.multiverse_id;
+						return obj.multiverseId !== 0;
+					});
+				}
 			}
 		});
 	});

@@ -46,10 +46,29 @@ export const auth = firebaseApp.auth();
  */
 
 export function signUserIn(id, pass) {
-	auth.signInWithEmailAndPassword(id, pass)
+	if(id.includes('@')) {
+		_signUserInWithEmail(id, pass);
+	} else {
+		_signUserInWithUsername(id, pass);
+	}
+}
+
+function _signUserInWithEmail(email, pass) {
+	auth.signInWithEmailAndPassword(email, pass)
 		.then(user => _handleUserSignIn(user))
 		.then(() => hashHistory.push('/dashboard'))
 		.catch(e => _handleSignInError(e));
+}
+
+function _signUserInWithUsername(username, pass) {
+	db.ref('usernames/').child(username).once('value').then((snapshot) => {
+		if(snapshot.val()) {
+			let email = snapshot.val().email;
+			_signUserInWithEmail(email, pass);
+		} else {
+			_handleSignInError();
+		}
+	});
 }
 
 function _handleUserSignIn(user) {
@@ -123,7 +142,7 @@ function addNewUserToDatabase(userId, email, username) {
 	userUpdates[`users/${userId}`] = { email, username };
 
 	// add their username to the usernames list
-	userUpdates[`usernames/${username}`] = { userId };
+	userUpdates[`usernames/${username}`] = { email };
 
 	db.ref().update(userUpdates).then(() => {
 		console.log('add new user to DB success');

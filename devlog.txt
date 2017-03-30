@@ -1,9 +1,12 @@
 Things to do:
-- Validation for "Featured Card"/"Commander" cards
-- Make sign-in with Username possible
-- Change the apperance of login/signup pages if user is signed in
+- Build the catalog by format
+- Get a deck ID / some sort of URL associated with the deck
+- Do some spring cleaning before continuing onto the next bit
+
 - Handling duplicate cards in deck list
 - Figure out best way to sync logged in user with the store
+- Add log out feature
+- Change the apperance of login/signup pages if user is signed in
 - Figure out better way to handle route protection
 
 
@@ -79,7 +82,7 @@ Things to do:
 1x Gideon, Ally of Zendikar #Tokens 
 1x Gilded Lotus #Mana-Rock 
 1x Hallowed Burial #Removal 
-1x Hanna, Ship's Navigator *CMDR* #Commander 
+1x Hanna, Ship's Navigator #Commander 
 1x Illusory Gains #Theft 
 1x Increasing Devotion #Tokens 
 12x Island #Mana-Land 
