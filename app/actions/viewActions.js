@@ -62,5 +62,23 @@ export function validateDeckList(deck) {
  */
 
 export function getUsersDecks() {
+	dispatcher.dispatch({
+		type: constants.actions.RETRIEVING_USERS_DECKS,
+	});
+
 	firebaseClient.getUsersDecks();
+}
+
+/**
+ * ----------------------------------------
+ * Retrieve a single deck
+ * ----------------------------------------
+ */
+
+export function getSingleDeck(deckId) {
+	dispatcher.dispatch({
+		type: constants.actions.RETRIEVING_SINGLE_DECK,
+	});
+
+	firebaseClient.getSingleDeck(deckId);
 }

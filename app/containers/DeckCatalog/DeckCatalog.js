@@ -8,12 +8,18 @@ import * as viewActions from '../../actions/viewActions';
 // stores
 import deckStore from '../../stores/deckStore';
 
+// components
+import Loader from '../../components/Loader';
+import FormatRow from './components/FormatRow';
+import NoDecksFound from './components/NoDecksFound';
+
 class DeckCatalog extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			decks: deckStore.getDecks(),
+			test: false,
 		};
 
 		this.onDecksChange = this.onDecksChange.bind(this);
@@ -47,38 +53,38 @@ class DeckCatalog extends Component {
 
 	/** ================ RENDER =========================== */
 
-	render() {
-		console.log(this.state.decks);
-		
-		let decksDisplay;
+	render() {		
+		let formatsDisplay,
+			{ decks, test } = this.state;
 
-		if (this.state.decks.length) {
-			let featuredCardImage;
+		if (decks.length) {
+			let formats = [],
+				decksByFormat = [];
 
-			decksDisplay = this.state.decks.map((deck, i) => {
-
-				deck.mainboard.forEach((card) => {
-					if(card.special == 'CMDR' || card.special == 'FEAT') {
-						featuredCardImage = `https://image.deckbrew.com/mtg/multiverseid/${card.multiverseId}.jpg`;
-					}
-				});
-
-				return <li key={i}>
-							<Link to="/">
-								<div class="featured-card">
-									<img src={featuredCardImage} />
-								</div>
-								<h3>{deck.deckName}</h3>
-							</Link>
-						</li>;
-
+			// get the unique formats
+			decks.forEach((deck) => { 
+				formats.indexOf(deck.format) < 0 && formats.push(deck.format);
 			});
+
+			// split the decks into sub-arrays based on format
+			formats.forEach((format, i) => {
+				decksByFormat[i] = [];
+
+				decks.forEach((deck) => {
+					deck.format == format && decksByFormat[i].push(deck);
+				});
+			});
+
+			// build the format components
+			formatsDisplay = decksByFormat.map((decksArr, i) => {
+				return <FormatRow key={i} formatName={decksArr[0].format} decksArr={decksArr} />
+			});
+		} else if (test) {
+			// direct them to create a new deck if none are found
+			formatsDisplay = <NoDecksFound />;
 		} else {
-			decksDisplay = <div id="no-decks-found" class="panel">
-								<p>No decks found!<br /> 
-									<Link to="/dashboard/add-deck">Click here to create your first one!</Link>
-								</p>
-							</div>
+			// show loader as default state
+			formatsDisplay = <Loader className="center" />;
 		}
 
 		return (
@@ -87,15 +93,7 @@ class DeckCatalog extends Component {
 
 				<div class="main-container">
 					<div class="formats">
-						<div class="format">
-							<div class="format-interior container-1100">
-								<h2>Commander:</h2>
-
-								<ul class="decks">
-									{decksDisplay}
-								</ul>
-							</div>
-						</div>
+						{formatsDisplay}
 					</div>
 				</div>
 			</div>

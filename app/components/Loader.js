@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
-const Loader = () => {
+const Loader = ({ className }) => {
 	return (
-		<img class="spinning-loader" src={require("../../public/img/spinning-loader-dark.gif")} />
+		<img class={`${className} spinning-loader`} src={require("../../public/img/spinning-loader-dark.gif")} />
 	);
 }
 

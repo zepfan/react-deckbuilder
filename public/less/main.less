@@ -144,6 +144,11 @@ body {
 	margin: 0 0 1em;
 }
 
+.spinning-loader.center {
+	display: block;
+	margin: 0 auto;
+}
+
 
 @media (max-width: @widthMobile) {
 	.app-interior {
@@ -172,6 +177,14 @@ h1 {
 	font-size: 3em;
 	text-transform: uppercase;
 	text-align: center;
+}
+
+h1 .subline {
+	color: @brand;
+	font-family: @sans-serif;
+	font-weight: 300;
+	display: block;
+	font-size: 0.6em;
 }
 
 h2 { 
@@ -444,7 +457,7 @@ button.control-btn {
 			background-repeat: no-repeat;
 			background-position: 0 0;
 			background-size: 100% 100%;
-			min-height: 350px;
+			min-height: 300px;
 
 			.decks {
 				.clearfix;
@@ -456,6 +469,7 @@ button.control-btn {
 					text-align: center;
 					transform: translateY(0);
 					transition: 0.2s linear all;
+					cursor: pointer;
 
 					a {
 						text-decoration: none;
@@ -468,6 +482,7 @@ button.control-btn {
 						width: 160px;
 						border-radius: 100px;
 						border: 5px solid rgba(0,0,0,0.17);
+						box-shadow: 0 0 0 1px fade(@brand, 20%);
 						margin: 0 auto 7px;
 
 						img {
@@ -481,6 +496,8 @@ button.control-btn {
 
 					h3 {
 						color: @white;
+						font-size: 1.3em;
+					    -webkit-font-smoothing: auto;
 					}
 
 					&.in-progress {

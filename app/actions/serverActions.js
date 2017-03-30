@@ -140,3 +140,16 @@ export function saveNewDeckFailed(errors) {
 		decks
 	});
 }
+
+/**
+ * ----------------------------------------
+ * Recieved a user's deck from the DB
+ * ----------------------------------------
+ */
+
+ export function singleDeckRecieved(deck) {
+	dispatcher.dispatch({
+		type: constants.actions.SINGLE_DECK_RECIEVED,
+		deck
+	});
+}

@@ -1,53 +1,26 @@
-Things to do:
-- Build the catalog by format
-- Get a deck ID / some sort of URL associated with the deck
-- Do some spring cleaning before continuing onto the next bit
 
-- Handling duplicate cards in deck list
-- Figure out best way to sync logged in user with the store
-- Add log out feature
-- Change the apperance of login/signup pages if user is signed in
-- Figure out better way to handle route protection
+Where we're at:
+- Make DB method for getting a single deck
+- Rename DeckListItem (isn't associated with DeckList)
+- Do some spring cleaning (and rename things) before getting too far
+
+Pretty easy:
+    - Make featured card seperate from commander
+    - Reverse card[key].editions in _spliceDeckArrays
+    - Add log out feature
+
+Not as easy:
+    - Figure out better way to handle route protection
+    - Figure out best way to sync logged in user with the store
+    - Handling duplicate cards in deck list
+    - Find proper place to fire off initial DB actions (va.getUsersDecks etc)
+
+Lower on radar:
+    - Change the apperance of login/signup pages if user is signed in
+    - Ability to parse other common decklist formats
 
 
 
-
-/** schema for decks */
-"3kkhkhskdfhfwf": {
-    "name": "The God Squad",
-    "format": "Commander",
-    "commander": "Lorthos, the Tidemaker",
-    "dateAdded": "20293-239023i-2323",
-    "lastUpdated": "20913203-23233",
-    "owner_name": "zepfan",
-    "in_progress": false,
-    "is_private": true,
-    "description": "This is a blah bloo blee deck",
-
-    "mainboard": [
-        {
-            "name": "Beacon of Tomorrow",
-            "id": "beacon-of-tomorrow",
-            "multiverse_id": 417575,
-            "types": ["artifact"],
-            "quantitiy": 1,
-            "cmc": 3,
-            "colors": ["white", "blue"]
-        },
-    ],
-
-    "sideboard": [
-        {
-            "name": "Beacon of Tomorrow",
-            "id": "beacon-of-tomorrow",
-            "multiverse_id": 417575,
-            "types": ["artifact"],
-            "quantitiy": 1,
-            "cmc": 3,
-            "colors": ["white", "blue"]
-        },
-    ]
-}
 
 
 
@@ -126,13 +99,6 @@ Things to do:
 1x Turn Aside #Counterspells 
 1x Unwinding Clock #Cheaters 
 1x Vivid Meadow #Mana-Land 
-
-
-
-
-
-
-
 
 
 

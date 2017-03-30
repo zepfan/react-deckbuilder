@@ -177,7 +177,7 @@ export function saveNewDeck(deck) {
 	let deckUpdates = {};
 
 	// add the deck to the `decks` tree
-	deckUpdates[`/decks/${deckKey}`] = { ...deck };
+	deckUpdates[`/decks/${deckKey}`] = { ...deck, deckId: deckKey };
 
 	// add a reference to the deck in the user's tree
 	deckUpdates[`/users/${userId}/decks/${deckKey}`] = { deckKey };
@@ -215,16 +215,41 @@ export function getUsersDecks() {
 
 function _getDeckObjects(deckKeys) {
 	let decks = [];
+	let promiseArr = [];
 
-	deckKeys.forEach(deckKey => {
-		db.ref(`/decks/${deckKey}`).once('value').then(snapshot => { 
+	deckKeys.forEach((deckKey, i) => {
+		promiseArr[i] = db.ref(`/decks/${deckKey}`).once('value').then(snapshot => { 
 			decks.push(snapshot.val());
-			serverActions.decksRecieved(decks);
 		}).catch(e => {
 			console.log('inner decks error', e)
 		});
 	});
+
+	Promise.all(promiseArr)
+		.then(() => { if (decks.length) { serverActions.decksRecieved(decks) } })
+		.catch(e => { console.log('promise.all error', e) });
 }
 
+/**
+ * ----------------------------------------
+ * Retrieves a single deck
+ * ----------------------------------------
+ */
 
+export function getSingleDeck(deckId) {
+	const userId = auth.currentUser.uid;
+
+	db.ref(`/users/${userId}/decks/${deckId}`).once('value')
+		.then(snapshot => {
+			if(snapshot.val().deckKey) {
+				db.ref(`/decks/${deckId}`).once('value')
+					.then(snapshot => { serverActions.singleDeckRecieved(snapshot.val()) })
+					.catch(e => { console.log('inner single error', e) });
+			}
+		})
+		.catch(e => {
+			console.log('single deck error', e);
+		});
+
+}
 

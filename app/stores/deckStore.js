@@ -4,6 +4,7 @@ import dispatcher from '../dispatcher';
 import constants from '../constants/constants';
 
 let _decks = [],
+	_singleDeck = {},
 	_isSubmittingNewDeck = false,
 	_deckErrors = false;
 
@@ -25,6 +26,10 @@ class DeckStore extends EventEmitter {
 
 	getDeckErrors() {
 		return _deckErrors;
+	}
+
+	getSingleDeck() {
+		return _singleDeck;
 	}
 
 	/** ======================= HANDLE DISPATCHER ======================= */
@@ -51,6 +56,11 @@ class DeckStore extends EventEmitter {
 				_decks = action.decks;
 				this.emit('change');
 				break;
+
+			case constants.actions.SINGLE_DECK_RECIEVED:
+				_singleDeck = action.deck;
+				this.emit('change');
+				break;				
 
 			default:
 				break;
