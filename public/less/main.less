@@ -184,7 +184,7 @@ h1 .subline {
 	font-family: @sans-serif;
 	font-weight: 300;
 	display: block;
-	font-size: 0.6em;
+	font-size: 0.45em;
 }
 
 h2 { 
@@ -453,7 +453,6 @@ button.control-btn {
 		.format {
 			margin: 0 0 5em;
 			background: url('../img/deck-formats-bg.png');
-			// background-repeat: repeat-y;
 			background-repeat: no-repeat;
 			background-position: 0 0;
 			background-size: 100% 100%;
@@ -641,3 +640,70 @@ button.control-btn {
 	}
 }
 
+
+/**
+ * ---------------------------------------------------
+ * Deck Adder
+ * ---------------------------------------------------
+ */
+
+#deck-list {
+	.main-container {
+		background: url('../img/deck-formats-bg.png');
+		background-repeat: no-repeat;
+		background-position: 0 0;
+		background-size: 100% 100%;
+	}
+
+	.left-col {
+		width: 30%;
+	}
+
+	.right-col {
+		width: 70%;
+	}
+
+	#card-image {
+		img {
+			border-radius: 15px;
+		}
+	}
+
+	.card-list-row {
+		float: left;
+		width: 30%;
+		margin-right: 5%;
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+
+	.card-list {
+		margin-bottom: 1.5em;
+
+		h3 {
+			color: @brand;
+			margin: 0 0 0.7em;
+			font-family: @sans-serif;
+			text-transform: uppercase;
+			font-weight: 600;
+
+			span {
+				font-size: 0.9em;
+				font-weight: 300;
+			}
+		}
+
+		ul {
+			li {
+				position: relative;
+				margin: 0 0 4px;
+
+				span.card-qty {
+					color: @light-gray;
+				}
+			}
+		}
+	}
+}

@@ -9,6 +9,7 @@ import deckStore from '../../stores/deckStore';
 
 // components
 import Loader from '../../components/Loader';
+import CardListRow from './components/CardListRow';
 
 class DeckList extends Component {
 	constructor(props) {
@@ -16,6 +17,7 @@ class DeckList extends Component {
 
 		this.state = {
 			deck: deckStore.getSingleDeck(),
+			currentImage: 0,
 		};
 
 		this.onDeckChange = this.onDeckChange.bind(this);
@@ -49,20 +51,54 @@ class DeckList extends Component {
 		});
 	}
 
+	generateRows(list, rowLength) {
+	    var rows = [],
+	        currentRow = [];
+
+		list.map(function(item, i) { 
+			if (i % rowLength === 0 && i !== 0) {
+				rows.push(currentRow);
+				currentRow = [];
+			}
+			currentRow.push(item);
+		});
+		rows.push(currentRow);
+
+	    return rows;
+	}
+
 	/** ================ RENDER =========================== */
 
 	render() {
-		let { deck } = this.state;
+		let { deck, currentImage } = this.state,
+			cardRowsDisplay = '';
 
 		if (!_.isEmpty(deck)) {
 			let { deckName, format, mainboard } = deck,
-				mainboardList = [];
+				cardTypes = [],
+				cardsByType = [],
+				cardRows = [];
 
-			mainboardList = mainboard.map((card, i) => {
-				return <li key={i}>
-							<span class="card-qty">{`${card.quantity}x`}&nbsp;</span>
-							<span class="card-name">{card.name}</span>
-						</li>;
+			// get the unique types
+			mainboard.forEach((card) => { 
+				cardTypes.indexOf(card.types[0]) < 0 && cardTypes.push(card.types[0]);
+			});
+
+			// split the cards into sub-arrays based on type
+			cardTypes.forEach((type, i) => {
+				cardsByType[i] = [];
+
+				mainboard.forEach((card) => {
+					card.types[0] == type && cardsByType[i].push(card);
+				});
+			});
+
+			// split all of the cardsByType lists into rows
+			cardRows = this.generateRows(cardsByType, 3);
+
+			// build the display
+			cardRowsDisplay = cardRows.map((row, i) => {
+				return <CardListRow key={i} cardsArrByType={row} />
 			});
 
 			return (
@@ -73,7 +109,29 @@ class DeckList extends Component {
 					</h1>
 
 					<div class="main-container">
-						{mainboardList}
+						<div class="container-1100">
+							<div class="row">
+								<div class="left-col">
+									<div id="card-image">
+										<img src={`https://image.deckbrew.com/mtg/multiverseid/${currentImage}.jpg`} />
+									</div>
+
+									<div id="deck-stats">
+										<ul>
+											<li>Date added:</li>
+											<li>Last Updated:</li>
+											<li>Legality:</li>
+											<li>Cards:</li>
+											<li>Avg CMC:</li>
+										</ul>
+									</div>
+								</div>
+
+								<div class="right-col">
+									{cardRowsDisplay}
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			);

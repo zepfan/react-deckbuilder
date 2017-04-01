@@ -8,6 +8,7 @@ Pretty easy:
     - Make featured card seperate from commander
     - Reverse card[key].editions in _spliceDeckArrays
     - Add log out feature
+    - Change "test" in DeckCatalog state to represent "no deck found"
 
 Not as easy:
     - Figure out better way to handle route protection

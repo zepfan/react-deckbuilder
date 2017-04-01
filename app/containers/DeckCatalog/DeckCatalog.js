@@ -53,9 +53,9 @@ class DeckCatalog extends Component {
 
 	/** ================ RENDER =========================== */
 
-	render() {		
-		let formatsDisplay,
-			{ decks, test } = this.state;
+	render() {
+		let { decks, test } = this.state,
+			formatsDisplay = '';
 
 		if (decks.length) {
 			let formats = [],
