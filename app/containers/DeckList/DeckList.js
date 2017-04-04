@@ -1,5 +1,6 @@
 // react jazz
 import React, { Component } from 'react';
+import Masonry from 'react-masonry-component';
 
 // actions
 import * as viewActions from '../../actions/viewActions';
@@ -9,7 +10,7 @@ import deckStore from '../../stores/deckStore';
 
 // components
 import Loader from '../../components/Loader';
-import CardListRow from './components/CardListRow';
+import CardList from './components/CardList';
 
 class DeckList extends Component {
 	constructor(props) {
@@ -21,8 +22,9 @@ class DeckList extends Component {
 		};
 
 		this.onDeckChange = this.onDeckChange.bind(this);
+		this.changeImageOnHover = this.changeImageOnHover.bind(this);
 
-		let deckPath = this.props.location.pathname;
+		// grab the deck from the DB
 		let deckId = this.props.location.pathname.replace('/dashboard/deck/', '');
 		viewActions.getSingleDeck(deckId);
 	}
@@ -51,33 +53,24 @@ class DeckList extends Component {
 		});
 	}
 
-	generateRows(list, rowLength) {
-	    var rows = [],
-	        currentRow = [];
+	changeImageOnHover(e) {
+		let multiverseId = e.target.id;
 
-		list.map(function(item, i) { 
-			if (i % rowLength === 0 && i !== 0) {
-				rows.push(currentRow);
-				currentRow = [];
-			}
-			currentRow.push(item);
+		this.setState({
+			currentImage: multiverseId,
 		});
-		rows.push(currentRow);
-
-	    return rows;
 	}
 
 	/** ================ RENDER =========================== */
 
 	render() {
 		let { deck, currentImage } = this.state,
-			cardRowsDisplay = '';
+			cardsDisplay = '';
 
 		if (!_.isEmpty(deck)) {
 			let { deckName, format, mainboard } = deck,
 				cardTypes = [],
-				cardsByType = [],
-				cardRows = [];
+				cardsByType = [];
 
 			// get the unique types
 			mainboard.forEach((card) => { 
@@ -93,12 +86,9 @@ class DeckList extends Component {
 				});
 			});
 
-			// split all of the cardsByType lists into rows
-			cardRows = this.generateRows(cardsByType, 3);
-
-			// build the display
-			cardRowsDisplay = cardRows.map((row, i) => {
-				return <CardListRow key={i} cardsArrByType={row} />
+			// build the cards display
+			cardsDisplay = cardsByType.map((cardsArr, i) => {
+				return <CardList key={i} changeImage={this.changeImageOnHover} typeName={cardsArr[0].types[0]} cardsArr={cardsArr} />;
 			});
 
 			return (
@@ -118,17 +108,19 @@ class DeckList extends Component {
 
 									<div id="deck-stats">
 										<ul>
-											<li>Date added:</li>
-											<li>Last Updated:</li>
-											<li>Legality:</li>
-											<li>Cards:</li>
-											<li>Avg CMC:</li>
+											<li><span>Date added:</span> Some data</li>
+											<li><span>Last Updated:</span> Some data</li>
+											<li><span>Legality:</span> Some data</li>
+											<li><span>Cards:</span> {this.state.deck.mainboard.length}</li>
+											<li><span>Avg CMC:</span> Some data</li>
 										</ul>
 									</div>
 								</div>
 
 								<div class="right-col">
-									{cardRowsDisplay}
+									<Masonry elementType={'div'}>
+										{cardsDisplay}
+									</Masonry>
 								</div>
 							</div>
 						</div>

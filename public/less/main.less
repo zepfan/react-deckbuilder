@@ -80,7 +80,9 @@ table {
 html {
 	font-family: @sans-serif;
 	background: @bg-color;
-	background-image: url('../img/bg-image-theros.jpg');
+	background-image: url('../img/bg-image-2.jpg');
+	// background-image: url('../img/bg-image-5.jpg');
+	// background-image: url('../img/bg-image-theros-2.jpg');
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-position: 50% 0;
@@ -396,12 +398,6 @@ button.control-btn {
  */
 
 #app-footer {
-	position: absolute;
-	padding: 15px 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-
 	.copyright {
 		display: block;
 		text-align: center;
@@ -481,7 +477,6 @@ button.control-btn {
 						width: 160px;
 						border-radius: 100px;
 						border: 5px solid rgba(0,0,0,0.17);
-						box-shadow: 0 0 0 1px fade(@brand, 20%);
 						margin: 0 auto 7px;
 
 						img {
@@ -665,21 +660,26 @@ button.control-btn {
 
 	#card-image {
 		img {
+			width: 80%;
+			height: auto;
 			border-radius: 15px;
 		}
 	}
 
-	.card-list-row {
-		float: left;
-		width: 30%;
-		margin-right: 5%;
-
-		&:last-child {
-			margin-right: 0;
+	#deck-stats {
+		ul {
+			li {
+				margin: 10px 0 0;
+				span {
+					font-weight: 600;
+					text-transform: uppercase;
+				}
+			}
 		}
 	}
 
 	.card-list {
+		width: 33%;
 		margin-bottom: 1.5em;
 
 		h3 {
@@ -699,6 +699,7 @@ button.control-btn {
 			li {
 				position: relative;
 				margin: 0 0 4px;
+				cursor: pointer;
 
 				span.card-qty {
 					color: @light-gray;

@@ -1,10 +1,14 @@
 import React, { PropTypes } from 'react';
 
-const CardList = ({ typeName, cardsArr }) => {
+const CardList = ({ typeName, cardsArr, changeImage }) => {
 	let cards = cardsArr.map((card, i) => {
+		// preload images
+		let cardImage = new Image();
+		cardImage.src = `https://image.deckbrew.com/mtg/multiverseid/${card.multiverseId}.jpg`;
+
 		return <li key={i}>
 					<span class="card-qty">{`${card.quantity}x`}&nbsp;</span>
-					<span class="card-name">{card.name}</span>
+					<span onMouseMove={changeImage} id={card.multiverseId} class="card-name">{card.name}</span>
 				</li>;
 	});
 
