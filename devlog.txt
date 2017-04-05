@@ -6,7 +6,7 @@ Things to do to complete V1:
     - Change how 'date added' is being saved in decks
     - Make the sideboard not look like shit
     - Make the catalog fonts not look like shit
-    - Rename DeckListItem (isn't associated with DeckList)
+    <!-- - Rename DeckListItem (isn't associated with DeckList) -->
     - Make featured card seperate from commander
     - Reverse/refactor card[key].editions in _spliceDeckArrays
     <!-- - Add log out feature -->
@@ -14,14 +14,14 @@ Things to do to complete V1:
     - Take all of the looping shit out of the render() functions
     - Figure out better way to handle route protection
     - Figure out best way to sync logged in user with the store
-    - Fix header issue when first signing in (not showing username)
+    <!-- - Fix header issue when first signing in (not showing username) -->
     - Handling duplicate cards in deck list
-    - Find proper place to fire off initial DB actions (va.getUsersDecks etc)
-    - Change the apperance of login/signup pages if user is signed in
+    <!-- - Change the apperance of login/signup pages if user is signed in -->
     - Ability to parse other common decklist formats
     - Add an edit deck feature
     - Make 'in progress' do something
     - Mobile styling
+    - Break the stylesheet up into seperate files
 
 
 

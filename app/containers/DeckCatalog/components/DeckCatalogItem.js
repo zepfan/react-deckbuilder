@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
-const DeckListItem = ({ deck }) => {
+const DeckCatalogItem = ({ deck }) => {
 	let featuredCardImage;
 
 	deck.mainboard.forEach((card, i) => {
@@ -22,6 +22,6 @@ const DeckListItem = ({ deck }) => {
 	);
 }
 
-DeckListItem.propTypes = {}
+DeckCatalogItem.propTypes = {}
 
-export default DeckListItem;
+export default DeckCatalogItem;

@@ -24,7 +24,8 @@ class Login extends Component {
 			password: '',
 			validationErrors: '',
 			logInErrors: userStore.getLoginErrors(),
-			isLoggingIn: userStore.isLoggingIn()
+			isLoggingIn: userStore.isLoggingIn(),
+			isLoggedIn: userStore.isLoggedIn(),
 		};
 
 		this.onUserChange = this.onUserChange.bind(this);
@@ -48,7 +49,8 @@ class Login extends Component {
 	onUserChange(e) {
 		this.setState({
 			logInErrors: userStore.getLoginErrors(),
-			isLoggingIn: userStore.isLoggingIn()
+			isLoggingIn: userStore.isLoggingIn(),
+			isLoggedIn: userStore.isLoggedIn(),
 		});
 	}
 
@@ -110,48 +112,60 @@ class Login extends Component {
 	/** ======================= RENDER ======================= */
 
 	render() {
-		const { identifier, password, isLoggingIn, validationErrors, logInErrors } = this.state;
+		const { identifier, password, isLoggingIn, validationErrors, logInErrors, isLoggedIn } = this.state;
 
-		return (
-			<div class="authenticate-pane">
-				<h1>Log In</h1>
+		if(!isLoggedIn) {
+			return (
+				<div class="authenticate-pane">
+					<h1>Log In</h1>
 
-				<div class="main-container">
-					{logInErrors ? <span class="error-msg">{logInErrors}</span> : ''}
+					<div class="main-container">
+						{logInErrors ? <span class="error-msg">{logInErrors}</span> : ''}
 
-					<form onSubmit={this.onSubmit}>
-						<TextFieldGroup 
-							label="Username or Email:"
-							name="identifier"
-							id="identifier-input"
-							value={identifier}
-							onChange={this.onInputChange}
-							error={validationErrors.identifier}
-						/>
+						<form onSubmit={this.onSubmit}>
+							<TextFieldGroup 
+								label="Username or Email:"
+								name="identifier"
+								id="identifier-input"
+								value={identifier}
+								onChange={this.onInputChange}
+								error={validationErrors.identifier}
+							/>
 
-						<TextFieldGroup 
-							label="Password:"
-							name="password"
-							id="password-input"
-							type="password"
-							value={password}
-							onChange={this.onInputChange}
-							error={validationErrors.password}
-						/>
+							<TextFieldGroup 
+								label="Password:"
+								name="password"
+								id="password-input"
+								type="password"
+								value={password}
+								onChange={this.onInputChange}
+								error={validationErrors.password}
+							/>
 
-						<div class="control-submit">
-							<button class="control-btn btn" type="submit" disabled={isLoggingIn}>Log In</button>
+							<div class="control-submit">
+								<button class="control-btn btn" type="submit" disabled={isLoggingIn}>Log In</button>
 
-							{isLoggingIn ? <Loader /> : ''}
-						</div>
-					</form>
+								{isLoggingIn ? <Loader /> : ''}
+							</div>
+						</form>
+					</div>
+
+					<span class="auxiliary-link">
+						Don't have an account yet? <Link to="/signup">Create one here.</Link>
+					</span>
 				</div>
+			);
+		} else {
+			return (
+				<div class="authenticate-pane">
+					<h1>You are already logged in.</h1>
 
-				<span class="auxiliary-link">
-					Don't have an account yet? <Link to="/signup">Create one here.</Link>
-				</span>
-			</div>
-		);
+					<div class="main-container">
+						<p><a onClick={viewActions.signUserOut}>Sign out</a> first to log into a different account.</p>
+					</div>
+				</div>
+			)
+		}
 	}
 }
 

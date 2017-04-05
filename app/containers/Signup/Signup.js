@@ -26,7 +26,8 @@ class Signup extends Component {
 			passwordConfirmation: '',
 			validationErrors: '',
 			registerErrors: userStore.getRegisteringErrors(),
-			isRegistering: userStore.isRegistering()
+			isRegistering: userStore.isRegistering(),
+			isLoggedIn: userStore.isLoggedIn(),
 		};
 
 		this.onUserChange = this.onUserChange.bind(this);
@@ -57,7 +58,8 @@ class Signup extends Component {
 	onUserChange(e) {
 		this.setState({
 			registerErrors: userStore.getRegisteringErrors(),
-			isRegistering: userStore.isRegistering()
+			isRegistering: userStore.isRegistering(),
+			isLoggedIn: userStore.isLoggedIn(),
 		});
 	}
 
@@ -126,67 +128,79 @@ class Signup extends Component {
 	/** ======================= RENDER ======================= */
 
 	render() {	
-		const { username, email, password, passwordConfirmation, isRegistering, validationErrors, registerErrors } = this.state;
+		const { username, email, password, passwordConfirmation, isRegistering, validationErrors, registerErrors, isLoggedIn } = this.state;
 
-		return (
-			<div class="authenticate-pane">
-				<h1>Create an Account</h1>
+		if(!isLoggedIn) {
+			return (
+				<div class="authenticate-pane">
+					<h1>Create an Account</h1>
 
-				<div class="main-container">
-					{registerErrors ? <span class="error-msg">{registerErrors}</span> : ''}
+					<div class="main-container">
+						{registerErrors ? <span class="error-msg">{registerErrors}</span> : ''}
 
-					<form onSubmit={this.onSubmit}>
-						<TextFieldGroup 
-							label="Username:"
-							name="username"
-							id="username-input"
-							value={username}
-							onChange={this.onInputChange}
-							error={validationErrors.username}
-						/>
+						<form onSubmit={this.onSubmit}>
+							<TextFieldGroup 
+								label="Username:"
+								name="username"
+								id="username-input"
+								value={username}
+								onChange={this.onInputChange}
+								error={validationErrors.username}
+							/>
 
-						<TextFieldGroup 
-							label="Email Address:"
-							name="email"
-							id="email-input"
-							value={email}
-							onChange={this.onInputChange}
-							error={validationErrors.email}
-						/>
+							<TextFieldGroup 
+								label="Email Address:"
+								name="email"
+								id="email-input"
+								value={email}
+								onChange={this.onInputChange}
+								error={validationErrors.email}
+							/>
 
-						<TextFieldGroup 
-							label="Password:"
-							name="password"
-							id="password-input"
-							type="password"
-							value={password}
-							onChange={this.onInputChange}
-							error={validationErrors.password}
-						/>
+							<TextFieldGroup 
+								label="Password:"
+								name="password"
+								id="password-input"
+								type="password"
+								value={password}
+								onChange={this.onInputChange}
+								error={validationErrors.password}
+							/>
 
-						<TextFieldGroup 
-							label="Confirm Password:"
-							name="passwordConfirmation"
-							id="confirm-password-input"
-							type="password"
-							value={passwordConfirmation}
-							onChange={this.onInputChange}
-							error={validationErrors.passwordConfirmation}
-						/>
+							<TextFieldGroup 
+								label="Confirm Password:"
+								name="passwordConfirmation"
+								id="confirm-password-input"
+								type="password"
+								value={passwordConfirmation}
+								onChange={this.onInputChange}
+								error={validationErrors.passwordConfirmation}
+							/>
 
-						<div class="control-submit">
-							<button class="control-btn btn" type="submit" disabled={isRegistering}>Create Account</button>
+							<div class="control-submit">
+								<button class="control-btn btn" type="submit" disabled={isRegistering}>Create Account</button>
 
-							{isRegistering ? <Loader /> : ''}
-						</div>
-					</form>
+								{isRegistering ? <Loader /> : ''}
+							</div>
+						</form>
+					</div>
+
+					<span class="auxiliary-link">
+						Already have an account? <Link to="/login">Sign in here.</Link>
+					</span>
 				</div>
+			);
+		} else {
+			return (
+				<div class="authenticate-pane">
+					<h1>You are already logged in.</h1>
 
-				<span class="auxiliary-link">
-					Already have an account? <Link to="/login">Sign in here.</Link>
-				</span>
-			</div>
-		);
+					<div class="main-container">
+						<p><a onClick={viewActions.signUserOut}>Sign out</a> first before creating a new account.</p>
+					</div>
+				</div>
+			);
+		}
 	}
 }
 

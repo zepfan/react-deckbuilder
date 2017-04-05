@@ -38,6 +38,10 @@ class UserStore extends EventEmitter {
 		return _isLoggingIn;
 	}
 
+	isLoggedIn() {
+		return _isLoggedIn;
+	}
+
 	getRegisteringErrors() {
 		return _registerErrors;
 	}

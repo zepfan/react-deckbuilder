@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 
-import DeckListItem from './DeckListItem';
+import DeckCatalogItem from './DeckCatalogItem';
 
 const FormatRow = ({ formatName, decksArr }) => {
 	let decks = decksArr.map((deck, i) => {
-		return <DeckListItem key={i} deck={deck} />;
+		return <DeckCatalogItem key={i} deck={deck} />;
 	});
 
 	return (
