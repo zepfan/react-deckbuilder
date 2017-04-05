@@ -76,6 +76,18 @@ export function deckValidationSuccess(deck) {
 
 /**
  * ----------------------------------------
+ * Handle sign out success
+ * ----------------------------------------
+ */
+
+export function signOutSuccess() {
+	dispatcher.dispatch({
+		type: constants.actions.SIGN_OUT_SUCCESS,
+	});
+}
+
+/**
+ * ----------------------------------------
  * Add a validated deck to the database
  * ----------------------------------------
  */
@@ -130,7 +142,7 @@ export function saveNewDeckFailed(errors) {
 
 /**
  * ----------------------------------------
- * Recieved a user's deck from the DB
+ * Recieved all the user's decks from DB
  * ----------------------------------------
  */
 
@@ -138,6 +150,18 @@ export function saveNewDeckFailed(errors) {
 	dispatcher.dispatch({
 		type: constants.actions.DECKS_RECIEVED,
 		decks
+	});
+}
+
+/**
+ * ----------------------------------------
+ * Recieved all the user's decks from DB
+ * ----------------------------------------
+ */
+
+export function noDecksFound() {
+	dispatcher.dispatch({
+		type: constants.actions.NO_DECKS_FOUND
 	});
 }
 

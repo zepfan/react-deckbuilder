@@ -6,7 +6,8 @@ import constants from '../constants/constants';
 let _decks = [],
 	_singleDeck = {},
 	_isSubmittingNewDeck = false,
-	_deckErrors = false;
+	_deckErrors = false,
+	_noDecksFound = false;
 
 class DeckStore extends EventEmitter {
 
@@ -32,6 +33,10 @@ class DeckStore extends EventEmitter {
 		return _singleDeck;
 	}
 
+	getNoDecksFoundStatus() {
+		return _noDecksFound;
+	}
+
 	/** ======================= HANDLE DISPATCHER ======================= */
 
 	handleActions(action) {
@@ -54,13 +59,27 @@ class DeckStore extends EventEmitter {
 
 			case constants.actions.DECKS_RECIEVED:
 				_decks = action.decks;
+				_noDecksFound = false;
+				this.emit('change');
+				break;
+
+			case constants.actions.NO_DECKS_FOUND:
+				_noDecksFound = true;
 				this.emit('change');
 				break;
 
 			case constants.actions.SINGLE_DECK_RECIEVED:
 				_singleDeck = action.deck;
 				this.emit('change');
-				break;				
+				break;
+
+			case constants.actions.SIGN_OUT_SUCCESS:
+				_decks = [];
+				_singleDeck = {};
+				_isSubmittingNewDeck = false;
+				_deckErrors = false;
+				_noDecksFound = false;
+				break;		
 
 			default:
 				break;

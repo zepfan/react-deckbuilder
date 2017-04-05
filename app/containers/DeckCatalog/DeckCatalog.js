@@ -19,7 +19,7 @@ class DeckCatalog extends Component {
 
 		this.state = {
 			decks: deckStore.getDecks(),
-			test: false,
+			noDecksFound: deckStore.getNoDecksFoundStatus(),
 		};
 
 		this.onDecksChange = this.onDecksChange.bind(this);
@@ -48,13 +48,14 @@ class DeckCatalog extends Component {
 	onDecksChange(e) {
 		this.setState({
 			decks: deckStore.getDecks(),
+			noDecksFound: deckStore.getNoDecksFoundStatus(),
 		});
 	}
 
 	/** ================ RENDER =========================== */
 
 	render() {
-		let { decks, test } = this.state,
+		let { decks, noDecksFound } = this.state,
 			formatsDisplay = '';
 
 		if (decks.length) {
@@ -79,7 +80,7 @@ class DeckCatalog extends Component {
 			formatsDisplay = decksByFormat.map((decksArr, i) => {
 				return <FormatRow key={i} formatName={decksArr[0].format} decksArr={decksArr} />
 			});
-		} else if (test) {
+		} else if (noDecksFound) {
 			// direct them to create a new deck if none are found
 			formatsDisplay = <NoDecksFound />;
 		} else {

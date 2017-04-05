@@ -1,9 +1,11 @@
+// react jazz
 import React, { PropTypes } from 'react';
 import { Link, IndexLink } from 'react-router';
 
-const Header = ({ isLoggedIn, userId, userName }) => {
+// firebase
+import * as viewActions from '../actions/viewActions';
 
-	console.log('header props:', isLoggedIn, userId, userName);
+const Header = ({ isLoggedIn, userId, userName }) => {
 
 	return (
 		<header id="app-header" class="container-1100">
@@ -28,7 +30,7 @@ const Header = ({ isLoggedIn, userId, userName }) => {
 						<div id="user-control">
 							logged in as <strong>{userName}</strong>
 
-							<button class="log-out btn">Log Out</button>
+							<button onClick={viewActions.signUserOut} class="log-out btn">Log Out</button>
 						</div>
 					</div>
 				}

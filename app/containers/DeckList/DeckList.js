@@ -49,9 +49,15 @@ class DeckList extends Component {
 
 	onDeckChange(e) {
 		this.setState({
-			deck: deckStore.getSingleDeck(),
+			deck: deckStore.getSingleDeck()
 		});
 	}
+
+	/**
+	 * ----------------------------------------
+	 * Update the card image when hovering
+	 * ----------------------------------------
+	 */
 
 	changeImageOnHover(e) {
 		let multiverseId = e.target.id;
@@ -65,15 +71,16 @@ class DeckList extends Component {
 
 	render() {
 		let { deck, currentImage } = this.state,
-			cardsDisplay = '';
+			mainboardDisplay = '',
+			sideboardDisplay = '';
 
 		if (!_.isEmpty(deck)) {
-			let { deckName, format, mainboard } = deck,
+			let { deckName, format, mainboard, sideboard } = deck,
 				cardTypes = [],
 				cardsByType = [];
 
 			// get the unique types
-			mainboard.forEach((card) => { 
+			mainboard.forEach((card) => {
 				cardTypes.indexOf(card.types[0]) < 0 && cardTypes.push(card.types[0]);
 			});
 
@@ -87,9 +94,34 @@ class DeckList extends Component {
 			});
 
 			// build the cards display
-			cardsDisplay = cardsByType.map((cardsArr, i) => {
+			mainboardDisplay = cardsByType.map((cardsArr, i) => {
 				return <CardList key={i} changeImage={this.changeImageOnHover} typeName={cardsArr[0].types[0]} cardsArr={cardsArr} />;
 			});
+
+			// build the sideboard
+			if(sideboard) {
+				sideboardDisplay = <CardList changeImage={this.changeImageOnHover} typeName={'Sideboard'} cardsArr={sideboard} />;
+			}
+
+
+
+			let cardQty = null,
+				avgCMC = null,
+				noLandsLen = null;
+
+			// get the quantity of cards
+			mainboard.forEach((card) => {
+				cardQty += card.quantity;
+				
+				if(card.cmc) {
+					avgCMC += card.cmc * card.quantity;
+				} else {
+					noLandsLen += card.quantity;
+				}
+			});
+
+			avgCMC = avgCMC/(cardQty - noLandsLen);
+			avgCMC = avgCMC.toFixed(2);
 
 			return (
 				<div id="deck-list">
@@ -108,18 +140,18 @@ class DeckList extends Component {
 
 									<div id="deck-stats">
 										<ul>
-											<li><span>Date added:</span> Some data</li>
-											<li><span>Last Updated:</span> Some data</li>
+											<li><span>Deck added:</span> Some data</li>
 											<li><span>Legality:</span> Some data</li>
-											<li><span>Cards:</span> {this.state.deck.mainboard.length}</li>
-											<li><span>Avg CMC:</span> Some data</li>
+											<li><span>Cards:</span> {cardQty}</li>
+											<li><span>Avg CMC:</span> {avgCMC}</li>
 										</ul>
 									</div>
 								</div>
 
 								<div class="right-col">
 									<Masonry elementType={'div'}>
-										{cardsDisplay}
+										{mainboardDisplay}
+										{sideboardDisplay}
 									</Masonry>
 								</div>
 							</div>

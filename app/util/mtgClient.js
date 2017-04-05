@@ -128,6 +128,7 @@ function _spliceDeckArrays(list, board) {
 	list.forEach((obj, i) => {
 		board.forEach((card, j) => {
 			let key = Object.keys(card);
+			
 			if(obj.formattedName == card[key].id) {
 				// card types
 				obj.types = card[key].types ? card[key].types : null;

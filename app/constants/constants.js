@@ -16,6 +16,10 @@ export default {
 		'REGISTER_SUCCESS',
 		'REGISTER_FAILED',
 
+		/* ======= Logging Out ======= */
+		'SIGN_USER_OUT',
+		'SIGN_OUT_SUCCESS',
+
 		/* ======= Decks ======= */
 		'SAVING_NEW_DECK',
 		'SAVE_NEW_DECK_SUCCESS',

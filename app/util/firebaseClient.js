@@ -81,6 +81,25 @@ function _handleSignInError(e) {
 	serverActions.loginFailed(error);
 }
 
+/** ======================= SIGN OUT ======================= */
+
+/**
+ * ----------------------------------------
+ * Sign the current user out
+ * ----------------------------------------
+ */
+
+export function signUserOut() {
+	auth.signOut()
+		.then(() => {
+			hashHistory.push('/login');
+			serverActions.signOutSuccess();
+		})
+		.catch((e) => {
+			console.log('sign out error', e);
+		})
+}
+
 /** ======================= CREATE ACCOUNT ======================= */
 
 /**
@@ -207,6 +226,8 @@ export function getUsersDecks() {
 			});
 
 			_getDeckObjects(deckKeys);
+		} else {
+			serverActions.noDecksFound();
 		}
 	}).catch(e => {
 		console.log('decks error', e)

@@ -82,3 +82,11 @@ export function getSingleDeck(deckId) {
 
 	firebaseClient.getSingleDeck(deckId);
 }
+
+export function signUserOut() {
+	dispatcher.dispatch({
+		type: constants.actions.SIGN_USER_OUT,
+	});
+
+	firebaseClient.signUserOut();
+}

@@ -1,7 +1,10 @@
 import React, { PropTypes } from 'react';
 
 const CardList = ({ typeName, cardsArr, changeImage }) => {
+	let quantity = null;
 	let cards = cardsArr.map((card, i) => {
+		quantity += card.quantity;
+
 		// preload images
 		let cardImage = new Image();
 		cardImage.src = `https://image.deckbrew.com/mtg/multiverseid/${card.multiverseId}.jpg`;
@@ -14,7 +17,7 @@ const CardList = ({ typeName, cardsArr, changeImage }) => {
 
 	return (
 		<div class="card-list">
-			<h3>{typeName} <span>({cardsArr.length})</span></h3>
+			<h3>{typeName} <span>({quantity})</span></h3>
 
 			<ul>
 				{cards}
