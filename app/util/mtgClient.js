@@ -171,3 +171,15 @@ function _handleDeckListErrors(deckArrOrig, deckErrors) {
 
 	serverActions.deckValidationFailed(errorMsg);
 }
+
+/**
+ * ----------------------------------------
+ * Check a deck's legality by format
+ * ----------------------------------------
+ */
+
+export function checkDeckLegality(deck) {
+	console.log('foo');
+}
+
+

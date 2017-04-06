@@ -70,6 +70,7 @@ class DeckStore extends EventEmitter {
 
 			case constants.actions.SINGLE_DECK_RECIEVED:
 				_singleDeck = action.deck;
+				console.log('deck recieved');
 				this.emit('change');
 				break;
 
@@ -79,6 +80,7 @@ class DeckStore extends EventEmitter {
 				_isSubmittingNewDeck = false;
 				_deckErrors = false;
 				_noDecksFound = false;
+				this.emit('change');
 				break;		
 
 			default:

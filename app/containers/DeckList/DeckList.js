@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import Masonry from 'react-masonry-component';
 
+// helpers
+import * as helpers from '../../util/helpers';
+
 // actions
 import * as viewActions from '../../actions/viewActions';
 
@@ -50,6 +53,9 @@ class DeckList extends Component {
 	onDeckChange(e) {
 		this.setState({
 			deck: deckStore.getSingleDeck()
+		}, () => {
+			console.log('check deck legality')
+			viewActions.checkDeckLegality(this.state.deck);
 		});
 	}
 
@@ -104,8 +110,8 @@ class DeckList extends Component {
 			}
 
 
-
-			let cardQty = null,
+			let dateAdded = null,
+				cardQty = null,
 				avgCMC = null,
 				noLandsLen = null;
 
@@ -122,6 +128,8 @@ class DeckList extends Component {
 
 			avgCMC = avgCMC/(cardQty - noLandsLen);
 			avgCMC = avgCMC.toFixed(2);
+
+			dateAdded = helpers.formatDate(deck.dateAdded);
 
 			return (
 				<div id="deck-list">
@@ -140,7 +148,7 @@ class DeckList extends Component {
 
 									<div id="deck-stats">
 										<ul>
-											<li><span>Deck added:</span> Some data</li>
+											<li><span>Deck added:</span> {dateAdded}</li>
 											<li><span>Legality:</span> Some data</li>
 											<li><span>Cards:</span> {cardQty}</li>
 											<li><span>Avg CMC:</span> {avgCMC}</li>

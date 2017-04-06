@@ -171,9 +171,11 @@ export function noDecksFound() {
  * ----------------------------------------
  */
 
- export function singleDeckRecieved(deck) {
+export function singleDeckRecieved(deck) {
 	dispatcher.dispatch({
 		type: constants.actions.SINGLE_DECK_RECIEVED,
 		deck
 	});
+
+	console.log('single deck dispatch');
 }

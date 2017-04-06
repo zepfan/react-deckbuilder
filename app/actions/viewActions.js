@@ -23,6 +23,20 @@ export function signUserIn(id, pass) {
 
 /**
  * ----------------------------------------
+ * Sign user out
+ * ----------------------------------------
+ */
+
+export function signUserOut() {
+	dispatcher.dispatch({
+		type: constants.actions.SIGN_USER_OUT,
+	});
+
+	firebaseClient.signUserOut();
+}
+
+/**
+ * ----------------------------------------
  * Create a new user
  * ----------------------------------------
  */
@@ -80,13 +94,21 @@ export function getSingleDeck(deckId) {
 		type: constants.actions.RETRIEVING_SINGLE_DECK,
 	});
 
+	console.log('get single deck');
+
 	firebaseClient.getSingleDeck(deckId);
 }
 
-export function signUserOut() {
+/**
+ * ----------------------------------------
+ * Retrieve a single deck
+ * ----------------------------------------
+ */
+
+export function checkDeckLegality(deck) {
 	dispatcher.dispatch({
-		type: constants.actions.SIGN_USER_OUT,
+		type: constants.actions.CHECKING_DECK_LEGALITY,
 	});
 
-	firebaseClient.signUserOut();
+	mtgClient.checkDeckLegality(deck);
 }
