@@ -29,7 +29,7 @@ class DeckList extends Component {
 
 		// grab the deck from the DB
 		let deckId = this.props.location.pathname.replace('/dashboard/deck/', '');
-		viewActions.getSingleDeck(deckId);
+		viewActions.getSingleDeck(deckId);	
 	}
 
 	/** ================ LIFECYCLE =========================== */
@@ -53,10 +53,9 @@ class DeckList extends Component {
 	onDeckChange(e) {
 		this.setState({
 			deck: deckStore.getSingleDeck()
-		}, () => {
-			console.log('check deck legality')
-			viewActions.checkDeckLegality(this.state.deck);
 		});
+
+		viewActions.checkDeckLegality(this.state.deck);
 	}
 
 	/**

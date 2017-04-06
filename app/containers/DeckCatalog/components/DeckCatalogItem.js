@@ -11,7 +11,7 @@ const DeckCatalogItem = ({ deck }) => {
 	})
 
 	return (
-		<li>
+		<li class={deck.inProgress ? 'in-progress' : ''}>
 			<Link to={`/dashboard/deck/${deck.deckId}`}>
 				<div class="featured-card">
 					<img src={featuredCardImage} />

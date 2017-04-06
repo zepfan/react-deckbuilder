@@ -176,6 +176,4 @@ export function singleDeckRecieved(deck) {
 		type: constants.actions.SINGLE_DECK_RECIEVED,
 		deck
 	});
-
-	console.log('single deck dispatch');
 }

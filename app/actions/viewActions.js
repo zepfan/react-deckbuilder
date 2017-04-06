@@ -94,8 +94,6 @@ export function getSingleDeck(deckId) {
 		type: constants.actions.RETRIEVING_SINGLE_DECK,
 	});
 
-	console.log('get single deck');
-
 	firebaseClient.getSingleDeck(deckId);
 }
 
