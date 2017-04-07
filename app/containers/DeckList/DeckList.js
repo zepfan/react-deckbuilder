@@ -28,6 +28,10 @@ class DeckList extends Component {
 			currentImage: 0,
 		};
 
+		// grab the deck from the DB
+		let deckId = this.props.location.pathname.replace('/dashboard/deck/', '');
+		viewActions.getSingleDeck(deckId);
+
 		// bind methods ahead of time
 		this.onDeckChange = this.onDeckChange.bind(this);
 		this.changeImageOnHover = this.changeImageOnHover.bind(this);
@@ -37,12 +41,6 @@ class DeckList extends Component {
 
 	componentWillMount() {
 		deckStore.on('change', this.onDeckChange);
-	}
-
-	componentDidMount() {
-		// grab the deck from the DB
-		let deckId = this.props.location.pathname.replace('/dashboard/deck/', '');
-		viewActions.getSingleDeck(deckId);
 	}
 
 	componentWillUnmount() {

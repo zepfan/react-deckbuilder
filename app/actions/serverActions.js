@@ -188,5 +188,5 @@ export function deckLegalityCheckSuccess(illegalCards) {
 	dispatcher.dispatch({
 		type: constants.actions.LEGALITY_CHECK_SUCCESS,
 		illegalCards
-	});	
+	});
 }

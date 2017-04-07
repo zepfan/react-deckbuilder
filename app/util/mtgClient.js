@@ -183,21 +183,25 @@ export function checkDeckLegality(deck) {
 		mainboard = deck.mainboard,
 		deckArr = [],
 		illegalCards = [];
-
 	deckArr = mainboard.map((card) => { return card.formattedName; });
 
 	mtg.getCardsArray(deckArr, (response) => {
 		response.forEach((card, i) => {
 			let key = Object.keys(card);
-			
-			if(card[key].formats[format] !== 'legal' || card[key].formats[format] !== undefined) {
-				illegalCards.push(card[key].name);
-				console.log('illegal');
+
+			if(format === 'commander') {
+				if(card[key].formats[format] && card[key].formats[format] !== 'legal') {
+					illegalCards.push(card[key].name);
+				}				
+			} else {
+				if(!card[key].formats[format] || card[key].formats[format] !== 'legal') {
+					illegalCards.push(card[key].name);
+				}
 			}
 		});
 
 		// return
-		// serverActions.deckLegalityCheckSuccess(illegalCards);
+		serverActions.deckLegalityCheckSuccess(illegalCards);
 	});
 }
 
