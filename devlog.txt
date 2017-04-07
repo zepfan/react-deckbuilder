@@ -1,33 +1,26 @@
-
-Things to do to complete V1:
-    - Get "legality check" working    
-    - Go through each file and do some spring cleaning
-    - Get the active nav state working for single decks ??
+Easier:
+    - Get "legality check" working
     - Reverse/refactor card[key].editions in _spliceDeckArrays
-    - Take all of the looping shit out of the render() functions
-    - Figure out better way to handle route protection
-    - Figure out best way to sync logged in user with the store
-    - Add an edit deck feature
     - Mobile styling
     - Make the sideboard not look like shit
     - Make the catalog fonts not look like shit
     - Break the stylesheet up into seperate files
+    - Go through each file and do some spring cleaning
+
+Harder:
+    - Get the active nav state working for single decks ??
+    - Take all of the looping shit out of the render() functions
+    - Figure out better way to handle route protection
+    - Figure out best way to sync logged in user with the store
     - Fix error handling (promises swallowing errors)
-    <!-- - Make 'in progress' do something -->
-    <!-- - Change how 'date added' is being saved in decks -->
-    <!-- - Fix header issue when first signing in (not showing username) -->
-    <!-- - Change the apperance of login/signup pages if user is signed in -->
-    <!-- - Add log out feature -->
-    <!-- - Change "test" in DeckCatalog state to represent "no deck found" -->
-    <!-- - Rename DeckListItem (isn't associated with DeckList) -->
+    - Add an edit deck feature
+
 
 
 Can fix later:
     - Handling duplicate cards in deck list
     - Ability to parse other common decklist formats
     - Make featured card seperate from commander
-
-
 
 Things for future:
     - Public decks system (comments, etc)

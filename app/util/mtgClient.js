@@ -179,7 +179,26 @@ function _handleDeckListErrors(deckArrOrig, deckErrors) {
  */
 
 export function checkDeckLegality(deck) {
-	console.log('foo');
+	let format = deck.format.toLowerCase(),
+		mainboard = deck.mainboard,
+		deckArr = [],
+		illegalCards = [];
+
+	deckArr = mainboard.map((card) => { return card.formattedName; });
+
+	mtg.getCardsArray(deckArr, (response) => {
+		response.forEach((card, i) => {
+			let key = Object.keys(card);
+			
+			if(card[key].formats[format] !== 'legal' || card[key].formats[format] !== undefined) {
+				illegalCards.push(card[key].name);
+				console.log('illegal');
+			}
+		});
+
+		// return
+		// serverActions.deckLegalityCheckSuccess(illegalCards);
+	});
 }
 
 

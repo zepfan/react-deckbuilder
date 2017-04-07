@@ -11,7 +11,6 @@ import userStore from './stores/userStore';
 
 // components
 import Header from './components/Header';
-import Footer from './components/Footer';
 
 class DeckManagerApp extends Component {
 	constructor(props) {
@@ -80,8 +79,6 @@ class DeckManagerApp extends Component {
 						}) }
 					</div>
 				</RouteTransition>
-
-				{/*<Footer />*/}
 			</div>
 		);
 	}

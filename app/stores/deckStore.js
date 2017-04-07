@@ -5,6 +5,7 @@ import constants from '../constants/constants';
 
 let _decks = [],
 	_singleDeck = {},
+	_isDeckLegal = 'N/A',
 	_isSubmittingNewDeck = false,
 	_deckErrors = false,
 	_noDecksFound = false;
@@ -29,8 +30,12 @@ class DeckStore extends EventEmitter {
 		return _deckErrors;
 	}
 
-	getSingleDeck() {
+	getCurrentDeck() {
 		return _singleDeck;
+	}
+
+	getDeckLegality() {
+		return _isDeckLegal;
 	}
 
 	getNoDecksFoundStatus() {
@@ -79,6 +84,12 @@ class DeckStore extends EventEmitter {
 				_isSubmittingNewDeck = false;
 				_deckErrors = false;
 				_noDecksFound = false;
+				this.emit('change');
+				break;
+
+			case constants.actions.LEGALITY_CHECK_SUCCESS:
+				console.log(action.illegalCards);
+				// _isDeckLegal = action.illegalCards.length ? 'not legal' : 'legal';
 				this.emit('change');
 				break;		
 

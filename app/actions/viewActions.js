@@ -96,17 +96,3 @@ export function getSingleDeck(deckId) {
 
 	firebaseClient.getSingleDeck(deckId);
 }
-
-/**
- * ----------------------------------------
- * Retrieve a single deck
- * ----------------------------------------
- */
-
-export function checkDeckLegality(deck) {
-	dispatcher.dispatch({
-		type: constants.actions.CHECKING_DECK_LEGALITY,
-	});
-
-	mtgClient.checkDeckLegality(deck);
-}

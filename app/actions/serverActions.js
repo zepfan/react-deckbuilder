@@ -177,3 +177,16 @@ export function singleDeckRecieved(deck) {
 		deck
 	});
 }
+
+/**
+ * ----------------------------------------
+ * Deck legality check was successful
+ * ----------------------------------------
+ */
+
+export function deckLegalityCheckSuccess(illegalCards) {
+	dispatcher.dispatch({
+		type: constants.actions.LEGALITY_CHECK_SUCCESS,
+		illegalCards
+	});	
+}

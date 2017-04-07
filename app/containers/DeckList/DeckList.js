@@ -8,6 +8,9 @@ import * as helpers from '../../util/helpers';
 // actions
 import * as viewActions from '../../actions/viewActions';
 
+// data access objects
+import * as mtgClient from '../../util/mtgClient';
+
 // stores
 import deckStore from '../../stores/deckStore';
 
@@ -20,22 +23,26 @@ class DeckList extends Component {
 		super(props);
 
 		this.state = {
-			deck: deckStore.getSingleDeck(),
+			deck: deckStore.getCurrentDeck(),
+			deckLegality: deckStore.getDeckLegality(),
 			currentImage: 0,
 		};
 
+		// bind methods ahead of time
 		this.onDeckChange = this.onDeckChange.bind(this);
 		this.changeImageOnHover = this.changeImageOnHover.bind(this);
-
-		// grab the deck from the DB
-		let deckId = this.props.location.pathname.replace('/dashboard/deck/', '');
-		viewActions.getSingleDeck(deckId);	
 	}
 
 	/** ================ LIFECYCLE =========================== */
 
 	componentWillMount() {
 		deckStore.on('change', this.onDeckChange);
+	}
+
+	componentDidMount() {
+		// grab the deck from the DB
+		let deckId = this.props.location.pathname.replace('/dashboard/deck/', '');
+		viewActions.getSingleDeck(deckId);
 	}
 
 	componentWillUnmount() {
@@ -52,10 +59,13 @@ class DeckList extends Component {
 
 	onDeckChange(e) {
 		this.setState({
-			deck: deckStore.getSingleDeck()
+			deck: deckStore.getCurrentDeck(),
+			deckLegality: deckStore.getDeckLegality(),
+		}, () => {
+			if(this.state.deckLegality == 'N/A') {
+				mtgClient.checkDeckLegality(this.state.deck);
+			}
 		});
-
-		viewActions.checkDeckLegality(this.state.deck);
 	}
 
 	/**
@@ -80,6 +90,13 @@ class DeckList extends Component {
 			sideboardDisplay = '';
 
 		if (!_.isEmpty(deck)) {
+			
+			/**
+			 * ----------------------------------------
+			 * Create the card lists
+			 * ----------------------------------------
+			 */
+
 			let { deckName, format, mainboard, sideboard } = deck,
 				cardTypes = [],
 				cardsByType = [];
@@ -108,27 +125,33 @@ class DeckList extends Component {
 				sideboardDisplay = <CardList changeImage={this.changeImageOnHover} typeName={'Sideboard'} cardsArr={sideboard} />;
 			}
 
+			/**
+			 * ----------------------------------------
+			 * Get the deck's auxiliary information
+			 * ----------------------------------------
+			 */
 
-			let dateAdded = null,
+			let dateAdded = helpers.formatDate(deck.dateAdded),
+				deckLegality = this.state.deckLegality,
 				cardQty = null,
 				avgCMC = null,
-				noLandsLen = null;
+				zeroCMC = null;
 
 			// get the quantity of cards
 			mainboard.forEach((card) => {
 				cardQty += card.quantity;
 				
+				// used for calculating avg CMC
 				if(card.cmc) {
 					avgCMC += card.cmc * card.quantity;
 				} else {
-					noLandsLen += card.quantity;
+					zeroCMC += card.quantity;
 				}
 			});
 
-			avgCMC = avgCMC/(cardQty - noLandsLen);
+			// caluclate average CMC
+			avgCMC = avgCMC/(cardQty - zeroCMC);
 			avgCMC = avgCMC.toFixed(2);
-
-			dateAdded = helpers.formatDate(deck.dateAdded);
 
 			return (
 				<div id="deck-list">
@@ -148,7 +171,7 @@ class DeckList extends Component {
 									<div id="deck-stats">
 										<ul>
 											<li><span>Deck added:</span> {dateAdded}</li>
-											<li><span>Legality:</span> Some data</li>
+											<li><span>Legality:</span> {deckLegality}</li>
 											<li><span>Cards:</span> {cardQty}</li>
 											<li><span>Avg CMC:</span> {avgCMC}</li>
 										</ul>
