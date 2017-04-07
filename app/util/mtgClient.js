@@ -183,6 +183,7 @@ export function checkDeckLegality(deck) {
 		mainboard = deck.mainboard,
 		deckArr = [],
 		illegalCards = [];
+	
 	deckArr = mainboard.map((card) => { return card.formattedName; });
 
 	mtg.getCardsArray(deckArr, (response) => {

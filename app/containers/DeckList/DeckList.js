@@ -47,6 +47,14 @@ class DeckList extends Component {
 		deckStore.removeListener('change', this.onDeckChange);
 	}
 
+	shouldComponentUpdate(nextProps, nextState) {
+		if(this.state.deckLegality.isDeckLegal === null) {
+			mtgClient.checkDeckLegality(nextState.deck);
+		}
+
+		return true;
+	}
+
 	/** ================ METHODS =========================== */
 
 	/**
@@ -59,10 +67,6 @@ class DeckList extends Component {
 		this.setState({
 			deck: deckStore.getCurrentDeck(),
 			deckLegality: deckStore.getDeckLegality(),
-		}, () => {
-			if(this.state.deckLegality == 'N/A') {
-				mtgClient.checkDeckLegality(this.state.deck);
-			}
 		});
 	}
 
@@ -131,6 +135,7 @@ class DeckList extends Component {
 
 			let dateAdded = helpers.formatDate(deck.dateAdded),
 				deckLegality = this.state.deckLegality,
+				deckLegalityMessage = null,
 				cardQty = null,
 				avgCMC = null,
 				zeroCMC = null;
@@ -151,6 +156,21 @@ class DeckList extends Component {
 			avgCMC = avgCMC/(cardQty - zeroCMC);
 			avgCMC = avgCMC.toFixed(2);
 
+
+			// set deck legality message
+			if(deckLegality.isDeckLegal === true) {
+				deckLegalityMessage = 'legal';
+			} else if(deckLegality.isDeckLegal === false) {
+				deckLegalityMessage = 'not legal';
+			} else {
+				deckLegalityMessage = 'N/A';
+			}
+
+			if cardsAreLegal & numberIsLegal > deckIsLegal
+			if cardsAreLegal & numbersAreNotLegal > deckIsNotLegal
+			if cardsAreNotLegal & numberIsLegal > deckIsNotLegal
+			if cardsAreNotLegal & numberIsNotLegal > deckIsNotLegal
+
 			return (
 				<div id="deck-list">
 					<h1>
@@ -169,7 +189,7 @@ class DeckList extends Component {
 									<div id="deck-stats">
 										<ul>
 											<li><span>Deck added:</span> {dateAdded}</li>
-											<li><span>Legality:</span> {deckLegality}</li>
+											<li><span>Legality:</span> {deckLegalityMessage}</li>
 											<li><span>Cards:</span> {cardQty}</li>
 											<li><span>Avg CMC:</span> {avgCMC}</li>
 										</ul>
